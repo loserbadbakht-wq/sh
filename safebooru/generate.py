@@ -18,7 +18,7 @@ def get_latest(limit=10):
         posts.append({
             'id': post.get('id'),
             'sample_url': post.get('sample_url'),
-            'source': post.get('source'),      # ← added source (original URL)
+            'source': post.get('source'),
             'tags': post.get('tags'),
             'rating': post.get('rating'),
             'score': post.get('score')
@@ -31,25 +31,26 @@ def generate_rss():
 <channel>
 <title>Safebooru Yuri - RSS Feed</title>
 <link>https://github.com</link>
-<description>Latest yuri images from Safebooru with source links</description>
+<description>Latest yuri images from Safebooru with inline previews</description>
 """
     for post in get_latest():
         tags = post['tags'].split()
         title = ' '.join(tags[:3]) if tags else f"Image {post['id']}"
         
-        # Description: tags, rating, score, and sample_url (preview)
+        # Description: tags, rating, score, and an <img> tag for preview
         desc_tags = post['tags'][:200] + ('...' if len(post['tags']) > 200 else '')
-        desc = (f"Tags: {desc_tags} | Rating: {post['rating']} | Score: {post['score']} | "
-                f"Preview: {post['sample_url']}")
+        desc_text = (f"Tags: {desc_tags} | Rating: {post['rating']} | Score: {post['score']}<br/>"
+                     f'<img src="{post["sample_url"]}" />')
         
         # Link: use source if available, otherwise fallback to sample_url
         link = post['source'] if post['source'] else post['sample_url']
         
+        # Wrap description in CDATA so the HTML is not escaped
         rss += f"""
 <item>
     <title>{title}</title>
     <link>{link}</link>
-    <description>{desc}</description>
+    <description><![CDATA[{desc_text}]]></description>
 </item>"""
     
     rss += '\n</channel>\n</rss>'
