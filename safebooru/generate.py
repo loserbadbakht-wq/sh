@@ -39,9 +39,7 @@ def generate_rss():
         
         # Description: tags, rating, score, and an <img> tag for preview
         desc_tags = post['tags'][:200] + ('...' if len(post['tags']) > 200 else '')
-        desc_text = (f"Tags: {desc_tags}
-        Rating: {post['rating']}
-        Score: {post['score']}<br/>"
+        desc_text = (f"Tags: {desc_tags} | Rating: {post['rating']} | Score: {post['score']}<br/>"
                      f'<img src="{post["sample_url"]}" />')
         
         # Link: use source if available, otherwise fallback to sample_url
