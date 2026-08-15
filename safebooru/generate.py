@@ -29,7 +29,7 @@ def generate_rss():
 <rss version="2.0">
 <channel>
 <title>Safebooru Yuri - RSS Feed</title>
-<link>https://github.com/ArjixGamer/anime-rss</link>
+<link>https://github.com</link>
 <description>Latest yuri images from Safebooru</description>
 """
     for post in get_latest():
