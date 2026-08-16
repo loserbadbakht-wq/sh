@@ -21,8 +21,8 @@ def get_latest(limit=10):
             'source': post.get('source'),
             'tags': post.get('tags'),
             'rating': post.get('rating'),
-            'score': post.get('score')
-            'file_url': post.get('file_url'),
+            'score': post.get('score'),
+            'file_url': post.get('file_url')
         })
     return posts
 
