@@ -22,7 +22,7 @@ def get_latest(limit=10):
             'tags': post.get('tags'),
             'rating': post.get('rating'),
             'score': post.get('score')
-            'file_url': post.get('sample_url'),
+            'file_url': post.get('file_url'),
         })
     return posts
 
