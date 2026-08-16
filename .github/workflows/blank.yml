@@ -34,6 +34,10 @@ jobs:
       run: |
         python ./Gen/genshin.py
 
+    - name: Generate rss (NTE)
+      run: |
+        python ./never/NTE.py
+
     - uses: stefanzweifel/git-auto-commit-action@v7
       with:
         # Optional but recommended
