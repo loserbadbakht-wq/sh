@@ -38,7 +38,7 @@ def generate_rss():
         title = ' '.join(tags[:3]) if tags else f"Image {post['id']}"
         
         # Description: tags, rating, score, and an <img> tag for preview
-        desc_tags = post['tags'][:200] + ('...' if len(post['tags']) > 200 else '')
+        desc_tags = post['tags'][:1000] + ('...' if len(post['tags']) > 1000 else '')
         desc_text = (f"Tags: {desc_tags}<br/>"
                      f'<img src="{post["sample_url"]}" />')
         
