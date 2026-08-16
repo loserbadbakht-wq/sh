@@ -30,9 +30,9 @@ def generate_rss():
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
-<title>Safebooru Yuri - RSS Feed</title>
+<title>Safebooru Genshin - RSS Feed</title>
 <link>https://github.com</link>
-<description>Latest yuri images from Safebooru with inline previews</description>
+<description>Latest genshin images from Safebooru with inline previews</description>
 """
     for post in get_latest():
         tags = post['tags'].split()
@@ -59,12 +59,12 @@ def generate_rss():
 
 # Save the RSS file
 try:
-    os.makedirs('./safebooru', exist_ok=True)
-    filename = './safebooru/safebooru-yuri-rss.xml'
+    os.makedirs('./Gen', exist_ok=True)
+    filename = './Gen/genshin-rss.xml'
     if os.path.exists(filename):
         os.remove(filename)
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(generate_rss().strip())
-    print('✅ Safebooru yuri RSS generated successfully.')
+    print('✅ genshin RSS generated successfully.')
 except Exception as e:
     print(f'❌ Failed: {e}')
