@@ -29,7 +29,10 @@ jobs:
     - name: Generate rss (safebooru)
       run: |
         python ./safebooru/generate.py
-
+        
+    - name: Generate rss (Genshin)
+      run: |
+        python ./Gen/genshin.py
 
     - uses: stefanzweifel/git-auto-commit-action@v7
       with:
