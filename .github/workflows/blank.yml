@@ -38,6 +38,10 @@ jobs:
       run: |
         python ./never/NTE.py
 
+    - name: Generate rss (NTE)
+      run: |
+        python ./safebooru_test/test.py
+    
     - uses: stefanzweifel/git-auto-commit-action@v7
       with:
         # Optional but recommended
