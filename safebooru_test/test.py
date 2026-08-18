@@ -40,13 +40,13 @@ def generate_rss():
     channel = ET.SubElement(rss, 'channel')
     ET.SubElement(channel, 'title').text = 'Safebooru Yuri - RSS Feed'
     ET.SubElement(channel, 'link').text = 'https://github.com'
-    ET.SubElement(channel, 'description').text = 'Latest yuri images from Safebooru (keeps old items)'
+    ET.SubElement(channel, 'description').text = 'Latest yuri images from Safebooru (test)'
     
     existing_items = []
     existing_links = set()
     
     # Try to load existing RSS file
-    filename = './safebooru/safebooru-yuri-rss.xml'
+    filename = './safebooru_test/safebooru-yuri-rss-test.xml'
     if os.path.exists(filename):
         try:
             tree = ET.parse(filename)
