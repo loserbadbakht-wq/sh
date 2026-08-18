@@ -8,7 +8,7 @@ def get_latest(limit=10):
     params = {
         'limit': limit,
         'pid': 0,
-        'tags': 'yuri'
+        'tags': 'yuri -ai-generated'
     }
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
     root = ET.fromstring(response.content)
