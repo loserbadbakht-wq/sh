@@ -2,7 +2,7 @@ import requests
 import xml.etree.ElementTree as ET
 import os
 
-def get_latest(limit=10):
+def get_latest(limit=50):
     """Fetch latest posts containing the 'yuri' tag."""
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
     params = {
