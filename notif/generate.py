@@ -88,8 +88,8 @@ def generate_rss():
 <description>Airing notification for feed</description>
 <item>
     <title>{safe_title}</title>
-    <link>{safe_link}</link>
-    <description>{safe_description}</description>
+    <link></link>
+    <description>!اومد {safe_description}</description>
 </item>
 """
     rss += '\n</channel>\n</rss>'
