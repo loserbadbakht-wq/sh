@@ -1,6 +1,8 @@
 import os
 import sys
+import re
 import urllib.request
+import urllib.parse
 import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 
@@ -68,6 +70,27 @@ def transform_title(original_title):
 
     return title.strip()
 
+def get_base_anime_title(transformed_title):
+    """
+    Extract the base anime name from a transformed title like "Hell Mode S2 - 08".
+    Returns e.g., "Hell Mode".
+    """
+    # Split on " - " to separate anime part from episode number
+    if " - " in transformed_title:
+        base = transformed_title.split(" - ", 1)[0]
+    else:
+        base = transformed_title
+
+    # Remove season indicators like " S2", " S02", " Season 2", etc.
+    base = re.sub(r'\s+S\d+$', '', base)                      # " S2" at end
+    base = re.sub(r'\s+Season\s*\d+$', '', base, flags=re.IGNORECASE)
+    return base.strip()
+
+def build_mal_search_url(anime_title):
+    """Return a MyAnimeList search URL for the given anime title."""
+    encoded = urllib.parse.quote(anime_title)
+    return f"https://myanimelist.net/anime.php?q={encoded}"
+
 # ----------------------------------------------------------------------
 # generate_rss() now uses the global items_data to create multiple items
 # ----------------------------------------------------------------------
@@ -107,13 +130,19 @@ def main():
     # 2. Get all items (title, link)
     all_items = get_all_items(rss_xml)
 
-    # 3. Transform each title and build the global list
+    # 3. Process each item
     for orig_title, orig_link in all_items:
+        # Transform the title
         new_title = transform_title(orig_title)
+        # Extract the base anime name
+        base_anime = get_base_anime_title(new_title)
+        # Build the MAL search URL
+        mal_link = build_mal_search_url(base_anime)
+
         items_data.append({
             'title': new_title,
-            'link': orig_link,
-            'description': new_title   # using transformed title as description
+            'link': mal_link,                # now points to MAL search
+            'description': new_title         # still the episode title
         })
 
     # 4. Write to file using the exact generate_rss() and try/except block
