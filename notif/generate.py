@@ -9,10 +9,8 @@ from xml.sax.saxutils import escape
 # ----------------------------------------------------------------------
 RSS_URL = "https://subsplease.org/rss/?t&r=1080"
 
-# Global variables to hold the processed data
-latest_title = ""
-latest_link = ""
-latest_description = ""
+# Global list to hold all processed items (each as dict with title, link, description)
+items_data = []
 
 def fetch_rss(url):
     """Fetch RSS content with a proper User-Agent header."""
@@ -27,30 +25,29 @@ def fetch_rss(url):
         print(f"❌ Failed to fetch RSS: {e}")
         sys.exit(1)
 
-def get_latest_item_title_and_link(rss_xml):
-    """Parse RSS, return (title, link) of the first <item>."""
+def get_all_items(rss_xml):
+    """Parse RSS and return a list of (title, link) for all items."""
     try:
         root = ET.fromstring(rss_xml)
     except ET.ParseError as e:
         print(f"❌ Failed to parse RSS: {e}")
         sys.exit(1)
 
-    # Find the first <item> element (RSS 2.0)
-    item = root.find('./channel/item')
-    if item is None:
+    items = root.findall('./channel/item')
+    if not items:
         print("❌ No items found in RSS.")
         sys.exit(1)
 
-    title_elem = item.find('title')
-    link_elem = item.find('link')
-    if title_elem is None or title_elem.text is None:
-        print("❌ Missing title in item.")
-        sys.exit(1)
-
-    title = title_elem.text.strip()
-    link = link_elem.text.strip() if link_elem is not None and link_elem.text else ""
-
-    return title, link
+    result = []
+    for item in items:
+        title_elem = item.find('title')
+        link_elem = item.find('link')
+        if title_elem is None or title_elem.text is None:
+            continue  # skip items without a title
+        title = title_elem.text.strip()
+        link = link_elem.text.strip() if link_elem is not None and link_elem.text else ""
+        result.append((title, link))
+    return result
 
 def transform_title(original_title):
     """
@@ -72,26 +69,29 @@ def transform_title(original_title):
     return title.strip()
 
 # ----------------------------------------------------------------------
-# The exact generate_rss() function you requested (with global variables)
+# generate_rss() now uses the global items_data to create multiple items
 # ----------------------------------------------------------------------
 def generate_rss():
-    # Use the global variables populated earlier
-    safe_title = escape(latest_title)
-    safe_link = escape(latest_link)
-    safe_description = escape(latest_description)
-
+    # Build the channel header
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
 <title>Air Notif - RSS Feed</title>
 <link>https://github.com</link>
 <description>Airing notification for feed</description>
+"""
+    # Add each item
+    for item in items_data:
+        safe_title = escape(item['title'])
+        safe_link = escape(item['link'])
+        safe_description = escape(item['description'])
+        rss += f"""
 <item>
     <title>{safe_title}</title>
-    <link></link>
-    <description>!اومد {safe_description}</description>
-</item>
-"""
+    <link>{safe_link}</link>
+    <description>{safe_description}</description>
+</item>"""
+    # Close channel and rss
     rss += '\n</channel>\n</rss>'
     return rss
 
@@ -99,23 +99,24 @@ def generate_rss():
 # Main execution
 # ----------------------------------------------------------------------
 def main():
-    global latest_title, latest_link, latest_description
+    global items_data
 
     # 1. Fetch the original RSS
     rss_xml = fetch_rss(RSS_URL)
 
-    # 2. Extract title and link from the latest item
-    orig_title, orig_link = get_latest_item_title_and_link(rss_xml)
+    # 2. Get all items (title, link)
+    all_items = get_all_items(rss_xml)
 
-    # 3. Transform the title
-    new_title = transform_title(orig_title)
+    # 3. Transform each title and build the global list
+    for orig_title, orig_link in all_items:
+        new_title = transform_title(orig_title)
+        items_data.append({
+            'title': new_title,
+            'link': orig_link,
+            'description': new_title   # using transformed title as description
+        })
 
-    # 4. Store in global variables for generate_rss()
-    latest_title = new_title
-    latest_link = orig_link
-    latest_description = new_title   # Use the transformed title as description
-
-    # 5. Write to file using the exact generate_rss() and try/except block
+    # 4. Write to file using the exact generate_rss() and try/except block
     try:
         os.makedirs('./notif', exist_ok=True)
         filename = './notif/airing.xml'
