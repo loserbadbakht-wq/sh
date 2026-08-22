@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Detective Conan - 1210</title>
+    <link>https://myanimelist.net/anime.php?q=Detective%20Conan</link>
+    <description>اومد! Detective Conan - 1210</description>
+</item>
+<item>
     <title>Honzuki no Gekokujou S4 - 19</title>
     <link>https://myanimelist.net/anime.php?q=Honzuki%20no%20Gekokujou</link>
     <description>اومد! Honzuki no Gekokujou S4 - 19</description>
@@ -249,11 +254,6 @@
     <title>Azur Lane - Bisoku Zenshin! S2 - 07</title>
     <link>https://myanimelist.net/anime.php?q=Azur%20Lane</link>
     <description>اومد! Azur Lane - Bisoku Zenshin! S2 - 07</description>
-</item>
-<item>
-    <title>One Piece - 1174</title>
-    <link>https://myanimelist.net/anime.php?q=One%20Piece</link>
-    <description>اومد! One Piece - 1174</description>
 </item>
 </channel>
 </rss>
