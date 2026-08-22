@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Super Cube</title>
+    <link>https://myanimelist.net/anime.php?q=Super%20Cube</link>
+    <description>اومد! Super Cube</description>
+</item>
+<item>
     <title>Seihantai na Kimi to Boku - 15v2</title>
     <link>https://myanimelist.net/anime.php?q=Seihantai%20na%20Kimi%20to%20Boku</link>
     <description>اومد! Seihantai na Kimi to Boku - 15v2</description>
@@ -249,11 +254,6 @@
     <title>Tai-Ari deshita. Ojousama wa Kakutou Game nante Shinai - 07</title>
     <link>https://myanimelist.net/anime.php?q=Tai-Ari%20deshita.%20Ojousama%20wa%20Kakutou%20Game%20nante%20Shinai</link>
     <description>اومد! Tai-Ari deshita. Ojousama wa Kakutou Game nante Shinai - 07</description>
-</item>
-<item>
-    <title>Bai Ri Cheng Wang - 17</title>
-    <link>https://myanimelist.net/anime.php?q=Bai%20Ri%20Cheng%20Wang</link>
-    <description>اومد! Bai Ri Cheng Wang - 17</description>
 </item>
 </channel>
 </rss>
