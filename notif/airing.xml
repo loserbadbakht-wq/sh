@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Saijo no Osewa - 08</title>
+    <link>https://myanimelist.net/anime.php?q=Saijo%20no%20Osewa</link>
+    <description>اومد! Saijo no Osewa - 08</description>
+</item>
+<item>
     <title>Hanaori-san wa Tensei shitemo Kenka ga Shitai - 07</title>
     <link>https://myanimelist.net/anime.php?q=Hanaori-san%20wa%20Tensei%20shitemo%20Kenka%20ga%20Shitai</link>
     <description>اومد! Hanaori-san wa Tensei shitemo Kenka ga Shitai - 07</description>
@@ -249,11 +254,6 @@
     <title>Tsue to Tsurugi no Wistoria S2</title>
     <link>https://myanimelist.net/anime.php?q=Tsue%20to%20Tsurugi%20no%20Wistoria</link>
     <description>اومد! Tsue to Tsurugi no Wistoria S2</description>
-</item>
-<item>
-    <title>Tsue to Tsurugi no Wistoria</title>
-    <link>https://myanimelist.net/anime.php?q=Tsue%20to%20Tsurugi%20no%20Wistoria</link>
-    <description>اومد! Tsue to Tsurugi no Wistoria</description>
 </item>
 </channel>
 </rss>
