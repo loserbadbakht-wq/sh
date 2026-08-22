@@ -112,7 +112,7 @@ def generate_rss():
 <item>
     <title>{safe_title}</title>
     <link>{safe_link}</link>
-    <description>{safe_description}</description>
+    <description>{safe_description}!اومد </description>
 </item>"""
     # Close channel and rss
     rss += '\n</channel>\n</rss>'
