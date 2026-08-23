@@ -28,6 +28,7 @@ COPYRIGHT_TAGS = {
 
 # Character tags
 CHARACTER_TAGS = {
+    #genshin
     'aether_(genshin_impact)',
     'lumine_(genshin_impact)',
     'paimon_(genshin_impact)',
@@ -159,4 +160,19 @@ CHARACTER_TAGS = {
     'vesna_(genshin_impact)',
     'vodyanitsa_(genshin_impact)',
     'alyosha_(genshin_impact)',
+    #mahou_shoujo_no_majo_saiban
+    'Sakuraba_Ema',
+    'Nikaido_Hiro',
+    'Natsume_An-An',
+    'Jogasaki_Noah',
+    'Hasumi_Leia',
+    'Saeki_Miria',
+    'Housho_Margo',
+    'Kurobe_Nanoka',
+    'Shito_Alisa',
+    'Tachibana_Sherry',
+    'Tono_Hanna',
+    'Sawatari_Coco',
+    'Hikami_Meruru',
+    'Gokuchou',
 }
