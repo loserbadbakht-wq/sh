@@ -29,7 +29,7 @@ def generate_rss():
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
-<title>Safebooru Yuri - RSS Feed</title>
+<title>Genshin - RSS Feed</title>
 <link>https://github.com</link>
 <description>Latest genshin images from safebooru</description>
 """
