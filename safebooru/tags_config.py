@@ -24,6 +24,7 @@ COPYRIGHT_TAGS = {
     'umamusume',
     'neverness_to_everness',
     'mahou_shoujo_no_majo_saiban',
+    'cho_kaguya-hime!',
 }
 
 # Character tags
