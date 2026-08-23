@@ -11,7 +11,7 @@ CHARACTER_TAGS = {
     # add more characters you know appear
 }
 
-def get_latest(limit=10):
+def get_latest(limit=50):
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
     # ✅ FIXED: removed genshin_impact – now fetches all yuri posts
     params = {'limit': limit, 'pid': 0, 'tags': 'yuri -ai-generated'}
