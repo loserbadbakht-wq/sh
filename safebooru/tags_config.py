@@ -349,4 +349,16 @@ CHARACTER_TAGS = {
     'hoshina_kiyoko_(umamusume)',
     'akasaka_misato_(umamusume)',
     'hosoe_junko_(umamusume)',
+    #cho kaguya hime!
+    'Sakayori_Iroha',
+    'Kaguya_(Cho_Kaguya-hime!)',
+    'Runami_Yachiyo',
+    'Fushi_(Cho_Kaguya-hime!)',
+    'Mikado_Akira_(Cho_Kaguya-hime!)',
+    'Komazawa_Rai',
+    'Komazawa_Noi',
+    'Ayatsumugi_Roka',
+    'Isayama_Mami',
+    'Chuuken_Otakou',
+    'Okkotteru_Koto',
 }
