@@ -2,18 +2,41 @@ import requests
 import xml.etree.ElementTree as ET
 import os
 
-# ---- Inline tag sets for testing (no file loading) ----
-COPYRIGHT_TAGS = {'genshin_impact'}   # Add more if you want
-CHARACTER_TAGS = {
-    'hu_tao_(genshin_impact)',
-    'ganyu_(genshin_impact)',
-    'xiao_(genshin_impact)',
-    # add more characters you know appear
-}
+# ---- Helper functions to load tags from files ----
+def load_tags_from_file(filename):
+    tags = set()
+    if os.path.exists(filename):
+        with open(filename, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    tags.add(line)
+    return tags
+
+def load_tags_from_folder(folder_path):
+    tags = set()
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        for filename in os.listdir(folder_path):
+            if filename.endswith('.txt'):
+                filepath = os.path.join(folder_path, filename)
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith('#'):
+                            tags.add(line)
+    return tags
+
+# ---- Load your tag lists ----
+COPYRIGHT_TAGS = load_tags_from_file('copyright_tags.txt')
+CHARACTER_TAGS = load_tags_from_folder('character_tags')
+
+# Optional: print how many tags were loaded
+print(f"Loaded {len(COPYRIGHT_TAGS)} copyright tags.")
+print(f"Loaded {len(CHARACTER_TAGS)} character tags.")
 
 def get_latest(limit=50):
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
-    # ✅ FIXED: removed genshin_impact – now fetches all yuri posts
+    # ✅ No franchise filter – gets all yuri posts
     params = {'limit': limit, 'pid': 0, 'tags': 'yuri -ai-generated'}
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
     root = ET.fromstring(response.content)
@@ -36,18 +59,15 @@ def generate_rss():
 <channel>
 <title>Safebooru Yuri - RSS Feed</title>
 <link>https://github.com</link>
-<description>Test separation (all yuri)</description>
+<description>Latest yuri images with separated tags</description>
 """
     for post in get_latest():
         all_tags = post['tags'].split()
         
-        # ---- SEPARATE ----
+        # ---- Separate tags ----
         copyright_tags = [t for t in all_tags if t in COPYRIGHT_TAGS]
         character_tags = [t for t in all_tags if t in CHARACTER_TAGS]
         other_tags = [t for t in all_tags if t not in COPYRIGHT_TAGS and t not in CHARACTER_TAGS]
-        
-        # Print to console so you see what was matched
-        print(f"Post {post['id']}: Copyright: {copyright_tags}, Character: {character_tags}")
         
         copy_str = ' '.join(copyright_tags) if copyright_tags else 'None'
         char_str = ' '.join(character_tags) if character_tags else 'None'
@@ -72,11 +92,12 @@ def generate_rss():
     rss += '\n</channel>\n</rss>'
     return rss
 
-# Save
+# ---- Save ----
 try:
     os.makedirs('./safebooru_test', exist_ok=True)
-    with open('./safebooru_test/safebooru-yuri-rss-test.xml', 'w', encoding='utf-8') as f:
+    filename = './safebooru_test/safebooru-yuri-rss-test.xml'
+    with open(filename, 'w', encoding='utf-8') as f:
         f.write(generate_rss().strip())
-    print("✅ Test RSS saved to ./safebooru/safebooru-yuri-test.xml")
+    print('✅ RSS saved to ./safebooru/test/safebooru-yuri-rss-test.xml (50 items)')
 except Exception as e:
-    print(f"❌ Error: {e}")
+    print(f'❌ Failed: {e}')
