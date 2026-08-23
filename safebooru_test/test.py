@@ -93,8 +93,8 @@ def generate_rss():
 
 # Save the RSS file
 try:
-    os.makedirs('./safebooru', exist_ok=True)
-    filename = './safebooru/safebooru-yuri-rss.xml'
+    os.makedirs('./safebooru_test', exist_ok=True)
+    filename = './safebooru/safebooru-yuri-rss-test.xml'
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(generate_rss().strip())
     print('✅ Safebooru yuri RSS generated successfully.')
