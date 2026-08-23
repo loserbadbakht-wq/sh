@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Hyakkano - 32</title>
+    <link>https://myanimelist.net/anime.php?q=Hyakkano</link>
+    <description>اومد! Hyakkano - 32</description>
+</item>
+<item>
     <title>Sekai Saikyou no Kouei - 08</title>
     <link>https://myanimelist.net/anime.php?q=Sekai%20Saikyou%20no%20Kouei</link>
     <description>اومد! Sekai Saikyou no Kouei - 08</description>
@@ -249,11 +254,6 @@
     <title>Youjo Senki S2 - 07</title>
     <link>https://myanimelist.net/anime.php?q=Youjo%20Senki</link>
     <description>اومد! Youjo Senki S2 - 07</description>
-</item>
-<item>
-    <title>Clevatess S2 - 07</title>
-    <link>https://myanimelist.net/anime.php?q=Clevatess</link>
-    <description>اومد! Clevatess S2 - 07</description>
 </item>
 </channel>
 </rss>
