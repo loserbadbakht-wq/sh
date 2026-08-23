@@ -38,8 +38,8 @@ def generate_rss():
         character_tags = [t for t in all_tags if t in CHARACTER_TAGS]
         other_tags = [t for t in all_tags if t not in COPYRIGHT_TAGS and t not in CHARACTER_TAGS]
         
-        copy_str = ' '.join(copyright_tags) if copyright_tags else 'None'
-        char_str = ' '.join(character_tags) if character_tags else 'None'
+        copy_str = ' '.join(copyright_tags) if copyright_tags else 'Can not guees'
+        char_str = ' '.join(character_tags) if character_tags else 'Can not guess'
         tags_str = ' '.join(other_tags) if other_tags else 'None'
         if len(tags_str) > 1000:
             tags_str = tags_str[:1000] + '...'
