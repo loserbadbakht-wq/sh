@@ -37,10 +37,9 @@ jobs:
     - name: Generate rss (NTE)
       run: |
         python ./never/NTE.py
-
-    - name: Generate rss (NTE)
-      run: |
-        python ./safebooru_test/test.py
+#- name: Generate rss (Safebooru test)
+#run: |
+#python ./safebooru_test/test.py
     
     - name: Generate rss (air)
       run: |
