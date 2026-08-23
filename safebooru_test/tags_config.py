@@ -156,7 +156,7 @@ CHARACTER_TAGS = {
     'tartaglia_(genshin_impact)',
     'tsaritsa_(genshin_impact)',
     'odette_(genshin_impact)',
-    'mitya_(genshin_impact',
+    'mitya_(genshin_impact'),
     'vesna_(genshin_impact)',
     'vodyanitsa_(genshin_impact)',
     'alyosha_(genshin_impact)',
