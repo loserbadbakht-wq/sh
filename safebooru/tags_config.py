@@ -28,6 +28,7 @@ COPYRIGHT_TAGS = {
     'vocaloid',
     'utau',
     'sayonara_lara',
+    'adachi_to_shimamura',
 }
 
 # Character tags
@@ -926,4 +927,7 @@ CHARACTER_TAGS = {
     'zaq_(utau)',
     'milk_(utau)',
     'needle_(utau)',
+    #adachi to shimamura
+    'adachi_sakura',
+    'shimamura_hougetsu',
 }
