@@ -2,12 +2,26 @@
 # tags_config.py – edit your tag lists here
 # ============================================
 
-# Copyright / Series tags
+# Copyright tags
 COPYRIGHT_TAGS = {
     'genshin_impact',
-    'vocaloid',
-    'touhou',
-    # add more series names here
+    'arknights',
+    'arknights:_endfield',
+    'azur_lane',
+    'bang_dream!_girls_band_party!',
+    'blue_archive',
+    'reverse:1999',
+    "girls'_frontline",
+    "girls'_frontline_2:_exilium",
+    'goddess_of_victory:_nikke',
+    'honkai_impact_3rd',
+    'honkai:_star_rail',
+    'honkai_(series)',
+    'wuthering_waves',
+    'zenless_zone_zero',
+    'umamusume',
+    'neverness_to_everness',
+    'mahou_shoujo_no_majo_saiban',
 }
 
 # Character tags
