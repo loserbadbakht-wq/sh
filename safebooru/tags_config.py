@@ -25,7 +25,8 @@ COPYRIGHT_TAGS = {
     'neverness_to_everness',
     'mahou_shoujo_no_majo_saiban',
     'cho_kaguya-hime!',
-    'vocaloid
+    'vocaloid',
+    'sayonara_lara',
 }
 
 # Character tags
