@@ -53,7 +53,7 @@ def generate_rss():
         
         rss += f"""
 <item>
-    <title>{title}</title>
+    <title></title>
     <link>{link}</link>
     <description><![CDATA[{desc_text} <br> <a href="{post["file_url"]}">original size</a>]]></description>
 </item>"""
