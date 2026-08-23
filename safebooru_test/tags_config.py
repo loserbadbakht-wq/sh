@@ -9,6 +9,7 @@ COPYRIGHT_TAGS = {
     'arknights',
     'arknights:_endfield',
     'azur_lane',
+    'bang_dream!',
     'bang_dream!_girls_band_party!',
     'blue_archive',
     'reverse:1999',
