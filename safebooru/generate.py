@@ -2,17 +2,14 @@ import requests
 import xml.etree.ElementTree as ET
 import os
 
+# ---- Import tag lists from the config file ----
+from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS
+
 def get_latest(limit=50):
-    """Fetch latest posts containing the 'yuri' tag."""
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
-    params = {
-        'limit': limit,
-        'pid': 0,
-        'tags': 'yuri -ai-generated'
-    }
+    params = {'limit': limit, 'pid': 0, 'tags': 'yuri -ai-generated'}
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
     root = ET.fromstring(response.content)
-    
     posts = []
     for post in root.findall('post'):
         posts.append({
@@ -32,39 +29,44 @@ def generate_rss():
 <channel>
 <title>Safebooru Yuri - RSS Feed</title>
 <link>https://github.com</link>
-<description>Latest yuri images from Safebooru with inline previews</description>
+<description>Latest yuri images from safebooru</description>
 """
     for post in get_latest():
-        tags = post['tags'].split()
-        title = ' '.join(tags[:3]) if tags else f"Image {post['id']}"
+        all_tags = post['tags'].split()
         
-        # Description: tags, rating, score, and an <img> tag for preview
-        desc_tags = post['tags'][:1000] + ('...' if len(post['tags']) > 1000 else '')
-        desc_text = (f"Tags: {desc_tags}<br/>"
+        copyright_tags = [t for t in all_tags if t in COPYRIGHT_TAGS]
+        character_tags = [t for t in all_tags if t in CHARACTER_TAGS]
+        other_tags = [t for t in all_tags if t not in COPYRIGHT_TAGS and t not in CHARACTER_TAGS]
+        
+        copy_str = ' '.join(copyright_tags) if copyright_tags else 'Can not guees'
+        char_str = ' '.join(character_tags) if character_tags else 'Can not guess'
+        tags_str = ' '.join(other_tags) if other_tags else 'None'
+        if len(tags_str) > 1000:
+            tags_str = tags_str[:1000] + '...'
+        
+        title = ' '.join(all_tags[:3]) if all_tags else f"Image {post['id']}"
+        desc_text = (f"<b>Copyright:</b> {copy_str}<br/>"
+                     f"<b>Character(s):</b> {char_str}<br/>"
+                     f"<b>Tags:</b> {tags_str}<br/>"
                      f'<img src="{post["sample_url"]}" />')
-        
-        # Link: use source if available, otherwise fallback to sample_url
         link = post['source'] if post['source'] else post['sample_url']
         
-        # Wrap description in CDATA so the HTML is not escaped
         rss += f"""
 <item>
-    <title>{title}</title>
+    <title></title>
     <link>{link}</link>
-    <description><![CDATA[{desc_text} <br> <a href="{post["file_url"]}">orginal size</a>]]></description>
+    <description><![CDATA[{desc_text} <br> <a href="{post["file_url"]}">original size</a>]]></description>
 </item>"""
     
     rss += '\n</channel>\n</rss>'
     return rss
 
-# Save the RSS file
+# ---- Save ----
 try:
     os.makedirs('./safebooru', exist_ok=True)
     filename = './safebooru/safebooru-yuri-rss.xml'
-    if os.path.exists(filename):
-        os.remove(filename)
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(generate_rss().strip())
-    print('✅ Safebooru yuri RSS generated successfully.')
+    print('✅ RSS saved to ./safebooru/safebooru-yuri-rss.xml')
 except Exception as e:
     print(f'❌ Failed: {e}')
