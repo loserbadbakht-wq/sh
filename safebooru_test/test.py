@@ -2,41 +2,11 @@ import requests
 import xml.etree.ElementTree as ET
 import os
 
-# ---- Helper functions to load tags from files ----
-def load_tags_from_file(filename):
-    tags = set()
-    if os.path.exists(filename):
-        with open(filename, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    tags.add(line)
-    return tags
-
-def load_tags_from_folder(folder_path):
-    tags = set()
-    if os.path.exists(folder_path) and os.path.isdir(folder_path):
-        for filename in os.listdir(folder_path):
-            if filename.endswith('.txt'):
-                filepath = os.path.join(folder_path, filename)
-                with open(filepath, 'r', encoding='utf-8') as f:
-                    for line in f:
-                        line = line.strip()
-                        if line and not line.startswith('#'):
-                            tags.add(line)
-    return tags
-
-# ---- Load your tag lists ----
-COPYRIGHT_TAGS = load_tags_from_file('copyright_tags.txt')
-CHARACTER_TAGS = load_tags_from_folder('character_tags')
-
-# Optional: print how many tags were loaded
-print(f"Loaded {len(COPYRIGHT_TAGS)} copyright tags.")
-print(f"Loaded {len(CHARACTER_TAGS)} character tags.")
+# ---- Import tag lists from the config file ----
+from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS
 
 def get_latest(limit=50):
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
-    # ✅ No franchise filter – gets all yuri posts
     params = {'limit': limit, 'pid': 0, 'tags': 'yuri -ai-generated'}
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
     root = ET.fromstring(response.content)
@@ -64,7 +34,6 @@ def generate_rss():
     for post in get_latest():
         all_tags = post['tags'].split()
         
-        # ---- Separate tags ----
         copyright_tags = [t for t in all_tags if t in COPYRIGHT_TAGS]
         character_tags = [t for t in all_tags if t in CHARACTER_TAGS]
         other_tags = [t for t in all_tags if t not in COPYRIGHT_TAGS and t not in CHARACTER_TAGS]
@@ -98,6 +67,6 @@ try:
     filename = './safebooru_test/safebooru-yuri-rss-test.xml'
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(generate_rss().strip())
-    print('✅ RSS saved to ./safebooru/test/safebooru-yuri-rss-test.xml (50 items)')
+    print('✅ RSS saved to ./safebooru/safebooru-yuri-rss.xml (50 items)')
 except Exception as e:
     print(f'❌ Failed: {e}')
