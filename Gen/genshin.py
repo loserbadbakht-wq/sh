@@ -2,7 +2,8 @@ import requests
 import xml.etree.ElementTree as ET
 import os
 
-# ---- Import tag lists from the config file ----
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from safebooru.tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS
 
 def get_latest(limit=50):
