@@ -96,6 +96,8 @@ CHARACTER_TAGS = {
     'thoma_(genshin_impact)',
     'yae_miko',
     'yoimiya_(genshin_impact)',
+    'scaramouche_(cat)_(genshin_impact)',
+    'scaramouche_(genshin_impact)',
     'alhaitham_(genshin_impact)',
     'candace_(genshin_impact)',
     'collei_(genshin_impact)',
