@@ -167,6 +167,7 @@ CHARACTER_TAGS = {
     'vesna_(genshin_impact)',
     'vodyanitsa_(genshin_impact)',
     'alyosha_(genshin_impact)',
+    'valeriy_(genshin_impact)',
     #mahou_shoujo_no_majo_saiban
     'sakuraba_ema',
     'nikaido_hiro',
