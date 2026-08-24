@@ -7,6 +7,7 @@ COPYRIGHT_TAGS = {
     # custom
     'sayonara_lara',
     'adachi_to_shimamura',
+    'kimi_ga_shinu_made_koi_wo_shitai',
     #other
     'bishoujo_senshi_sailor_moon_(first_season)',
     'japanese_urban_legends',
