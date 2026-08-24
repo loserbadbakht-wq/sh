@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>The Beginning After the End</title>
+    <link>https://myanimelist.net/anime.php?q=The%20Beginning%20After%20the%20End</link>
+    <description>اومد! The Beginning After the End</description>
+</item>
+<item>
     <title>Bleach - Sennen Kessen Hen - 45</title>
     <link>https://myanimelist.net/anime.php?q=Bleach</link>
     <description>اومد! Bleach - Sennen Kessen Hen - 45</description>
@@ -249,11 +254,6 @@
     <title>Link Click S3 - 03</title>
     <link>https://myanimelist.net/anime.php?q=Link%20Click</link>
     <description>اومد! Link Click S3 - 03</description>
-</item>
-<item>
-    <title>Otome Kaijuu Carameliser - 08</title>
-    <link>https://myanimelist.net/anime.php?q=Otome%20Kaijuu%20Carameliser</link>
-    <description>اومد! Otome Kaijuu Carameliser - 08</description>
 </item>
 </channel>
 </rss>
