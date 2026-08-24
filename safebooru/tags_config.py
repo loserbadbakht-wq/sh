@@ -4,6 +4,10 @@
 
 # Copyright tags
 COPYRIGHT_TAGS = {
+    # custom
+    'sayonara_lara',
+    'adachi_to_shimamura',
+    #other
     'bishoujo_senshi_sailor_moon_(first_season)',
     'japanese_urban_legends',
     'strike_the_blood',
