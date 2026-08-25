@@ -40,10 +40,10 @@ jobs:
               filename: 'safebooru-yuri-rss.json'
             },
             // Add more feeds here
-            // {
-            //   url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new1.xml',
-            //   filename: 'new1.json'
-            // },
+             {
+              url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new1.xml',
+              filename: 'new1.json'
+             },
             // {
             //   url: 'https://example.com/feed3.xml',
             //   filename: 'feed3.json'
