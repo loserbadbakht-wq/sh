@@ -2,8 +2,8 @@ name: Fetch RSS and convert to JSON
 
 on:
   schedule:
-    - cron: '0 * * * *'   # runs every hour
-  workflow_dispatch:      # allows manual trigger
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   convert:
@@ -32,13 +32,9 @@ jobs:
       - name: Fetch and convert RSS
         run: |
           mkdir -p json
-          npx --yes rss-converter@latest << 'EOF' > json/${{ steps.extract.outputs.filename }}.json
-          const { convert } = require('rss-converter');
-          const url = process.env.RSS_URL;
-          convert(url)
-            .then(data => console.log(JSON.stringify(data, null, 2)))
-            .catch(err => { console.error(err); process.exit(1); });
-          EOF
+          npm init -y
+          npm install rss-converter
+          node -e "const {convert} = require('rss-converter'); convert(process.env.RSS_URL).then(data => console.log(JSON.stringify(data, null, 2))).catch(console.error)" > json/${{ steps.extract.outputs.filename }}.json
         env:
           RSS_URL: ${{ steps.extract.outputs.full_url }}
 
