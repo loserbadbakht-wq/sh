@@ -2,7 +2,7 @@ name: Fetch RSS and convert to JSON
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -21,46 +21,63 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Extract filename and URL
-        id: extract
-        run: |
-          URL="https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/safebooru/safebooru-yuri-rss.xml"
-          FILENAME=$(basename "$URL" .xml)
-          echo "full_url=$URL" >> $GITHUB_OUTPUT
-          echo "filename=$FILENAME" >> $GITHUB_OUTPUT
-
-      - name: Fetch and convert RSS
+      - name: Fetch and convert RSS feeds
         run: |
           mkdir -p json
           npm init -y
           npm install axios xml2js
-          node -e "
-            const axios = require('axios');
-            const xml2js = require('xml2js');
-            const parser = new xml2js.Parser({ explicitArray: false });
-            
-            axios.get(process.env.RSS_URL)
-              .then(response => {
-                parser.parseString(response.data, (err, result) => {
-                  if (err) {
-                    console.error(err);
-                    process.exit(1);
-                  }
-                  console.log(JSON.stringify(result, null, 2));
-                });
-              })
-              .catch(err => {
-                console.error(err);
-                process.exit(1);
-              });
-          " > json/${{ steps.extract.outputs.filename }}.json
-        env:
-          RSS_URL: ${{ steps.extract.outputs.full_url }}
+          
+          cat > convert.js << 'EOF'
+          const axios = require('axios');
+          const xml2js = require('xml2js');
+          const fs = require('fs');
+          const parser = new xml2js.Parser({ explicitArray: false });
+          
+          // Define your RSS feeds here
+          const feeds = [
+            {
+              url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/safebooru/safebooru-yuri-rss.xml',
+              filename: 'safebooru-yuri-rss.json'
+            },
+            // Add more feeds here
+            // {
+            //   url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new1.xml',
+            //   filename: 'new1.json'
+            // },
+            // {
+            //   url: 'https://example.com/feed3.xml',
+            //   filename: 'feed3.json'
+            // }
+          ];
+          
+          async function fetchAndConvert(feed) {
+            try {
+              console.log(`Fetching: ${feed.url}`);
+              const response = await axios.get(feed.url);
+              const result = await parser.parseStringPromise(response.data);
+              const jsonPath = `json/${feed.filename}`;
+              fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
+              console.log(`✅ Saved: ${jsonPath}`);
+            } catch (error) {
+              console.error(`❌ Error processing ${feed.url}:`, error.message);
+            }
+          }
+          
+          async function processAllFeeds() {
+            const promises = feeds.map(feed => fetchAndConvert(feed));
+            await Promise.all(promises);
+            console.log('All feeds processed!');
+          }
+          
+          processAllFeeds();
+          EOF
+          
+          node convert.js
 
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add json/
-          git diff --staged --quiet || git commit -m "Update RSS feed JSON [skip ci]"
+          git diff --staged --quiet || git commit -m "Update RSS feeds JSON [skip ci]"
           git push
