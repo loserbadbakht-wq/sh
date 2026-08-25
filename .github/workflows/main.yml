@@ -3,14 +3,18 @@ name: Fetch RSS and convert to JSON
 on:
   schedule:
     - cron: '0 * * * *'   # runs every hour
-  workflow_dispatch:      # allows manual trigger
+  workflow_dispatch:      
 
 jobs:
   convert:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write    
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # fetch all history for pushing
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -25,19 +29,22 @@ jobs:
         id: extract
         run: |
           URL="https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/safebooru/safebooru-yuri-rss.xml"
-          FILENAME=$(basename "$URL")
+          FILENAME=$(basename "$URL" .xml)  # remove .xml extension
           echo "full_url=$URL" >> $GITHUB_OUTPUT
           echo "filename=$FILENAME" >> $GITHUB_OUTPUT
       
       - name: Fetch and convert RSS
         run: |
           npm install rss-converter
-          npx -c "const {convert} = require('rss-converter'); convert(process.env.RSS_URL).then(console.log).catch(console.error)" > ${{ steps.extract.outputs.filename }}.json
+          mkdir -p json  # create json folder if it doesn't exist
+          npx -c "const {convert} = require('rss-converter'); convert(process.env.RSS_URL).then(data => console.log(JSON.stringify(data, null, 2))).catch(console.error)" > json/${{ steps.extract.outputs.filename }}.json
         env:
           RSS_URL: ${{ steps.extract.outputs.full_url }}
 
-      - name: Upload JSON as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: feed-json
-          path: feed.json
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add json/
+          git diff --staged --quiet || git commit -m "Update RSS feed JSON [skip ci]"
+          git push
