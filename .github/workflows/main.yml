@@ -20,10 +20,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm install rss-converter
 
       - name: Extract filename and URL
         id: extract
@@ -36,13 +32,13 @@ jobs:
       - name: Fetch and convert RSS
         run: |
           mkdir -p json
-          node -e "
-            const { convert } = require('rss-converter');
-            const url = process.env.RSS_URL;
-            convert(url)
-              .then(data => console.log(JSON.stringify(data, null, 2)))
-              .catch(err => { console.error(err); process.exit(1); });
-          " > json/${{ steps.extract.outputs.filename }}.json
+          npx --yes rss-converter@latest << 'EOF' > json/${{ steps.extract.outputs.filename }}.json
+          const { convert } = require('rss-converter');
+          const url = process.env.RSS_URL;
+          convert(url)
+            .then(data => console.log(JSON.stringify(data, null, 2)))
+            .catch(err => { console.error(err); process.exit(1); });
+          EOF
         env:
           RSS_URL: ${{ steps.extract.outputs.full_url }}
 
