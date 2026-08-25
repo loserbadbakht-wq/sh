@@ -1,0 +1,41 @@
+name: Fetch RSS and convert to JSON
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # runs every hour
+  workflow_dispatch:      # allows manual trigger
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Extract both filename and URL
+        id: extract
+        run: |
+          URL=""
+          FILENAME=$(basename "$URL")
+          echo "full_url=$URL" >> $GITHUB_OUTPUT
+          echo "filename=$FILENAME" >> $GITHUB_OUTPUT
+      
+      - name: Run RSS to JSON converter
+        env:
+          RSS_URL: ${{ steps.extract.outputs.full_url }}
+        run: node rss-to-json.js > ${{ steps.extract.outputs.filename }}.json
+
+      - name: Upload JSON as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: feed-json
+          path: feed.json
