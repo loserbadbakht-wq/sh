@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Feed Reader – RSS & Atom (rss2json)</title>
+    <title>Feed Reader – JSON Feed</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ====== (All CSS – exactly as before, unchanged) ====== */
+        /* ====== CSS Variables (Light & Dark) ====== */
         :root {
             --bg: #f1f5f9;
             --bg-card: #ffffff;
@@ -145,7 +145,7 @@
         .loading-overlay { display: flex; align-items: center; justify-content: center; padding: 40px 20px; color: var(--text-muted); gap: 12px; }
         @media (max-width: 900px) { .app { flex-direction: column; padding: 12px 12px 16px; gap: 12px; } .sidebar { width: 100%; min-width: unset; max-height: 340px; position: static; top: unset; } .content { max-height: unset; min-height: 500px; } .header { padding: 0 16px; } .header-logo { font-size: 18px; } .content-header { padding: 12px 16px; flex-direction: column; align-items: stretch; gap: 8px; } .content-header .feed-title-large { font-size: 16px; } .sidebar-add .add-form { flex-wrap: wrap; } .sidebar-add .add-form input { flex: 1 1 100%; } }
         @media (max-width: 480px) { .header-logo span { display: none; } .header-actions .btn-icon { width: 34px; height: 34px; font-size: 14px; } .entry-card { padding: 12px 14px; } .entry-card .entry-title { font-size: 15px; } .toast-container { left: 12px; right: 12px; max-width: unset; bottom: 12px; } .content-header .feed-actions button { font-size: 11px; padding: 4px 10px; } }
-        .api-notice {
+        .data-notice {
             background: var(--primary-light);
             color: var(--primary);
             padding: 6px 16px;
@@ -155,7 +155,17 @@
             text-align: center;
             flex-shrink: 0;
         }
-        .api-notice i { margin-right: 6px; }
+        .data-notice i { margin-right: 6px; }
+        .data-notice code { background: var(--bg-card); padding: 1px 8px; border-radius: 3px; font-size: 11px; border: 1px solid var(--border); }
+        .loading-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            gap: 12px;
+            color: var(--text-secondary);
+        }
+        .loading-message .spinner { width: 24px; height: 24px; }
     </style>
 </head>
 <body>
@@ -173,7 +183,7 @@
             <div class="sidebar-header"><h2><i class="fas fa-list-ul" style="margin-right:6px;"></i> Your Feeds</h2><span class="badge" id="feedCount">0</span></div>
             <div class="sidebar-add">
                 <form class="add-form" id="addFeedForm">
-                    <input type="url" id="feedUrlInput" placeholder="Paste RSS / Atom URL…" required />
+                    <input type="url" id="feedUrlInput" placeholder="Paste JSON feed URL…" required />
                     <button type="submit" id="addFeedBtn"><i class="fas fa-plus"></i> Add</button>
                 </form>
             </div>
@@ -181,21 +191,35 @@
         </aside>
         <main class="content" id="content">
             <div class="content-header">
-                <div class="feed-title-large" id="contentFeedTitle"><span class="feed-icon-large" id="contentFeedIcon"><i class="fas fa-rss"></i></span><span id="contentFeedName">Select a feed</span></div>
+                <div class="feed-title-large" id="contentFeedTitle"><span class="feed-icon-large" id="contentFeedIcon"><i class="fas fa-rss"></i></span><span id="contentFeedName">Loading feed…</span></div>
                 <div class="feed-meta" id="contentFeedMeta"><span id="entryCount">0 items</span></div>
                 <div class="feed-actions">
                     <button id="markAllReadBtn" title="Mark all as read"><i class="fas fa-check-double"></i> Mark all read</button>
                     <button id="refreshFeedBtn" class="primary" title="Refresh this feed"><i class="fas fa-sync-alt"></i> Refresh</button>
                 </div>
             </div>
-            <div class="content-items" id="contentItems"><div class="content-empty"><i class="fas fa-inbox"></i><h3>No feed selected</h3><p>Choose a feed from the sidebar to view its articles.</p></div></div>
-            <div class="api-notice"><i class="fas fa-cloud"></i> Powered by rss2json.com</div>
+            <div class="content-items" id="contentItems">
+                <div class="loading-message">
+                    <span class="spinner"></span>
+                    <span>Loading feed data from JSON file…</span>
+                </div>
+            </div>
+            <div class="data-notice"><i class="fas fa-file-code"></i> Default feed: <code id="jsonPathDisplay">https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/safebooru-yuri-rss.json</code></div>
         </main>
     </div>
     <div class="toast-container" id="toastContainer"></div>
     <script>
         (function() {
             'use strict';
+
+            // ============================================================
+            //  ⭐ DEFAULT JSON FEED (loads on first visit) ⭐
+            //  ============================================================
+            const DEFAULT_JSON_FEED = 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/safebooru-yuri-rss.json';
+
+            // ============================================================
+            //  APPLICATION CODE
+            // ============================================================
 
             // ---- References ----
             const feedListEl = document.getElementById('feedList');
@@ -213,11 +237,15 @@
             const refreshFeedBtn = document.getElementById('refreshFeedBtn');
             const markAllReadBtn = document.getElementById('markAllReadBtn');
             const toastContainer = document.getElementById('toastContainer');
+            const jsonPathDisplay = document.getElementById('jsonPathDisplay');
 
             // ---- State ----
             let feeds = [];
             let activeFeedId = null;
             let isLoading = false;
+
+            // Display the default path
+            jsonPathDisplay.textContent = DEFAULT_JSON_FEED;
 
             // ---- Helpers ----
             function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
@@ -283,72 +311,157 @@
             setTheme(getTheme());
 
             // ---- LocalStorage ----
-            function saveFeeds() { try { localStorage.setItem('fr-feeds', JSON.stringify(feeds)); } catch (e) {} }
+            function saveFeeds() { 
+                try { 
+                    localStorage.setItem('fr-feeds', JSON.stringify(feeds)); 
+                } catch (e) { 
+                    console.warn('Could not save feeds to localStorage:', e);
+                } 
+            }
             function loadFeeds() {
                 try {
                     const data = localStorage.getItem('fr-feeds');
                     if (data) {
                         const parsed = JSON.parse(data);
-                        if (Array.isArray(parsed)) {
+                        if (Array.isArray(parsed) && parsed.length > 0) {
                             feeds = parsed;
-                            feeds.forEach(f => { if (!f.items) f.items = []; f.items.forEach(i => { if (i.read === undefined) i.read = false; }); });
-                            return;
+                            feeds.forEach(f => { 
+                                if (!f.items) f.items = []; 
+                                f.items.forEach(i => { if (i.read === undefined) i.read = false; });
+                            });
+                            return true;
                         }
                     }
-                } catch (e) {}
-                feeds = [];
+                } catch (e) { 
+                    console.warn('Could not load feeds from localStorage:', e);
+                }
+                return false;
             }
 
-            // ============================================================
-            //  RSS2JSON API – the only fetch method
-            // ============================================================
-            const API_KEY = '9hq9dufr1ik4m1auocaxgpzjx1kdw8wrrpxn0idb'; // public key
+            // ---- Parse JSON feed (supports multiple formats) ----
+            function parseJsonFeed(data, url) {
+                let feedData;
+                
+                // Format 1: { rss: { channel: { ... } } } (Safebooru style)
+                if (data.rss && data.rss.channel) {
+                    const channel = data.rss.channel;
+                    feedData = {
+                        feed: {
+                            title: channel.title || 'Feed',
+                            url: channel.link || url,
+                            image: channel.image || getFavicon(url)
+                        },
+                        items: (channel.item || []).map(item => ({
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || '',
+                            pubDate: item.pubDate || new Date().toISOString()
+                        }))
+                    };
+                }
+                // Format 2: { feed: { ... }, items: [ ... ] } (rss2json style)
+                else if (data.feed && data.items) {
+                    feedData = {
+                        feed: {
+                            title: data.feed.title || 'Feed',
+                            url: data.feed.url || url,
+                            image: data.feed.image || data.feed.icon || getFavicon(url)
+                        },
+                        items: (data.items || []).map(item => ({
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || item.content || '',
+                            pubDate: item.pubDate || new Date().toISOString()
+                        }))
+                    };
+                }
+                // Format 3: { status: "ok", feed: {...}, items: [...] } (rss2json API)
+                else if (data.status === 'ok' && data.feed) {
+                    feedData = {
+                        feed: {
+                            title: data.feed.title || 'Feed',
+                            url: data.feed.url || url,
+                            image: data.feed.image || getFavicon(url)
+                        },
+                        items: (data.items || []).map(item => ({
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || item.content || '',
+                            pubDate: item.pubDate || new Date().toISOString()
+                        }))
+                    };
+                }
+                // Format 4: Just an array of items with feed info at top
+                else if (Array.isArray(data) && data.length > 0 && data[0].feedTitle) {
+                    feedData = {
+                        feed: {
+                            title: data[0].feedTitle || 'Feed',
+                            url: data[0].feedUrl || url,
+                            image: data[0].feedIcon || getFavicon(url)
+                        },
+                        items: data.map(item => ({
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || '',
+                            pubDate: item.pubDate || new Date().toISOString()
+                        }))
+                    };
+                }
+                else {
+                    throw new Error('Unrecognised JSON format. Expected { rss: { channel: {...} } } or { feed: {...}, items: [...] }');
+                }
 
-            async function fetchAndParseFeed(url) {
-                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}&api_key=${API_KEY}&count=100`;
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status} – ${response.statusText}`);
-                }
-                const data = await response.json();
-                if (data.status !== 'ok') {
-                    // rss2json returns a message in data.message
-                    throw new Error(data.message || 'Unknown error from rss2json');
-                }
-                // data.feed and data.items
-                const feedTitle = data.feed?.title || getDomain(url);
-                const feedIcon = data.feed?.image || getFavicon(url);
-                const items = (data.items || []).map(item => ({
-                    id: generateId(),
-                    title: item.title || 'Untitled',
-                    link: item.link || '#',
-                    description: item.description || item.content || '',
-                    pubDate: item.pubDate || new Date().toISOString(),
-                    read: false,
-                }));
-                // sort by date newest first
-                items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-                return { title: feedTitle, icon: feedIcon, items };
+                return {
+                    title: feedData.feed.title || 'Feed',
+                    icon: feedData.feed.image || getFavicon(url),
+                    items: (feedData.items || []).map(item => ({
+                        id: generateId(),
+                        title: item.title || 'Untitled',
+                        link: item.link || '#',
+                        description: item.description || '',
+                        pubDate: item.pubDate || new Date().toISOString(),
+                        read: false,
+                    }))
+                };
             }
 
-            // ---- Add Feed ----
+            // ---- Load from JSON URL ----
+            async function loadFeedFromJson(url) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status} – ${response.statusText}`);
+                    }
+                    const data = await response.json();
+                    return parseJsonFeed(data, url);
+                } catch (err) {
+                    console.error('Error loading JSON feed:', err);
+                    throw new Error(`Failed to load feed from ${url}: ${err.message}`);
+                }
+            }
+
+            // ---- Add Feed (now works with JSON URLs!) ----
             async function addFeed(url) {
                 url = url.trim();
                 if (!url) return;
+                
+                // Check duplicate
                 if (feeds.some(f => f.url.toLowerCase() === url.toLowerCase())) {
                     showToast('Feed already exists.', 'error');
                     return;
                 }
+
                 addBtn.disabled = true;
                 addBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
+
                 try {
-                    const data = await fetchAndParseFeed(url);
+                    const feedData = await loadFeedFromJson(url);
                     const feed = {
                         id: generateId(),
                         url: url,
-                        title: data.title || getDomain(url),
-                        icon: data.icon || getFavicon(url),
-                        items: data.items || [],
+                        title: feedData.title || 'Feed',
+                        icon: feedData.icon || getFavicon(url),
+                        items: feedData.items || [],
                     };
                     feeds.push(feed);
                     saveFeeds();
@@ -357,13 +470,7 @@
                     showToast(`Added "${feed.title}" with ${feed.items.length} items.`, 'success');
                     feedUrlInput.value = '';
                 } catch (err) {
-                    let msg = err.message;
-                    if (msg.includes('HTTP 422') || msg.includes('422')) {
-                        msg = 'The feed could not be parsed (422). Check that the URL points to a valid RSS/Atom feed.';
-                    } else if (msg.includes('NetworkError') || msg.includes('Failed to fetch')) {
-                        msg = 'Network error – please check your internet connection or try again later.';
-                    }
-                    showToast(`Failed to add feed: ${msg}`, 'error');
+                    showToast(`Failed to add feed: ${err.message}`, 'error');
                 } finally {
                     addBtn.disabled = false;
                     addBtn.innerHTML = '<i class="fas fa-plus"></i> Add';
@@ -378,7 +485,7 @@
                 refreshFeedBtn.disabled = true;
                 refreshFeedBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
                 try {
-                    const data = await fetchAndParseFeed(feed.url);
+                    const data = await loadFeedFromJson(feed.url);
                     feed.title = data.title || feed.title;
                     feed.icon = data.icon || feed.icon || getFavicon(feed.url);
                     const existingLinks = new Set(feed.items.map(i => i.link));
@@ -403,13 +510,7 @@
                     if (activeFeedId === feed.id) renderItems(feed);
                     showToast(`Refreshed "${feed.title}" — ${newCount} new item${newCount !== 1 ? 's' : ''}.`, 'success');
                 } catch (err) {
-                    let msg = err.message;
-                    if (msg.includes('HTTP 422') || msg.includes('422')) {
-                        msg = 'The feed could not be parsed (422). It may be temporarily unavailable.';
-                    } else if (msg.includes('NetworkError') || msg.includes('Failed to fetch')) {
-                        msg = 'Network error – please check your connection.';
-                    }
-                    showToast(`Failed to refresh: ${msg}`, 'error');
+                    showToast(`Failed to refresh: ${err.message}`, 'error');
                 } finally {
                     isLoading = false;
                     refreshFeedBtn.disabled = false;
@@ -417,7 +518,52 @@
                 }
             }
 
-            // ---- All rendering & control functions (identical to previous) ----
+            // ---- Initialize ----
+            async function initFeed() {
+                // Try localStorage first
+                if (loadFeeds() && feeds.length > 0) {
+                    console.log('📡 Loaded feeds from localStorage:', feeds.length);
+                    activeFeedId = feeds[0].id;
+                    renderFeeds();
+                    renderItems(feeds[0]);
+                    showToast(`Loaded "${feeds[0].title}" from localStorage`, 'success', 3000);
+                    return;
+                }
+
+                // Try loading default JSON feed
+                try {
+                    contentItemsEl.innerHTML = `
+                        <div class="loading-message">
+                            <span class="spinner"></span>
+                            <span>Loading default feed from ${DEFAULT_JSON_FEED}…</span>
+                        </div>
+                    `;
+                    
+                    const feedData = await loadFeedFromJson(DEFAULT_JSON_FEED);
+                    const feed = {
+                        id: generateId(),
+                        url: DEFAULT_JSON_FEED,
+                        title: feedData.title || 'Safebooru Yuri',
+                        icon: feedData.icon || getFavicon(DEFAULT_JSON_FEED),
+                        items: feedData.items || [],
+                    };
+                    feeds = [feed];
+                    saveFeeds();
+                    
+                    activeFeedId = feed.id;
+                    renderFeeds();
+                    renderItems(feed);
+                    showToast(`Loaded "${feed.title}" with ${feed.items.length} items`, 'success', 4000);
+                } catch (err) {
+                    console.error(err);
+                    feeds = [];
+                    renderFeeds();
+                    renderContentEmpty('Error loading feed', `Could not load default feed: ${err.message}`);
+                    showToast(`Error: ${err.message}`, 'error', 10000);
+                }
+            }
+
+            // ---- Select Feed ----
             function selectFeed(id) {
                 activeFeedId = id;
                 const feed = feeds.find(f => f.id === id);
@@ -430,6 +576,7 @@
                 renderItems(feed);
             }
 
+            // ---- Render Feeds (sidebar) ----
             function renderFeeds() {
                 if (feeds.length === 0) {
                     feedListEl.innerHTML = `<div class="sidebar-empty"><i class="fas fa-rss"></i><p>No feeds yet.<br />Add one above to get started.</p></div>`;
@@ -466,6 +613,7 @@
                 });
             }
 
+            // ---- Render Items (content) ----
             function renderItems(feed) {
                 if (!feed) { renderContentEmpty('No feed selected', 'Choose a feed from the sidebar.'); return; }
                 const iconHtml = feed.icon ? `<img src="${feed.icon}" alt="" loading="lazy" />` : `<i class="fas fa-rss"></i>`;
@@ -519,6 +667,7 @@
                 contentItemsEl.innerHTML = `<div class="content-empty"><i class="fas fa-inbox"></i><h3>${title || 'No feed selected'}</h3><p>${msg || 'Choose a feed from the sidebar to view its articles.'}</p></div>`;
             }
 
+            // ---- Toggle Read ----
             function toggleRead(feedId, itemId) {
                 const feed = feeds.find(f => f.id === feedId);
                 if (!feed) return;
@@ -531,6 +680,7 @@
                 renderFeeds();
             }
 
+            // ---- Mark All Read ----
             function markAllRead() {
                 const feed = feeds.find(f => f.id === activeFeedId);
                 if (!feed) return;
@@ -541,6 +691,7 @@
                 showToast('All items marked as read.', 'success');
             }
 
+            // ---- Refresh All ----
             async function refreshAll() {
                 if (feeds.length === 0) { showToast('No feeds to refresh.', 'info'); return; }
                 refreshAllBtn.disabled = true;
@@ -557,6 +708,7 @@
                 renderFeeds();
             }
 
+            // ---- Remove Feed ----
             function removeFeed(id) {
                 if (!confirm('Remove this feed?')) return;
                 const idx = feeds.findIndex(f => f.id === id);
@@ -571,29 +723,25 @@
             }
 
             // ---- Event listeners ----
-            addForm.addEventListener('submit', (e) => { e.preventDefault(); addFeed(feedUrlInput.value); });
+            addForm.addEventListener('submit', (e) => { 
+                e.preventDefault(); 
+                addFeed(feedUrlInput.value); 
+            });
             refreshFeedBtn.addEventListener('click', () => { if (activeFeedId) refreshFeed(activeFeedId); });
             refreshAllBtn.addEventListener('click', refreshAll);
             markAllReadBtn.addEventListener('click', markAllRead);
 
             // ---- Init ----
-            loadFeeds();
-            if (feeds.length > 0) {
-                activeFeedId = feeds[0].id;
-                renderFeeds();
-                const active = feeds.find(f => f.id === activeFeedId);
-                if (active) renderItems(active);
-            } else {
-                renderFeeds();
-                renderContentEmpty('No feeds', 'Add a feed using the sidebar.');
-            }
+            initFeed();
 
+            // ---- Keyboard shortcut ----
             document.addEventListener('keydown', (e) => {
                 if ((e.metaKey || e.ctrlKey) && e.key === 'r') { e.preventDefault(); refreshAll(); }
             });
 
-            console.log('📰 Feed Reader ready – using rss2json API');
-            console.log(`📡 ${feeds.length} feed(s) loaded.`);
+            console.log('📰 Feed Reader ready – JSON feed mode');
+            console.log('📡 Add any JSON feed URL using the "Add" button');
+
         })();
     </script>
 </body>
