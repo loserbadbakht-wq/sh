@@ -2604,4 +2604,16 @@ CHARACTER_TAGS = {
     'rone_(blue_archive)',
     'pei_(blue_archive)',
     'yukari_(unused_character)_(blue_archive)',
+    #alien stage
+    'mizi_(alien_stage)',
+    'sua_(alien_stage)',
+    'till_(alien_stage)',
+    'ivan_(alien_stage)',
+    'hyuna_(alien_stage)',
+    'luka_(alien_stage)',
+    'hyunwoo_(alien_stage)',
+    'dewey_(alien_stage)',
+    'io_(alien_stage)',
+    'isaac_(alien_stage)',
+    'hia_(alien_stage)',
 }
