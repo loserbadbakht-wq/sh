@@ -983,15 +983,41 @@
             }
 
             // ============================================================
-            //  NEW: Fetch and parse feed using CORS proxy + DOMParser
+            //  FETCH WITH FALLBACK PROXIES
             // ============================================================
-            async function fetchAndParseFeed(url) {
-                // Use a free CORS proxy to get the raw XML
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-                const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error(`HTTP ${response.status} – ${response.statusText}`);
-                const xmlText = await response.text();
+            async function fetchWithFallback(url) {
+                // List of CORS proxies to try (in order)
+                const proxies = [
+                    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+                    `https://corsproxy.io/?${encodeURIComponent(url)}`,
+                    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+                ];
 
+                let lastError = null;
+                for (const proxy of proxies) {
+                    try {
+                        const response = await fetch(proxy, {
+                            signal: AbortSignal.timeout(15000) // 15 second timeout
+                        });
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status} – ${response.statusText}`);
+                        }
+                        const text = await response.text();
+                        // Quick sanity check: if it looks like HTML, it's likely an error page
+                        if (text.trim().startsWith('<') && !text.includes('<rss') && !text.includes('<feed')) {
+                            throw new Error('Proxy returned HTML, not a feed');
+                        }
+                        return text; // success
+                    } catch (err) {
+                        lastError = err;
+                        // continue to next proxy
+                    }
+                }
+                throw new Error(`All proxies failed. Last error: ${lastError?.message || 'Unknown error'}`);
+            }
+
+            // ---- Parse feed from XML text ----
+            function parseFeedXML(xmlText, url) {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(xmlText, 'text/xml');
 
@@ -999,7 +1025,6 @@
                 const parseError = doc.querySelector('parsererror');
                 if (parseError) throw new Error('Invalid XML (not a valid feed)');
 
-                // Detect feed type
                 const root = doc.documentElement;
                 const isRSS = root.tagName === 'rss';
                 const isAtom = root.tagName === 'feed' || root.namespaceURI === 'http://www.w3.org/2005/Atom';
@@ -1009,7 +1034,6 @@
                 let items = [];
 
                 if (isRSS) {
-                    // RSS 2.0
                     const channel = root.querySelector('channel');
                     if (!channel) throw new Error('No <channel> element found in RSS feed');
                     feedTitle = channel.querySelector('title')?.textContent || getDomain(url);
@@ -1033,7 +1057,6 @@
                         });
                     }
                 } else if (isAtom) {
-                    // Atom 1.0
                     const feed = root;
                     feedTitle = feed.querySelector('title')?.textContent || getDomain(url);
                     const logo = feed.querySelector('logo');
@@ -1071,6 +1094,12 @@
                     icon: feedIcon || getFavicon(url),
                     items: items,
                 };
+            }
+
+            // ---- Combined fetch and parse ----
+            async function fetchAndParseFeed(url) {
+                const xmlText = await fetchWithFallback(url);
+                return parseFeedXML(xmlText, url);
             }
 
             // ---- Add Feed (updated) ----
@@ -1411,11 +1440,11 @@
                 }
             });
 
-            console.log('📰 Feed Reader ready! (CORS proxy + local parser)');
+            console.log('📰 Feed Reader ready (with proxy fallback)');
             console.log(`📡 ${feeds.length} feed(s) loaded.`);
 
         })();
     </script>
 
 </body>
-        </html>
+    </html>
