@@ -33,29 +33,27 @@ jobs:
         run: |
           mkdir -p json
           npm init -y
-          npm install rss-converter
-          cat > convert.js << 'EOF'
-          const rssConverter = require('rss-converter');
-          const url = process.env.RSS_URL;
-          
-          console.log('URL:', url);
-          console.log('Type of rssConverter:', typeof rssConverter);
-          console.log('Keys:', Object.keys(rssConverter));
-          
-          if (typeof rssConverter === 'function') {
-            rssConverter(url)
-              .then(data => console.log(JSON.stringify(data, null, 2)))
-              .catch(err => { console.error('Error:', err); process.exit(1); });
-          } else if (rssConverter.default && typeof rssConverter.default === 'function') {
-            rssConverter.default(url)
-              .then(data => console.log(JSON.stringify(data, null, 2)))
-              .catch(err => { console.error('Error:', err); process.exit(1); });
-          } else {
-            console.error('rssConverter is not a function:', rssConverter);
-            process.exit(1);
-          }
-          EOF
-          node convert.js > json/${{ steps.extract.outputs.filename }}.json 2>&1
+          npm install axios xml2js
+          node -e "
+            const axios = require('axios');
+            const xml2js = require('xml2js');
+            const parser = new xml2js.Parser({ explicitArray: false });
+            
+            axios.get(process.env.RSS_URL)
+              .then(response => {
+                parser.parseString(response.data, (err, result) => {
+                  if (err) {
+                    console.error(err);
+                    process.exit(1);
+                  }
+                  console.log(JSON.stringify(result, null, 2));
+                });
+              })
+              .catch(err => {
+                console.error(err);
+                process.exit(1);
+              });
+          " > json/${{ steps.extract.outputs.filename }}.json
         env:
           RSS_URL: ${{ steps.extract.outputs.full_url }}
 
