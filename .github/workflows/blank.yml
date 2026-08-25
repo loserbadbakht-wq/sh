@@ -45,6 +45,10 @@ jobs:
       run: |
         python ./notif/generate.py
         
+    - name: Generate rss (air)
+      run: |
+        python ./notif/new1.py
+    
     - uses: stefanzweifel/git-auto-commit-action@v7
       with:
         # Optional but recommended
