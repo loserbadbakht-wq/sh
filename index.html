@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feed Reader – RSS & Atom</title>
+
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ========== CSS Variables (Light & Dark) ========== */
+        :root {
+            --bg: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-sidebar: #f8fafc;
+            --bg-input: #ffffff;
+            --bg-hover: #eef2ff;
+            --bg-active: #dbeafe;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.2s ease;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --max-width: 1280px;
+            --header-height: 64px;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-sidebar: #1a2332;
+            --bg-input: #1e293b;
+            --bg-hover: #334155;
+            --bg-active: #1e3a5f;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #334155;
+            --border-hover: #475569;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --primary-light: #1e3a5f;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ========== Reset & Base ========== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== Scrollbar ========== */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ========== Header ========== */
+        .header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(8px);
+            background: var(--bg-card);
+            transition: background var(--transition), border var(--transition);
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.3px;
+        }
+        .header-logo i {
+            font-size: 24px;
+        }
+        .header-logo span {
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions .btn-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+        }
+        .header-actions .btn-icon:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+        .header-actions .btn-icon.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* ========== Main Layout ========== */
+        .app {
+            display: flex;
+            flex: 1;
+            max-width: var(--max-width);
+            width: 100%;
+            margin: 0 auto;
+            padding: 16px 20px 20px;
+            gap: 20px;
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        /* ========== Sidebar ========== */
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 40px);
+            overflow: hidden;
+            transition: background var(--transition), border var(--transition);
+            position: sticky;
+            top: calc(var(--header-height) + 16px);
+        }
+
+        .sidebar-header {
+            padding: 0 16px 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .sidebar-header h2 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+        .sidebar-header .badge {
+            background: var(--bg-hover);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .sidebar-add {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .sidebar-add .add-form {
+            display: flex;
+            gap: 8px;
+        }
+        .sidebar-add .add-form input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            background: var(--bg-input);
+            color: var(--text);
+            transition: border var(--transition), background var(--transition);
+            outline: none;
+            min-width: 0;
+        }
+        .sidebar-add .add-form input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        .sidebar-add .add-form input::placeholder {
+            color: var(--text-muted);
+        }
+        .sidebar-add .add-form button {
+            padding: 8px 14px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background var(--transition);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .sidebar-add .add-form button:hover {
+            background: var(--primary-hover);
+        }
+        .sidebar-add .add-form button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .sidebar-feed-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 8px 8px 0;
+        }
+
+        .feed-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px 10px 12px;
+            margin: 0 8px 2px 8px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+        .feed-item:hover {
+            background: var(--bg-hover);
+        }
+        .feed-item.active {
+            background: var(--bg-active);
+            border-left-color: var(--primary);
+        }
+        .feed-item .feed-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .feed-item .feed-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .feed-item .feed-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .feed-item .feed-info .feed-title {
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .feed-item .feed-info .feed-url {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+        .feed-item .feed-count {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--bg-hover);
+            padding: 1px 10px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+        .feed-item .feed-remove {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+        .feed-item:hover .feed-remove {
+            opacity: 1;
+        }
+        .feed-item .feed-remove:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        [data-theme="dark"] .feed-item .feed-remove:hover {
+            background: #7f1d1d;
+            color: #fca5a5;
+        }
+
+        .sidebar-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .sidebar-empty i {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        .sidebar-empty p {
+            line-height: 1.6;
+        }
+
+        /* ========== Content ========== */
+        .content {
+            flex: 1;
+            min-width: 0;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            transition: background var(--transition), border var(--transition);
+            overflow: hidden;
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 40px);
+        }
+
+        .content-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .content-header .feed-title-large {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .content-header .feed-title-large .feed-icon-large {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            overflow: hidden;
+        }
+        .content-header .feed-title-large .feed-icon-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .content-header .feed-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .content-header .feed-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .content-header .feed-actions button {
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .content-header .feed-actions button:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-hover);
+        }
+        .content-header .feed-actions button.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .content-header .feed-actions button.primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .content-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 16px 20px;
+        }
+
+        /* ========== Feed Item Cards ========== */
+        .entry-card {
+            padding: 16px 18px;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            margin-bottom: 8px;
+            transition: all var(--transition);
+            cursor: default;
+            background: transparent;
+            border-bottom: 1px solid var(--border);
+        }
+        .entry-card:last-child {
+            border-bottom: none;
+        }
+        .entry-card:hover {
+            background: var(--bg-hover);
+        }
+        .entry-card.read {
+            opacity: 0.7;
+        }
+        .entry-card.read .entry-title {
+            font-weight: 400;
+        }
+        .entry-card .entry-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            line-height: 1.4;
+            color: var(--text);
+        }
+        .entry-card .entry-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .entry-card .entry-title a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        .entry-card .entry-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .entry-card .entry-meta .entry-date {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .entry-card .entry-meta .entry-link {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .entry-card .entry-meta a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .entry-card .entry-meta a:hover {
+            text-decoration: underline;
+        }
+        .entry-card .entry-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+        .entry-card .entry-desc img {
+            max-width: 100%;
+            border-radius: 4px;
+            margin: 6px 0;
+        }
+        .entry-card .entry-desc p {
+            margin: 4px 0;
+        }
+
+        .entry-card .entry-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .entry-card .entry-actions button {
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .entry-card .entry-actions button:hover {
+            background: var(--bg-hover);
+        }
+        .entry-card .entry-actions button.mark-read {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .entry-card .entry-actions button.mark-read:hover {
+            background: var(--primary-light);
+        }
+
+        .content-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 300px;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .content-empty i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
+        .content-empty h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .content-empty p {
+            font-size: 14px;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        /* ========== Toast Notifications ========== */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 360px;
+            width: 100%;
+        }
+        .toast {
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            font-size: 14px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideUp 0.3s ease;
+            transition: all var(--transition);
+        }
+        .toast.error {
+            border-left: 4px solid #dc2626;
+        }
+        .toast.success {
+            border-left: 4px solid #22c55e;
+        }
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+        .toast .toast-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .toast .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: auto;
+            padding: 0 4px;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== Loading Spinner ========== */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            gap: 12px;
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 900px) {
+            .app {
+                flex-direction: column;
+                padding: 12px 12px 16px;
+                gap: 12px;
+            }
+            .sidebar {
+                width: 100%;
+                min-width: unset;
+                max-height: 340px;
+                position: static;
+                top: unset;
+            }
+            .content {
+                max-height: unset;
+                min-height: 500px;
+            }
+            .header {
+                padding: 0 16px;
+            }
+            .header-logo {
+                font-size: 18px;
+            }
+            .content-header {
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .content-header .feed-title-large {
+                font-size: 16px;
+            }
+            .sidebar-add .add-form {
+                flex-wrap: wrap;
+            }
+            .sidebar-add .add-form input {
+                flex: 1 1 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-logo span {
+                display: none;
+            }
+            .header-actions .btn-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 14px;
+            }
+            .entry-card {
+                padding: 12px 14px;
+            }
+            .entry-card .entry-title {
+                font-size: 15px;
+            }
+            .toast-container {
+                left: 12px;
+                right: 12px;
+                max-width: unset;
+                bottom: 12px;
+            }
+            .content-header .feed-actions button {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header-left">
+            <div class="header-logo">
+                <i class="fas fa-rss"></i>
+                Feed<span>Reader</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-icon" id="themeToggle" title="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="btn-icon" id="refreshAllBtn" title="Refresh all feeds">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== APP ========== -->
+    <div class="app">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-list-ul" style="margin-right:6px;"></i> Your Feeds</h2>
+                <span class="badge" id="feedCount">0</span>
+            </div>
+
+            <div class="sidebar-add">
+                <form class="add-form" id="addFeedForm">
+                    <input type="url" id="feedUrlInput" placeholder="Paste RSS / Atom URL…" required />
+                    <button type="submit" id="addFeedBtn">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </form>
+            </div>
+
+            <div class="sidebar-feed-list" id="feedList">
+                <!-- Feeds rendered by JS -->
+                <div class="sidebar-empty">
+                    <i class="fas fa-rss"></i>
+                    <p>No feeds yet.<br />Add one above to get started.</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content -->
+        <main class="content" id="content">
+            <div class="content-header">
+                <div class="feed-title-large" id="contentFeedTitle">
+                    <span class="feed-icon-large" id="contentFeedIcon">
+                        <i class="fas fa-rss"></i>
+                    </span>
+                    <span id="contentFeedName">Select a feed</span>
+                </div>
+                <div class="feed-meta" id="contentFeedMeta">
+                    <span id="entryCount">0 items</span>
+                </div>
+                <div class="feed-actions">
+                    <button id="markAllReadBtn" title="Mark all as read">
+                        <i class="fas fa-check-double"></i> Mark all read
+                    </button>
+                    <button id="refreshFeedBtn" class="primary" title="Refresh this feed">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="content-items" id="contentItems">
+                <!-- Entries rendered by JS -->
+                <div class="content-empty">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No feed selected</h3>
+                    <p>Choose a feed from the sidebar to view its articles.</p>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- ========== TOAST CONTAINER ========== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- References ----
+            const feedListEl = document.getElementById('feedList');
+            const contentItemsEl = document.getElementById('contentItems');
+            const contentFeedName = document.getElementById('contentFeedName');
+            const contentFeedIcon = document.getElementById('contentFeedIcon');
+            const contentFeedMeta = document.getElementById('contentFeedMeta');
+            const entryCountEl = document.getElementById('entryCount');
+            const feedCountEl = document.getElementById('feedCount');
+            const addForm = document.getElementById('addFeedForm');
+            const feedUrlInput = document.getElementById('feedUrlInput');
+            const addBtn = document.getElementById('addFeedBtn');
+            const themeToggle = document.getElementById('themeToggle');
+            const refreshAllBtn = document.getElementById('refreshAllBtn');
+            const refreshFeedBtn = document.getElementById('refreshFeedBtn');
+            const markAllReadBtn = document.getElementById('markAllReadBtn');
+            const toastContainer = document.getElementById('toastContainer');
+
+            // ---- State ----
+            let feeds = []; // { id, url, title, icon, items: [{ id, title, link, description, pubDate, read }] }
+            let activeFeedId = null;
+            let isLoading = false;
+
+            // ---- Helpers ----
+            function generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+            }
+
+            function timeAgo(date) {
+                const diff = Date.now() - new Date(date).getTime();
+                const mins = Math.floor(diff / 60000);
+                if (mins < 1) return 'Just now';
+                if (mins < 60) return mins + 'm ago';
+                const hrs = Math.floor(mins / 60);
+                if (hrs < 24) return hrs + 'h ago';
+                const days = Math.floor(hrs / 24);
+                if (days < 7) return days + 'd ago';
+                return new Date(date).toLocaleDateString();
+            }
+
+            function truncateText(text, len = 300) {
+                if (!text) return '';
+                const stripped = text.replace(/<[^>]*>/g, ' ');
+                return stripped.length > len ? stripped.slice(0, len) + '…' : stripped;
+            }
+
+            function getDomain(url) {
+                try {
+                    const u = new URL(url);
+                    return u.hostname.replace(/^www\./, '');
+                } catch { return url; }
+            }
+
+            function getFavicon(url) {
+                try {
+                    const u = new URL(url);
+                    return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=32`;
+                } catch { return ''; }
+            }
+
+            // ---- Toast ----
+            function showToast(message, type = 'info', duration = 4000) {
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-exclamation-circle',
+                    info: 'fa-info-circle'
+                };
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span>
+                    <span>${message}</span>
+                    <button class="toast-close"><i class="fas fa-times"></i></button>
+                `;
+                toast.querySelector('.toast-close').addEventListener('click', () => {
+                    toast.remove();
+                });
+                toastContainer.appendChild(toast);
+                setTimeout(() => {
+                    if (toast.parentNode) toast.remove();
+                }, duration);
+            }
+
+            // ---- Theme ----
+            function getTheme() {
+                return localStorage.getItem('fr-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ?
+                    'dark' : 'light');
+            }
+
+            function setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('fr-theme', theme);
+                const icon = themeToggle.querySelector('i');
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                setTheme(current === 'dark' ? 'light' : 'dark');
+            });
+
+            // Init theme
+            setTheme(getTheme());
+
+            // ---- LocalStorage ----
+            function saveFeeds() {
+                try {
+                    localStorage.setItem('fr-feeds', JSON.stringify(feeds));
+                } catch (e) { /* ignore */ }
+            }
+
+            function loadFeeds() {
+                try {
+                    const data = localStorage.getItem('fr-feeds');
+                    if (data) {
+                        const parsed = JSON.parse(data);
+                        if (Array.isArray(parsed)) {
+                            feeds = parsed;
+                            // ensure each feed has items array
+                            feeds.forEach(f => {
+                                if (!f.items) f.items = [];
+                                f.items.forEach(item => {
+                                    if (item.read === undefined) item.read = false;
+                                });
+                            });
+                            return;
+                        }
+                    }
+                } catch (e) { /* ignore */ }
+                feeds = [];
+            }
+
+            // ---- Fetch & Parse Feed via rss2json ----
+            async function fetchFeed(url) {
+                const proxyUrl =
+                    `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}&api_key=9hq9dufr1ik4m1auocaxgpzjx1kdw8wrrpxn0idb&count=100`;
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                if (data.status !== 'ok') throw new Error(data.message || 'Failed to parse feed');
+                return data;
+            }
+
+            // ---- Add Feed ----
+            async function addFeed(url) {
+                url = url.trim();
+                if (!url) return;
+
+                // Check duplicate
+                if (feeds.some(f => f.url.toLowerCase() === url.toLowerCase())) {
+                    showToast('Feed already exists.', 'error');
+                    return;
+                }
+
+                addBtn.disabled = true;
+                addBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
+
+                try {
+                    const data = await fetchFeed(url);
+                    const feed = {
+                        id: generateId(),
+                        url: url,
+                        title: data.feed.title || getDomain(url),
+                        icon: data.feed.image || getFavicon(url),
+                        items: (data.items || []).map(item => ({
+                            id: generateId(),
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || item.content || '',
+                            pubDate: item.pubDate || new Date().toISOString(),
+                            read: false,
+                        }))
+                    };
+                    feeds.push(feed);
+                    saveFeeds();
+                    renderFeeds();
+                    selectFeed(feed.id);
+                    showToast(`Added "${feed.title}" with ${feed.items.length} items.`, 'success');
+                    feedUrlInput.value = '';
+                } catch (err) {
+                    showToast(`Failed to add feed: ${err.message}`, 'error');
+                } finally {
+                    addBtn.disabled = false;
+                    addBtn.innerHTML = '<i class="fas fa-plus"></i> Add';
+                }
+            }
+
+            // ---- Remove Feed ----
+            function removeFeed(id) {
+                if (!confirm('Remove this feed?')) return;
+                const idx = feeds.findIndex(f => f.id === id);
+                if (idx === -1) return;
+                feeds.splice(idx, 1);
+                saveFeeds();
+                if (activeFeedId === id) {
+                    activeFeedId = feeds.length > 0 ? feeds[0].id : null;
+                }
+                renderFeeds();
+                if (activeFeedId) selectFeed(activeFeedId);
+                else renderContentEmpty('No feed selected', 'Choose a feed from the sidebar.');
+                showToast('Feed removed.', 'info');
+            }
+
+            // ---- Refresh Feed ----
+            async function refreshFeed(id) {
+                const feed = feeds.find(f => f.id === id);
+                if (!feed) return;
+                isLoading = true;
+                refreshFeedBtn.disabled = true;
+                refreshFeedBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
+
+                try {
+                    const data = await fetchFeed(feed.url);
+                    feed.title = data.feed.title || feed.title;
+                    feed.icon = data.feed.image || feed.icon || getFavicon(feed.url);
+                    const existingLinks = new Set(feed.items.map(i => i.link));
+                    let newCount = 0;
+                    (data.items || []).forEach(item => {
+                        const link = item.link || '#';
+                        if (!existingLinks.has(link)) {
+                            feed.items.unshift({
+                                id: generateId(),
+                                title: item.title || 'Untitled',
+                                link: link,
+                                description: item.description || item.content || '',
+                                pubDate: item.pubDate || new Date().toISOString(),
+                                read: false,
+                            });
+                            newCount++;
+                            existingLinks.add(link);
+                        }
+                    });
+                    // Sort by date descending
+                    feed.items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+                    saveFeeds();
+                    renderFeeds();
+                    if (activeFeedId === feed.id) renderItems(feed);
+                    showToast(`Refreshed "${feed.title}" — ${newCount} new item${newCount !== 1 ? 's' : ''}.`,
+                        'success');
+                } catch (err) {
+                    showToast(`Failed to refresh: ${err.message}`, 'error');
+                } finally {
+                    isLoading = false;
+                    refreshFeedBtn.disabled = false;
+                    refreshFeedBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                }
+            }
+
+            // ---- Select Feed ----
+            function selectFeed(id) {
+                activeFeedId = id;
+                const feed = feeds.find(f => f.id === id);
+                if (!feed) {
+                    renderContentEmpty('Feed not found', 'Please select another feed.');
+                    renderFeeds();
+                    return;
+                }
+                renderFeeds();
+                renderItems(feed);
+            }
+
+            // ---- Render Feeds (sidebar) ----
+            function renderFeeds() {
+                if (feeds.length === 0) {
+                    feedListEl.innerHTML = `
+                        <div class="sidebar-empty">
+                            <i class="fas fa-rss"></i>
+                            <p>No feeds yet.<br />Add one above to get started.</p>
+                        </div>
+                    `;
+                    feedCountEl.textContent = '0';
+                    return;
+                }
+
+                let html = '';
+                feeds.forEach(feed => {
+                    const unread = feed.items.filter(i => !i.read).length;
+                    const isActive = feed.id === activeFeedId;
+                    const iconHtml = feed.icon ?
+                        `<img src="${feed.icon}" alt="" loading="lazy" />` :
+                        `<i class="fas fa-rss"></i>`;
+                    html += `
+                        <div class="feed-item ${isActive ? 'active' : ''}" data-id="${feed.id}">
+                            <div class="feed-icon">${iconHtml}</div>
+                            <div class="feed-info">
+                                <div class="feed-title">${feed.title || 'Untitled'}</div>
+                                <div class="feed-url">${getDomain(feed.url)}</div>
+                            </div>
+                            ${unread > 0 ? `<span class="feed-count">${unread}</span>` : ''}
+                            <button class="feed-remove" data-id="${feed.id}" title="Remove feed">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                feedListEl.innerHTML = html;
+                feedCountEl.textContent = feeds.length;
+
+                // Click to select
+                feedListEl.querySelectorAll('.feed-item').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        if (e.target.closest('.feed-remove')) return;
+                        selectFeed(el.dataset.id);
+                    });
+                });
+
+                // Remove buttons
+                feedListEl.querySelectorAll('.feed-remove').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        removeFeed(btn.dataset.id);
+                    });
+                });
+            }
+
+            // ---- Render Items (content) ----
+            function renderItems(feed) {
+                if (!feed) {
+                    renderContentEmpty('No feed selected', 'Choose a feed from the sidebar.');
+                    return;
+                }
+
+                // Header
+                const iconHtml = feed.icon ?
+                    `<img src="${feed.icon}" alt="" loading="lazy" />` :
+                    `<i class="fas fa-rss"></i>`;
+                contentFeedIcon.innerHTML = iconHtml;
+                contentFeedName.textContent = feed.title || 'Untitled';
+                const total = feed.items.length;
+                const unread = feed.items.filter(i => !i.read).length;
+                entryCountEl.textContent = `${total} item${total !== 1 ? 's' : ''}${unread > 0 ? ` · ${unread} unread` : ''}`;
+                contentFeedMeta.style.display = 'block';
+
+                if (feed.items.length === 0) {
+                    contentItemsEl.innerHTML = `
+                        <div class="content-empty">
+                            <i class="fas fa-newspaper"></i>
+                            <h3>No articles</h3>
+                            <p>This feed has no items yet. Try refreshing.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                feed.items.forEach((item, idx) => {
+                    const readClass = item.read ? 'read' : '';
+                    const date = item.pubDate ? new Date(item.pubDate) : new Date();
+                    const dateStr = !isNaN(date.getTime()) ? timeAgo(date) : 'Unknown date';
+                    const desc = truncateText(item.description || '', 350);
+                    html += `
+                        <div class="entry-card ${readClass}" data-id="${item.id}">
+                            <div class="entry-title">
+                                <a href="${item.link}" target="_blank" rel="noopener">${item.title || 'Untitled'}</a>
+                            </div>
+                            <div class="entry-meta">
+                                <span class="entry-date"><i class="far fa-calendar-alt"></i> ${dateStr}</span>
+                                <span class="entry-link"><i class="fas fa-external-link-alt"></i> <a href="${item.link}" target="_blank" rel="noopener">Source</a></span>
+                            </div>
+                            ${desc ? `<div class="entry-desc">${desc}</div>` : ''}
+                            <div class="entry-actions">
+                                <button class="mark-read" data-id="${item.id}">
+                                    ${item.read ? '<i class="fas fa-undo"></i> Mark unread' : '<i class="fas fa-check"></i> Mark read'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                contentItemsEl.innerHTML = html;
+
+                // Mark read/unread buttons
+                contentItemsEl.querySelectorAll('.mark-read').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const itemId = btn.dataset.id;
+                        toggleRead(feed.id, itemId);
+                    });
+                });
+
+                // Click on card to toggle read (optional)
+                contentItemsEl.querySelectorAll('.entry-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('a') || e.target.closest('button')) return;
+                        const itemId = card.dataset.id;
+                        toggleRead(feed.id, itemId);
+                    });
+                });
+            }
+
+            function renderContentEmpty(title, msg) {
+                contentFeedName.textContent = title || 'No feed selected';
+                contentFeedIcon.innerHTML = '<i class="fas fa-rss"></i>';
+                entryCountEl.textContent = '0 items';
+                contentFeedMeta.style.display = 'block';
+                contentItemsEl.innerHTML = `
+                    <div class="content-empty">
+                        <i class="fas fa-inbox"></i>
+                        <h3>${title || 'No feed selected'}</h3>
+                        <p>${msg || 'Choose a feed from the sidebar to view its articles.'}</p>
+                    </div>
+                `;
+            }
+
+            // ---- Toggle Read ----
+            function toggleRead(feedId, itemId) {
+                const feed = feeds.find(f => f.id === feedId);
+                if (!feed) return;
+                const item = feed.items.find(i => i.id === itemId);
+                if (!item) return;
+                item.read = !item.read;
+                saveFeeds();
+                // Re-render current view
+                const active = feeds.find(f => f.id === activeFeedId);
+                if (active) renderItems(active);
+                renderFeeds(); // update badge counts
+            }
+
+            // ---- Mark All Read ----
+            function markAllRead() {
+                const feed = feeds.find(f => f.id === activeFeedId);
+                if (!feed) return;
+                feed.items.forEach(item => item.read = true);
+                saveFeeds();
+                renderItems(feed);
+                renderFeeds();
+                showToast('All items marked as read.', 'success');
+            }
+
+            // ---- Refresh All ----
+            async function refreshAll() {
+                if (feeds.length === 0) {
+                    showToast('No feeds to refresh.', 'info');
+                    return;
+                }
+                refreshAllBtn.disabled = true;
+                refreshAllBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
+                let successCount = 0;
+                for (const feed of feeds) {
+                    try {
+                        await refreshFeed(feed.id);
+                        successCount++;
+                    } catch (e) {
+                        // already handled inside refreshFeed
+                    }
+                }
+                refreshAllBtn.disabled = false;
+                refreshAllBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
+                if (successCount > 0) {
+                    showToast(`Refreshed ${successCount} feed${successCount !== 1 ? 's' : ''}.`, 'success');
+                }
+                // Re-select active
+                const active = feeds.find(f => f.id === activeFeedId);
+                if (active) renderItems(active);
+                renderFeeds();
+            }
+
+            // ---- Form Submit ----
+            addForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                addFeed(feedUrlInput.value);
+            });
+
+            // ---- Event Listeners ----
+            refreshFeedBtn.addEventListener('click', () => {
+                if (activeFeedId) refreshFeed(activeFeedId);
+            });
+
+            refreshAllBtn.addEventListener('click', refreshAll);
+
+            markAllReadBtn.addEventListener('click', markAllRead);
+
+            // ---- Init ----
+            loadFeeds();
+
+            // Auto-select first feed or show empty
+            if (feeds.length > 0) {
+                activeFeedId = feeds[0].id;
+                renderFeeds();
+                const active = feeds.find(f => f.id === activeFeedId);
+                if (active) renderItems(active);
+            } else {
+                renderFeeds();
+                renderContentEmpty('No feeds', 'Add a feed using the sidebar.');
+            }
+
+            // ---- Keyboard shortcut: Cmd/Ctrl + R to refresh all ----
+            document.addEventListener('keydown', (e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'r') {
+                    e.preventDefault();
+                    refreshAll();
+                }
+            });
+
+            // ---- Expose for debugging ----
+            window.__feeds = feeds;
+
+            console.log('📰 Feed Reader ready!');
+            console.log(`📡 ${feeds.length} feed(s) loaded.`);
+
+        })();
+    </script>
+
+</body>
+  </html>
