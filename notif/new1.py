@@ -80,7 +80,7 @@ def fetch_page_content(url):
                 text = strip_html(content)
                 text = re.sub(r'\s+', ' ', text).strip()
                 if len(text) > 500:
-                    text = text[:500] + "..."
+                    text = text[:1000] + "..."
                 return text
     except Exception as e:
         print(f"⚠️ Could not fetch {url}: {e}")
