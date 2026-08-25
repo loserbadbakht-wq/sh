@@ -158,7 +158,7 @@ def main():
     print(f"📊 Found {len(all_items)} items")
 
     # Process each item (limit to 10 items to avoid excessive requests)
-    max_items = 10  # Adjust as needed
+    max_items = 50  # Adjust as needed
     processed = 0
     
     for orig_title, orig_description, orig_link in all_items:
