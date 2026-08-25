@@ -72,14 +72,14 @@ def fetch_page_content(url):
                 # Clean up whitespace
                 text = re.sub(r'\s+', ' ', text).strip()
                 # Limit to a reasonable length for description
-                if len(text) > 500:
-                    text = text[:500] + "..."
+                if len(text) > 1000:
+                    text = text[:1000] + "..."
                 return text
             else:
                 # Fallback: get all text
                 text = strip_html(content)
                 text = re.sub(r'\s+', ' ', text).strip()
-                if len(text) > 500:
+                if len(text) > 1000:
                     text = text[:1000] + "..."
                 return text
     except Exception as e:
