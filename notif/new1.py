@@ -51,8 +51,11 @@ def fetch_rss(url):
         print(f"❌ Failed to fetch RSS: {e}")
         sys.exit(1)
 
-def fetch_page_content(url):
-    """Fetch and extract plain text from a webpage."""
+def fetch_full_page_content(url):
+    """
+    Fetch and extract the FULL plain text content from a webpage.
+    Gets all text without truncation.
+    """
     try:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -60,28 +63,31 @@ def fetch_page_content(url):
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=15) as response:
             content = response.read().decode('utf-8', errors='ignore')
-            # Try to extract the main article content (simplified approach)
-            # Remove scripts and styles (basic stripping)
+            
+            # Remove scripts and styles
             content = re.sub(r'<script.*?>.*?</script>', '', content, flags=re.DOTALL | re.IGNORECASE)
             content = re.sub(r'<style.*?>.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
-            # Extract text from paragraphs
+            
+            # Try to extract article content from paragraphs
             paragraphs = re.findall(r'<p.*?>(.*?)</p>', content, re.DOTALL | re.IGNORECASE)
+            
             if paragraphs:
-                # Join first few paragraphs to get a summary
-                text = ' '.join(strip_html(p) for p in paragraphs[:5])
-                # Clean up whitespace
-                text = re.sub(r'\s+', ' ', text).strip()
-                # Limit to a reasonable length for description
-                if len(text) > 500:
-                    text = text[:500] + "..."
-                return text
+                # Join ALL paragraphs to get full text
+                full_text = ' '.join(strip_html(p) for p in paragraphs)
+                # Clean up excessive whitespace
+                full_text = re.sub(r'\s+', ' ', full_text).strip()
+                
+                # Remove common IGN footer/boilerplate text
+                # (IGN often has "IGN" repeated, ads, etc.)
+                full_text = re.sub(r'\bIGN\b.*?(?:\n|$)', '', full_text)
+                
+                return full_text
             else:
-                # Fallback: get all text
-                text = strip_html(content)
-                text = re.sub(r'\s+', ' ', text).strip()
-                if len(text) > 500:
-                    text = text[:500] + "..."
-                return text
+                # Fallback: get all text from the page
+                full_text = strip_html(content)
+                full_text = re.sub(r'\s+', ' ', full_text).strip()
+                return full_text
+                
     except Exception as e:
         print(f"⚠️ Could not fetch {url}: {e}")
         return "Content unavailable"
@@ -132,7 +138,7 @@ def generate_rss():
     for item in items_data:
         safe_title = escape(item['title'])  # IGN description as our title
         safe_link = escape(item['link'])    # Original IGN link
-        safe_description = escape(item['description'])  # Content from the link page
+        safe_description = escape(item['description'])  # FULL content from the link page
         
         rss += f"""
 <item>
@@ -167,34 +173,37 @@ def main():
             
         print(f"🔄 Processing: {orig_title[:50]}...")
         
-        # Fetch content from the link
-        print(f"📡 Fetching content from: {orig_link[:50]}...")
-        page_content = fetch_page_content(orig_link)
+        # Fetch FULL content from the link (no truncation)
+        print(f"📡 Fetching full content from: {orig_link[:50]}...")
+        page_content = fetch_full_page_content(orig_link)
+        
+        # Check if we got a meaningful amount of content
+        word_count = len(page_content.split())
+        print(f"📝 Extracted {word_count} words")
         
         items_data.append({
             'title': orig_description,  # IGN description becomes our title
             'link': orig_link,          # Original link stays the same
-            'description': page_content  # Content from the link page
+            'description': page_content  # FULL content from the link page
         })
         processed += 1
         
         # Add a small delay to be nice to the servers
-        # (not strictly necessary but good practice)
         if processed < min(len(all_items), max_items):
             import time
             time.sleep(1)
 
     print(f"✅ Processed {processed} items")
 
-    # Write to file using the exact generate_rss() and try/except block
+    # Write to file
     try:
         os.makedirs('./notif', exist_ok=True)
-        filename = './notif/ign_feed.xml'
+        filename = './notif/new1.xml'
         if os.path.exists(filename):
             os.remove(filename)
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(generate_rss().strip())
-        print('✅ IGN RSS generated successfully.')
+        print('✅ new1 RSS generated successfully.')
         print(f'📁 Output file: {filename}')
     except Exception as e:
         print(f'❌ Failed: {e}')
