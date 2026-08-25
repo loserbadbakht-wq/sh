@@ -23,7 +23,7 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm install
+        run: npm install rss-converter
 
       - name: Extract both filename and URL
         id: extract
@@ -35,7 +35,6 @@ jobs:
       
       - name: Fetch and convert RSS
         run: |
-          npm install rss-converter
           mkdir -p json  # create json folder if it doesn't exist
           npx -c "const {convert} = require('rss-converter'); convert(process.env.RSS_URL).then(data => console.log(JSON.stringify(data, null, 2))).catch(console.error)" > json/${{ steps.extract.outputs.filename }}.json
         env:
