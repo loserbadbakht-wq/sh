@@ -24,15 +24,17 @@ jobs:
       - name: Extract both filename and URL
         id: extract
         run: |
-          URL=""
+          URL="https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/safebooru/safebooru-yuri-rss.xml"
           FILENAME=$(basename "$URL")
           echo "full_url=$URL" >> $GITHUB_OUTPUT
           echo "filename=$FILENAME" >> $GITHUB_OUTPUT
       
-      - name: Run RSS to JSON converter
+      - name: Fetch and convert RSS
+        run: |
+          npm install rss-converter
+          npx -c "const {convert} = require('rss-converter'); convert(process.env.RSS_URL).then(console.log).catch(console.error)" > ${{ steps.extract.outputs.filename }}.json
         env:
           RSS_URL: ${{ steps.extract.outputs.full_url }}
-        run: node rss-to-json.js > ${{ steps.extract.outputs.filename }}.json
 
       - name: Upload JSON as artifact
         uses: actions/upload-artifact@v3
