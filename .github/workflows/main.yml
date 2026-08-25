@@ -34,7 +34,13 @@ jobs:
           mkdir -p json
           npm init -y
           npm install rss-converter
-          node -e "const {convert} = require('rss-converter'); convert(process.env.RSS_URL).then(data => console.log(JSON.stringify(data, null, 2))).catch(console.error)" > json/${{ steps.extract.outputs.filename }}.json
+          node -e "
+            const rssConverter = require('rss-converter');
+            const url = process.env.RSS_URL;
+            rssConverter(url)
+              .then(data => console.log(JSON.stringify(data, null, 2)))
+              .catch(err => { console.error(err); process.exit(1); });
+          " > json/${{ steps.extract.outputs.filename }}.json
         env:
           RSS_URL: ${{ steps.extract.outputs.full_url }}
 
