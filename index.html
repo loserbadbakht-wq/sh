@@ -969,7 +969,6 @@
                         const parsed = JSON.parse(data);
                         if (Array.isArray(parsed)) {
                             feeds = parsed;
-                            // ensure each feed has items array
                             feeds.forEach(f => {
                                 if (!f.items) f.items = [];
                                 f.items.forEach(item => {
@@ -983,18 +982,98 @@
                 feeds = [];
             }
 
-            // ---- Fetch & Parse Feed via rss2json ----
-            async function fetchFeed(url) {
-                const proxyUrl =
-                    `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}&api_key=9hq9dufr1ik4m1auocaxgpzjx1kdw8wrrpxn0idb&count=100`;
+            // ============================================================
+            //  NEW: Fetch and parse feed using CORS proxy + DOMParser
+            // ============================================================
+            async function fetchAndParseFeed(url) {
+                // Use a free CORS proxy to get the raw XML
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
                 const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-                if (data.status !== 'ok') throw new Error(data.message || 'Failed to parse feed');
-                return data;
+                if (!response.ok) throw new Error(`HTTP ${response.status} – ${response.statusText}`);
+                const xmlText = await response.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(xmlText, 'text/xml');
+
+                // Check for parsing errors
+                const parseError = doc.querySelector('parsererror');
+                if (parseError) throw new Error('Invalid XML (not a valid feed)');
+
+                // Detect feed type
+                const root = doc.documentElement;
+                const isRSS = root.tagName === 'rss';
+                const isAtom = root.tagName === 'feed' || root.namespaceURI === 'http://www.w3.org/2005/Atom';
+
+                let feedTitle = '';
+                let feedIcon = '';
+                let items = [];
+
+                if (isRSS) {
+                    // RSS 2.0
+                    const channel = root.querySelector('channel');
+                    if (!channel) throw new Error('No <channel> element found in RSS feed');
+                    feedTitle = channel.querySelector('title')?.textContent || getDomain(url);
+                    const image = channel.querySelector('image url');
+                    if (image) feedIcon = image.textContent;
+                    else feedIcon = getFavicon(url);
+
+                    const itemNodes = channel.querySelectorAll('item');
+                    for (const item of itemNodes) {
+                        const title = item.querySelector('title')?.textContent || 'Untitled';
+                        const link = item.querySelector('link')?.textContent || '#';
+                        const description = item.querySelector('description')?.textContent || '';
+                        const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
+                        items.push({
+                            id: generateId(),
+                            title: title.trim(),
+                            link: link.trim(),
+                            description: description.trim(),
+                            pubDate: pubDate.trim(),
+                            read: false,
+                        });
+                    }
+                } else if (isAtom) {
+                    // Atom 1.0
+                    const feed = root;
+                    feedTitle = feed.querySelector('title')?.textContent || getDomain(url);
+                    const logo = feed.querySelector('logo');
+                    if (logo) feedIcon = logo.textContent;
+                    else feedIcon = getFavicon(url);
+
+                    const entries = feed.querySelectorAll('entry');
+                    for (const entry of entries) {
+                        const title = entry.querySelector('title')?.textContent || 'Untitled';
+                        let link = '#';
+                        const linkEl = entry.querySelector('link[rel="alternate"]') || entry.querySelector('link');
+                        if (linkEl) link = linkEl.getAttribute('href') || '#';
+                        const summary = entry.querySelector('summary')?.textContent || '';
+                        const content = entry.querySelector('content')?.textContent || '';
+                        const description = summary || content;
+                        const updated = entry.querySelector('updated')?.textContent || new Date().toISOString();
+                        items.push({
+                            id: generateId(),
+                            title: title.trim(),
+                            link: link.trim(),
+                            description: description.trim(),
+                            pubDate: updated.trim(),
+                            read: false,
+                        });
+                    }
+                } else {
+                    throw new Error('Unrecognised feed format (not RSS or Atom)');
+                }
+
+                // Sort items by date (newest first)
+                items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+                return {
+                    title: feedTitle || getDomain(url),
+                    icon: feedIcon || getFavicon(url),
+                    items: items,
+                };
             }
 
-            // ---- Add Feed ----
+            // ---- Add Feed (updated) ----
             async function addFeed(url) {
                 url = url.trim();
                 if (!url) return;
@@ -1009,20 +1088,13 @@
                 addBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
 
                 try {
-                    const data = await fetchFeed(url);
+                    const data = await fetchAndParseFeed(url);
                     const feed = {
                         id: generateId(),
                         url: url,
-                        title: data.feed.title || getDomain(url),
-                        icon: data.feed.image || getFavicon(url),
-                        items: (data.items || []).map(item => ({
-                            id: generateId(),
-                            title: item.title || 'Untitled',
-                            link: item.link || '#',
-                            description: item.description || item.content || '',
-                            pubDate: item.pubDate || new Date().toISOString(),
-                            read: false,
-                        }))
+                        title: data.title || getDomain(url),
+                        icon: data.icon || getFavicon(url),
+                        items: data.items || [],
                     };
                     feeds.push(feed);
                     saveFeeds();
@@ -1038,23 +1110,7 @@
                 }
             }
 
-            // ---- Remove Feed ----
-            function removeFeed(id) {
-                if (!confirm('Remove this feed?')) return;
-                const idx = feeds.findIndex(f => f.id === id);
-                if (idx === -1) return;
-                feeds.splice(idx, 1);
-                saveFeeds();
-                if (activeFeedId === id) {
-                    activeFeedId = feeds.length > 0 ? feeds[0].id : null;
-                }
-                renderFeeds();
-                if (activeFeedId) selectFeed(activeFeedId);
-                else renderContentEmpty('No feed selected', 'Choose a feed from the sidebar.');
-                showToast('Feed removed.', 'info');
-            }
-
-            // ---- Refresh Feed ----
+            // ---- Refresh Feed (updated) ----
             async function refreshFeed(id) {
                 const feed = feeds.find(f => f.id === id);
                 if (!feed) return;
@@ -1063,27 +1119,25 @@
                 refreshFeedBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
 
                 try {
-                    const data = await fetchFeed(feed.url);
-                    feed.title = data.feed.title || feed.title;
-                    feed.icon = data.feed.image || feed.icon || getFavicon(feed.url);
+                    const data = await fetchAndParseFeed(feed.url);
+                    feed.title = data.title || feed.title;
+                    feed.icon = data.icon || feed.icon || getFavicon(feed.url);
                     const existingLinks = new Set(feed.items.map(i => i.link));
                     let newCount = 0;
                     (data.items || []).forEach(item => {
-                        const link = item.link || '#';
-                        if (!existingLinks.has(link)) {
+                        if (!existingLinks.has(item.link)) {
                             feed.items.unshift({
                                 id: generateId(),
                                 title: item.title || 'Untitled',
-                                link: link,
-                                description: item.description || item.content || '',
+                                link: item.link || '#',
+                                description: item.description || '',
                                 pubDate: item.pubDate || new Date().toISOString(),
                                 read: false,
                             });
                             newCount++;
-                            existingLinks.add(link);
+                            existingLinks.add(item.link);
                         }
                     });
-                    // Sort by date descending
                     feed.items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
                     saveFeeds();
                     renderFeeds();
@@ -1262,10 +1316,9 @@
                 if (!item) return;
                 item.read = !item.read;
                 saveFeeds();
-                // Re-render current view
                 const active = feeds.find(f => f.id === activeFeedId);
                 if (active) renderItems(active);
-                renderFeeds(); // update badge counts
+                renderFeeds();
             }
 
             // ---- Mark All Read ----
@@ -1293,7 +1346,7 @@
                         await refreshFeed(feed.id);
                         successCount++;
                     } catch (e) {
-                        // already handled inside refreshFeed
+                        // error already shown inside refreshFeed
                     }
                 }
                 refreshAllBtn.disabled = false;
@@ -1301,10 +1354,25 @@
                 if (successCount > 0) {
                     showToast(`Refreshed ${successCount} feed${successCount !== 1 ? 's' : ''}.`, 'success');
                 }
-                // Re-select active
                 const active = feeds.find(f => f.id === activeFeedId);
                 if (active) renderItems(active);
                 renderFeeds();
+            }
+
+            // ---- Remove Feed ----
+            function removeFeed(id) {
+                if (!confirm('Remove this feed?')) return;
+                const idx = feeds.findIndex(f => f.id === id);
+                if (idx === -1) return;
+                feeds.splice(idx, 1);
+                saveFeeds();
+                if (activeFeedId === id) {
+                    activeFeedId = feeds.length > 0 ? feeds[0].id : null;
+                }
+                renderFeeds();
+                if (activeFeedId) selectFeed(activeFeedId);
+                else renderContentEmpty('No feed selected', 'Choose a feed from the sidebar.');
+                showToast('Feed removed.', 'info');
             }
 
             // ---- Form Submit ----
@@ -1325,7 +1393,6 @@
             // ---- Init ----
             loadFeeds();
 
-            // Auto-select first feed or show empty
             if (feeds.length > 0) {
                 activeFeedId = feeds[0].id;
                 renderFeeds();
@@ -1344,14 +1411,11 @@
                 }
             });
 
-            // ---- Expose for debugging ----
-            window.__feeds = feeds;
-
-            console.log('📰 Feed Reader ready!');
+            console.log('📰 Feed Reader ready! (CORS proxy + local parser)');
             console.log(`📡 ${feeds.length} feed(s) loaded.`);
 
         })();
     </script>
 
 </body>
-  </html>
+        </html>
