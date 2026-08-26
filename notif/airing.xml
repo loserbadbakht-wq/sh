@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Clevatess S2 - 08</title>
+    <link>https://myanimelist.net/anime.php?q=Clevatess</link>
+    <description>اومد! Clevatess S2 - 08</description>
+</item>
+<item>
     <title>The Beginning After the End S2</title>
     <link>https://myanimelist.net/anime.php?q=The%20Beginning%20After%20the%20End</link>
     <description>اومد! The Beginning After the End S2</description>
@@ -249,11 +254,6 @@
     <title>Hell Mode S2 - 08</title>
     <link>https://myanimelist.net/anime.php?q=Hell%20Mode</link>
     <description>اومد! Hell Mode S2 - 08</description>
-</item>
-<item>
-    <title>Uchi no Otouto-domo ga Sumimasen - 08</title>
-    <link>https://myanimelist.net/anime.php?q=Uchi%20no%20Otouto-domo%20ga%20Sumimasen</link>
-    <description>اومد! Uchi no Otouto-domo ga Sumimasen - 08</description>
 </item>
 </channel>
 </rss>
