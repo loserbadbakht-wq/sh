@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Toukutsu Ou - 08</title>
+    <link>https://myanimelist.net/anime.php?q=Toukutsu%20Ou</link>
+    <description>اومد! Toukutsu Ou - 08</description>
+</item>
+<item>
     <title>Lv999 no Murabito - 10</title>
     <link>https://myanimelist.net/anime.php?q=Lv999%20no%20Murabito</link>
     <description>اومد! Lv999 no Murabito - 10</description>
@@ -249,11 +254,6 @@
     <title>Yomi no Tsugai - 20</title>
     <link>https://myanimelist.net/anime.php?q=Yomi%20no%20Tsugai</link>
     <description>اومد! Yomi no Tsugai - 20</description>
-</item>
-<item>
-    <title>Iwamoto-senpai no Suisen - 08</title>
-    <link>https://myanimelist.net/anime.php?q=Iwamoto-senpai%20no%20Suisen</link>
-    <description>اومد! Iwamoto-senpai no Suisen - 08</description>
 </item>
 </channel>
 </rss>
