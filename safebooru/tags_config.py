@@ -2616,7 +2616,7 @@ CHARACTER_TAGS = {
     'io_(alien_stage)',
     'isaac_(alien_stage)',
     'hia_(alien_stage)',
-    #touho
+    #touhou
     'hakurei_reimu',
     'kirisame_marisa',
     'genjii',
