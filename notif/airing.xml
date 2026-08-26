@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Jishou Akuyaku Reijou na Konyakusha no Kansatsu Kiroku.</title>
+    <link>https://myanimelist.net/anime.php?q=Jishou%20Akuyaku%20Reijou%20na%20Konyakusha%20no%20Kansatsu%20Kiroku.</link>
+    <description>اومد! Jishou Akuyaku Reijou na Konyakusha no Kansatsu Kiroku.</description>
+</item>
+<item>
     <title>Toukutsu Ou - 08</title>
     <link>https://myanimelist.net/anime.php?q=Toukutsu%20Ou</link>
     <description>اومد! Toukutsu Ou - 08</description>
@@ -249,11 +254,6 @@
     <title>Tenmaku no Jaadugar - 09</title>
     <link>https://myanimelist.net/anime.php?q=Tenmaku%20no%20Jaadugar</link>
     <description>اومد! Tenmaku no Jaadugar - 09</description>
-</item>
-<item>
-    <title>Yomi no Tsugai - 20</title>
-    <link>https://myanimelist.net/anime.php?q=Yomi%20no%20Tsugai</link>
-    <description>اومد! Yomi no Tsugai - 20</description>
 </item>
 </channel>
 </rss>
