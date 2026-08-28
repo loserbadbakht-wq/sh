@@ -3,7 +3,7 @@ name: Generate rss feeds
 on:
   push:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch: 
 jobs:
   build:
