@@ -7,7 +7,7 @@ from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS
 
 def get_latest(limit=50):
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
-    params = {'limit': limit, 'pid': 0, 'tags': 'yaoi -ai-generated'}
+    params = {'limit': limit, 'pid': 0, 'tags': 'yuri yaoi -ai-generated'}
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
     root = ET.fromstring(response.content)
     posts = []
@@ -27,9 +27,9 @@ def generate_rss():
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
-<title>Safebooru Yaoi - RSS Feed</title>
+<title>Safebooru Yuri Yaoi - RSS Feed</title>
 <link>https://github.com</link>
-<description>Latest yaoi images from safebooru</description>
+<description>Latest yuri & yaoi images from safebooru</description>
 """
     for post in get_latest():
         all_tags = post['tags'].split()
@@ -47,6 +47,7 @@ def generate_rss():
         title = ' '.join(all_tags[:3]) if all_tags else f"Image {post['id']}"
         desc_text = (f"<b>Copyright:</b> {copy_str}<br/> <br/>"
                      f"<b>Character(s):</b> {char_str}<br/> <br/>"
+                     f"<b>Orientation(s):</b> {char_str}<br/> <br/>"
                      f"<b>Tags:</b> {tags_str}<br/>"
                      f'<img src="{post["sample_url"]}" />')
         link = post['source'] if post['source'] else post['sample_url']
@@ -64,9 +65,9 @@ def generate_rss():
 # ---- Save ----
 try:
     os.makedirs('./safebooru', exist_ok=True)
-    filename = './safebooru/safebooru-yaoi-rss.xml'
+    filename = './safebooru/safebooru-yy-rss.xml'
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(generate_rss().strip())
-    print('✅ RSS saved to ./safebooru/safebooru-yaoi-rss.xml')
+    print('✅ RSS saved to ./safebooru/safebooru-yy-rss.xml')
 except Exception as e:
     print(f'❌ Failed: {e}')
