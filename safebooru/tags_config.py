@@ -1,7 +1,11 @@
 # ============================================
 # tags_config.py – edit your tag lists here
 # ============================================
-
+ORIENTATION = {
+    'hetero'
+    'yuri'
+    'yaoi'
+}    
 # Copyright tags
 COPYRIGHT_TAGS = {
     # custom
