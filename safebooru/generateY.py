@@ -4,7 +4,7 @@ import os
 from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS, ORIENTATION
 
 def fetch_posts(tag, limit=50):
-    url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
+    url = 'https://konachan.com/post.xml'
     params = {'limit': limit, 'pid': 0, 'tags': f'{tag} -ai-generated'}
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
     root = ET.fromstring(response.content)
