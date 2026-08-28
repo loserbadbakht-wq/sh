@@ -30,6 +30,10 @@ jobs:
       run: |
         python ./safebooru/generate.py
         
+    - name: Generate rss (safebooruY)
+      run: |
+        python ./safebooru/generateY.py
+    
     - name: Generate rss (Genshin)
       run: |
         python ./Gen/genshin.py
