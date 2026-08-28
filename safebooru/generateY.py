@@ -41,7 +41,7 @@ def generate_rss():
         
         copy_str = ' '.join(copyright_tags) if copyright_tags else 'Can not guees'
         char_str = ' '.join(character_tags) if character_tags else 'Can not guess'
-        orien_str = ' '.join(character_tags) if character_tags else 'Can not guess'
+        orien_str = ' '.join(orientation) if orientation else 'Can not guess'
         tags_str = ' '.join(other_tags) if other_tags else 'None'
         if len(tags_str) > 1000:
             tags_str = tags_str[:1000] + '...'
@@ -50,7 +50,7 @@ def generate_rss():
         desc_text = (f'<img src="{post["sample_url"]}" />'
                      f"<b>Copyright:</b> {copy_str}<br/> <br/>"
                      f"<b>Character(s):</b> {char_str}<br/> <br/>"
-                     f"<b>Orientation(s):</b> {orien_str}<br/> <br/>"
+                     f"<b>Orientation:</b> {orien_str}<br/> <br/>"
                      f"<b>Tags:</b> {tags_str}<br/>")
         link = post['source'] if post['source'] else post['sample_url']
         
