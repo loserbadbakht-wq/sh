@@ -88,9 +88,9 @@ def generate_rss():
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
-<title>Gelbooru Yuri & Yaoi - Updated {datetime.now().strftime('%Y-%m-%d %H:%M')}</title>
+<title>Gelbooru Yuri & Yaoi </title>
 <link>https://github.com</link>
-<description>Latest yuri or yaoi images from Gelbooru (blocked tags filtered)</description>
+<description>Latest yuri or yaoi images from Gelbooru </description>
 """
     posts = get_latest()
     print(f"📝 Adding {len(posts)} items to RSS")
