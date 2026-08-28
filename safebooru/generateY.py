@@ -114,7 +114,7 @@ def generate_rss():
             tags_str = tags_str[:1000] + "..."
 
         title = " ".join(all_tags[:3]) if all_tags else f"Image {post['id']}"
-        desc_text = (f'<img src="{post["sample_url"]}" /><br/><br/>'
+        desc_text = (f'<img src="{post["sample_url"]}" referrerpolicy="no-referrer" /><br/><br/>'
                      f"<b>Copyright:</b> {copy_str}<br/><br/>"
                      f"<b>Character(s):</b> {char_str}<br/><br/>"
                      f"<b>Orientation:</b> {orien_str}<br/><br/>"
