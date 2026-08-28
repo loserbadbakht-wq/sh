@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 import os
 
 # ---- Import tag lists from the config file ----
-from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS ORIENTATION
+from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS, ORIENTATION
 
 def get_latest(limit=50):
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
