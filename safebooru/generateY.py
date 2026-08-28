@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 import os
 
 # ---- Import tag lists from the config file ----
-from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS
+from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS ORIENTATION
 
 def get_latest(limit=50):
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
@@ -36,20 +36,22 @@ def generate_rss():
         
         copyright_tags = [t for t in all_tags if t in COPYRIGHT_TAGS]
         character_tags = [t for t in all_tags if t in CHARACTER_TAGS]
+        orientation = [t for t in all_tags if t in ORIENTATION]
         other_tags = [t for t in all_tags if t not in COPYRIGHT_TAGS and t not in CHARACTER_TAGS]
         
         copy_str = ' '.join(copyright_tags) if copyright_tags else 'Can not guees'
         char_str = ' '.join(character_tags) if character_tags else 'Can not guess'
+        orien_str = ' '.join(character_tags) if character_tags else 'Can not guess'
         tags_str = ' '.join(other_tags) if other_tags else 'None'
         if len(tags_str) > 1000:
             tags_str = tags_str[:1000] + '...'
         
         title = ' '.join(all_tags[:3]) if all_tags else f"Image {post['id']}"
-        desc_text = (f"<b>Copyright:</b> {copy_str}<br/> <br/>"
+        desc_text = (f'<img src="{post["sample_url"]}" />'
+                     f"<b>Copyright:</b> {copy_str}<br/> <br/>"
                      f"<b>Character(s):</b> {char_str}<br/> <br/>"
-                     f"<b>Orientation(s):</b> {char_str}<br/> <br/>"
-                     f"<b>Tags:</b> {tags_str}<br/>"
-                     f'<img src="{post["sample_url"]}" />')
+                     f"<b>Orientation(s):</b> {orien_str}<br/> <br/>"
+                     f"<b>Tags:</b> {tags_str}<br/>")
         link = post['source'] if post['source'] else post['sample_url']
         
         rss += f"""
