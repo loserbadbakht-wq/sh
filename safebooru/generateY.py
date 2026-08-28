@@ -7,7 +7,7 @@ from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS, ORIENTATION
 
 def get_latest(limit=50):
     url = 'https://safebooru.org/index.php?page=dapi&s=post&q=index'
-    params = {'limit': limit, 'pid': 0, 'tags': 'yuri yaoi -ai-generated'}
+    params = {'limit': limit, 'pid': 0, 'tags': '~yuri ~yaoi -ai-generated'}
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
     root = ET.fromstring(response.content)
     posts = []
