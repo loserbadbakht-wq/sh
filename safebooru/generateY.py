@@ -2,10 +2,27 @@ import requests
 import os
 from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS, ORIENTATION
 
-# ===== EDIT THESE TWO LINES =====
-API_KEY = os.environ.get("KEY")      # Get from: https://gelbooru.com/index.php?page=account&s=options
-USER_ID = os.environ.get("ID")    # Same page as above
-# ================================
+# ---- Load environment variables (local .env support) ----
+try:
+    from dotenv import load_dotenv
+    load_dotenv()  # reads .env file (ignored by git)
+except ImportError:
+    # If python-dotenv is not installed, just skip (will use system env)
+    pass
+
+# ===== Environment variables (set in GitHub Secrets or .env) =====
+API_KEY = os.environ.get("KEY")
+USER_ID = os.environ.get("ID")
+
+# Fail early if not set
+if not API_KEY or not USER_ID:
+    raise EnvironmentError(
+        "❌ Missing API_KEY or USER_ID.\n"
+        "Set them as environment variables: KEY and ID.\n"
+        "For local: create a .env file with KEY=... and ID=...\n"
+        "For GitHub Actions: add KEY and ID as repository secrets."
+    )
+# =================================================================
 
 # List of tags to block – add/remove as needed
 BLOCKED_TAGS = [
