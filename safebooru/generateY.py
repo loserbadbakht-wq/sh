@@ -1,41 +1,41 @@
 import requests
 import os
+import sys
 from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS, ORIENTATION
 
-# ---- Load environment variables (local .env support) ----
+# ---- Load .env if available ----
 try:
     from dotenv import load_dotenv
-    load_dotenv()  # reads .env file (ignored by git)
+    load_dotenv()
 except ImportError:
-    # If python-dotenv is not installed, just skip (will use system env)
     pass
 
-# ===== Environment variables (set in GitHub Secrets or .env) =====
-API_KEY = os.environ.get("KEY")
-USER_ID = os.environ.get("ID")
+# ---- Environment variables ----
+API_KEY = os.environ.get("KEY", "").strip()
+USER_ID = os.environ.get("ID", "").strip()
 
-# Fail early if not set
+# ---- Debug: show if they are set (masked) ----
+print(f"🔑 KEY is {'SET' if API_KEY else 'EMPTY'}")
+print(f"🆔 ID is {'SET' if USER_ID else 'EMPTY'}")
+
 if not API_KEY or not USER_ID:
-    raise EnvironmentError(
-        "❌ Missing API_KEY or USER_ID.\n"
-        "Set them as environment variables: KEY and ID.\n"
-        "For local: create a .env file with KEY=... and ID=...\n"
-        "For GitHub Actions: add KEY and ID as repository secrets."
-    )
-# =================================================================
+    print("❌ ERROR: KEY or ID environment variable is missing or empty.")
+    print("   Please set them via:")
+    print("   - .env file (KEY=... / ID=...)")
+    print("   - or export KEY=... ID=...")
+    print("   - or GitHub Secrets -> env mapping")
+    sys.exit(1)
 
-# List of tags to block – add/remove as needed
+# ---- Blocked tags ----
 BLOCKED_TAGS = [
     "guro", "snuff", "scat", "bestiality", "rape",
     "loli", "shota", "incest", "mind_break", "netorare",
 ]
 
 def build_blocked_filter():
-    """Convert blocked tags to Gelbooru's exclude syntax: -tag1 -tag2 ..."""
     return " " + " ".join(f"-{tag}" for tag in BLOCKED_TAGS)
 
 def fetch_posts(tag, limit=50):
-    """Fetch posts with a specific tag from Gelbooru."""
     url = "https://gelbooru.com/index.php"
     params = {
         "page": "dapi",
@@ -44,22 +44,39 @@ def fetch_posts(tag, limit=50):
         "json": 1,
         "limit": limit,
         "pid": 0,
-        "tags": f"{tag}{build_blocked_filter()}",  # e.g., "yuri -guro -loli ..."
+        "tags": f"{tag}{build_blocked_filter()}",
         "api_key": API_KEY,
         "user_id": USER_ID,
     }
 
+    # ---- Debug: print request (masking the key) ----
+    safe_params = params.copy()
+    safe_params["api_key"] = "***MASKED***"
+    print(f"🌐 Request URL: {url}")
+    print(f"📦 Params: {safe_params}")
+
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
 
+    # ---- Debug: print response ----
+    print(f"📡 Status code: {response.status_code}")
     if response.status_code != 200:
-        print(f"⚠️ API error: {response.status_code}")
-        if response.status_code == 401:
-            print("   → Unauthorized. Check your API_KEY and USER_ID.")
+        print(f"❌ Response text (first 500 chars):\n{response.text[:500]}")
         return []
 
-    data = response.json()
+    try:
+        data = response.json()
+    except ValueError as e:
+        print(f"❌ JSON decode error: {e}")
+        print(f"Raw response:\n{response.text[:1000]}")
+        return []
+
+    # ---- Check if API returned an error message ----
+    if "error" in data:
+        print(f"❌ API error: {data['error']}")
+        return []
+
     posts = []
-    for post in data.get("post", []):   # Gelbooru nests posts under "post" key
+    for post in data.get("post", []):
         posts.append({
             "id": int(post.get("id", 0)),
             "sample_url": post.get("sample_url", ""),
@@ -69,10 +86,10 @@ def fetch_posts(tag, limit=50):
             "score": post.get("score", 0),
             "file_url": post.get("file_url", ""),
         })
+    print(f"✅ Fetched {len(posts)} posts for tag '{tag}'")
     return posts
 
 def get_latest(limit=50):
-    """Fetch yuri and yaoi posts, merge, deduplicate, and sort by newest."""
     yuri_posts = fetch_posts("yuri", limit)
     yaoi_posts = fetch_posts("yaoi", limit)
     all_posts = {post["id"]: post for post in yuri_posts + yaoi_posts}.values()
@@ -87,9 +104,11 @@ def generate_rss():
 <link>https://github.com</link>
 <description>Latest yuri or yaoi images from Gelbooru (blocked tags filtered)</description>
 """
-    for post in get_latest():
+    posts = get_latest()
+    if not posts:
+        print("⚠️ No posts retrieved – RSS will be empty.")
+    for post in posts:
         all_tags = post["tags"].split()
-
         copyright_tags = [t for t in all_tags if t in COPYRIGHT_TAGS]
         character_tags = [t for t in all_tags if t in CHARACTER_TAGS]
         orientation_tags = [t for t in all_tags if t in ORIENTATION]
@@ -123,12 +142,16 @@ def generate_rss():
     rss += "\n</channel>\n</rss>"
     return rss
 
-# ---- Save ----
+# ---- Main ----
 try:
     os.makedirs("./gelbooru", exist_ok=True)
     filename = "./gelbooru/gelbooru-yy-rss.xml"
+    rss_content = generate_rss()
     with open(filename, "w", encoding="utf-8") as f:
-        f.write(generate_rss().strip())
+        f.write(rss_content.strip())
     print("✅ RSS saved to ./gelbooru/gelbooru-yy-rss.xml")
 except Exception as e:
     print(f"❌ Failed: {e}")
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
