@@ -3,5 +3,5 @@ bs4
 requests-html
 cloudscraper
 beautifulsoup4
-undetected-chromedriver
 selenium
+playwright
