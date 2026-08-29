@@ -1,6 +1,7 @@
 import requests
 import os
 import sys
+import re  # NEW
 from datetime import datetime
 from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS, ORIENTATION
 
@@ -33,6 +34,23 @@ BLOCKED_TAGS = [
 def build_blocked_filter():
     """Convert blocked tags to Gelbooru's exclude syntax: -tag1 -tag2 ..."""
     return " " + " ".join(f"-{tag}" for tag in BLOCKED_TAGS)
+
+# ---- NEW: CDN conversion function ----
+def convert_to_cdn(url):
+    """
+    Convert a Gelbooru image URL (sample or full) to a booruview.b-cdn.net URL.
+    Example:
+        https://img4.gelbooru.com//samples/fa/ca/sample_faca198da02e948c7245024411ccc8db.jpg
+        -> https://booruview.b-cdn.net/faca198da02e948c7245024411ccc8db.webp
+    """
+    filename = url.split('/')[-1]
+    if filename.startswith('sample_'):
+        filename = filename[7:]  # remove "sample_"
+    match = re.search(r'([a-f0-9]{32})\.', filename)
+    if not match:
+        return url  # fallback to original if no hash found
+    file_hash = match.group(1)
+    return f"https://booruview.b-cdn.net/{file_hash}.webp"
 
 def fetch_posts(tag, limit=50):
     """Fetch posts with a specific tag from Gelbooru."""
@@ -114,18 +132,26 @@ def generate_rss():
             tags_str = tags_str[:1000] + "..."
 
         title = " ".join(all_tags[:3]) if all_tags else f"Image {post['id']}"
-        desc_text = (f'<img src="{post["sample_url"]}" referrerpolicy="no-referrer" /><br/><br/>'
+
+        # ---- CDN conversion ----
+        cdn_sample = convert_to_cdn(post["sample_url"])
+        cdn_file = convert_to_cdn(post["file_url"])
+
+        # Description uses CDN sample image, and original size link uses CDN full
+        desc_text = (f'<img src="{cdn_sample}" referrerpolicy="no-referrer" /><br/><br/>'
                      f"<b>Copyright:</b> {copy_str}<br/><br/>"
                      f"<b>Character(s):</b> {char_str}<br/><br/>"
                      f"<b>Orientation:</b> {orien_str}<br/><br/>"
                      f"<b>Tags:</b> {tags_str}")
-        link = post["source"] if post["source"] else post["sample_url"]
+
+        # Link is now the CDN full image (direct, no redirect)
+        link = cdn_file
 
         rss += f"""
 <item>
     <title>{title}</title>
     <link>{link}</link>
-    <description><![CDATA[{desc_text} <br/><br/> <a href="{post["file_url"]}">original size</a>]]></description>
+    <description><![CDATA[{desc_text} <br/><br/> <a href="{cdn_file}">original size</a>]]></description>
 </item>"""
 
     rss += "\n</channel>\n</rss>"
