@@ -7,17 +7,14 @@ import urllib.parse
 from xml.sax.saxutils import escape
 
 # ----------------------------------------------------------------------
-# Optional imports – we use what's available
+# Use undetected-chromedriver if available, else fallback to selenium
 # ----------------------------------------------------------------------
 try:
-    from selenium import webdriver
-    from selenium.webdriver.firefox.options import Options as FirefoxOptions
-    from selenium.webdriver.firefox.service import Service
-    from webdriver_manager.firefox import GeckoDriverManager
-    HAS_SELENIUM = True
+    import undetected_chromedriver as uc
+    HAS_UNDETECTED = True
 except ImportError:
-    HAS_SELENIUM = False
-    print("⚠️ Selenium not installed. Install with: pip install selenium webdriver-manager")
+    HAS_UNDETECTED = False
+    print("⚠️ undetected-chromedriver not installed. Install with: pip install undetected-chromedriver")
 
 try:
     from bs4 import BeautifulSoup
@@ -39,9 +36,9 @@ ARCHIVE_URL = "https://game8.co/games/Genshin-Impact/archives"
 MAX_ITEMS = 15
 items_data = []
 
-# ----------------------------------------------------------------------
-# Helper: strip HTML
-# ----------------------------------------------------------------------
+# Optional proxy (set to None if not used)
+PROXY = None  # e.g., "http://user:pass@ip:port" or "socks5://..."
+
 def strip_html(html):
     if not html:
         return ""
@@ -51,34 +48,35 @@ def strip_html(html):
         return re.sub(r'<[^>]+>', ' ', html).strip()
 
 # ----------------------------------------------------------------------
-# Fetch page with Selenium + Firefox (headless)
+# Fetch with undetected-chromedriver (supports proxies)
 # ----------------------------------------------------------------------
-def fetch_page_selenium(url):
-    if not HAS_SELENIUM:
+def fetch_page_undetected(url):
+    if not HAS_UNDETECTED:
         return None
     try:
-        options = FirefoxOptions()
+        options = uc.ChromeOptions()
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--window-size=1920,1080')
-        # Set a realistic user agent
-        options.set_preference("general.useragent.override",
-                               "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/120.0")
-        # Use geckodriver from webdriver-manager
-        service = Service(GeckoDriverManager().install())
-        driver = webdriver.Firefox(service=service, options=options)
+        options.add_argument('--disable-gpu')
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        if PROXY:
+            options.add_argument(f'--proxy-server={PROXY}')
+        driver = uc.Chrome(options=options)
         driver.get(url)
-        time.sleep(4)  # let JS render
+        time.sleep(5)
         html = driver.page_source
         driver.quit()
         return html
     except Exception as e:
-        print(f"❌ Selenium (Firefox) fetch failed: {e}")
+        print(f"❌ Undetected fetch failed: {e}")
         return None
 
 # ----------------------------------------------------------------------
-# Fetch page with cloudscraper (fallback)
+# Fallback: cloudscraper (if no proxy, likely fails)
 # ----------------------------------------------------------------------
 def fetch_page_static(url):
     if not HAS_CLOUDSCRAPER:
@@ -92,6 +90,8 @@ def fetch_page_static(url):
     }
     try:
         scraper = cloudscraper.create_scraper()
+        if PROXY:
+            scraper.proxies = {'http': PROXY, 'https': PROXY}
         response = scraper.get(url, headers=headers, timeout=30)
         response.raise_for_status()
         return response.text
@@ -100,7 +100,7 @@ def fetch_page_static(url):
         return None
 
 # ----------------------------------------------------------------------
-# Extract articles from JSON inside scripts
+# Article extraction (unchanged)
 # ----------------------------------------------------------------------
 def extract_from_json(html):
     script_pattern = r'<script[^>]*>(.*?)</script>'
@@ -128,9 +128,6 @@ def extract_from_json(html):
             continue
     return None
 
-# ----------------------------------------------------------------------
-# Extract articles using BeautifulSoup (fallback)
-# ----------------------------------------------------------------------
 def extract_from_html(html):
     if not HAS_BS4:
         return []
@@ -166,11 +163,8 @@ def extract_from_html(html):
         })
     return articles
 
-# ----------------------------------------------------------------------
-# Fetch full article content (Selenium first, then static)
-# ----------------------------------------------------------------------
 def fetch_full_article_content(url):
-    html = fetch_page_selenium(url) or fetch_page_static(url)
+    html = fetch_page_undetected(url) or fetch_page_static(url)
     if not html:
         return "Content unavailable"
     if HAS_BS4:
@@ -185,7 +179,6 @@ def fetch_full_article_content(url):
             text = re.sub(r'\s+', ' ', text).strip()
             text = re.sub(r'\bGame8\b.*?(?:\n|$)', '', text)
             return text
-    # fallback regex
     html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
     html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
     paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
@@ -195,9 +188,6 @@ def fetch_full_article_content(url):
         return full_text
     return strip_html(html)
 
-# ----------------------------------------------------------------------
-# Generate RSS
-# ----------------------------------------------------------------------
 def generate_rss():
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
@@ -227,18 +217,13 @@ def main():
 
     print("🔍 Fetching Game8 Genshin Impact archives...")
     
-    # Try Selenium with Firefox first
-    html = fetch_page_selenium(ARCHIVE_URL)
-    if not html:
-        print("⚠️ Selenium (Firefox) failed, falling back to cloudscraper...")
-        html = fetch_page_static(ARCHIVE_URL)
+    html = fetch_page_undetected(ARCHIVE_URL) or fetch_page_static(ARCHIVE_URL)
     if not html:
         print("❌ All fetch attempts failed. Exiting.")
         sys.exit(1)
 
     print(f"📄 Fetched {len(html)} bytes. Snippet:\n{html[:300]}\n")
 
-    # Extract articles
     articles_json = extract_from_json(html)
     if articles_json:
         print(f"✅ Found {len(articles_json)} articles from JSON.")
@@ -262,7 +247,6 @@ def main():
         title = article['title']
         link = article['link']
         print(f"🔄 Processing: {title[:50]}...")
-        print(f"📡 Fetching full content from: {link[:50]}...")
         full_content = fetch_full_article_content(link)
         if len(full_content.split()) < 20:
             full_content = article.get('description', title)
