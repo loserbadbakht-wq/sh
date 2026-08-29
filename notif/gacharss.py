@@ -5,6 +5,7 @@ import time
 import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
+from xml.sax.saxutils import escape   # <-- import added
 from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
@@ -78,6 +79,9 @@ def parse_rss_items(rss_xml):
         url_match = re.search(r'(https?://[^\s]+)', description)
         article_url = url_match.group(1) if url_match else ""
         if link and article_url:
+            # Filter out non-article URLs (e.g., /advertise, /zenless-zone-zero-blind-ranking)
+            if '/advertise' in article_url or '/blind-ranking' in article_url or '/tag/' in article_url:
+                continue
             items.append({
                 'bluesky_link': link,
                 'article_url': article_url,
