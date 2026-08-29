@@ -1,8 +1,8 @@
 import os
 import sys
 import re
-import json
 import time
+import json
 import urllib.parse
 from xml.sax.saxutils import escape
 
@@ -10,11 +10,14 @@ from xml.sax.saxutils import escape
 # Optional imports – we use what's available
 # ----------------------------------------------------------------------
 try:
-    import cloudscraper
-    HAS_CLOUDSCRAPER = True
+    from selenium import webdriver
+    from selenium.webdriver.firefox.options import Options as FirefoxOptions
+    from selenium.webdriver.firefox.service import Service
+    from webdriver_manager.firefox import GeckoDriverManager
+    HAS_SELENIUM = True
 except ImportError:
-    HAS_CLOUDSCRAPER = False
-    print("⚠️ cloudscraper not installed. Install with: pip install cloudscraper")
+    HAS_SELENIUM = False
+    print("⚠️ Selenium not installed. Install with: pip install selenium webdriver-manager")
 
 try:
     from bs4 import BeautifulSoup
@@ -22,6 +25,12 @@ try:
 except ImportError:
     HAS_BS4 = False
     print("⚠️ BeautifulSoup not installed. Install with: pip install beautifulsoup4")
+
+try:
+    import cloudscraper
+    HAS_CLOUDSCRAPER = True
+except ImportError:
+    HAS_CLOUDSCRAPER = False
 
 # ----------------------------------------------------------------------
 # Configuration
@@ -31,7 +40,7 @@ MAX_ITEMS = 15
 items_data = []
 
 # ----------------------------------------------------------------------
-# Helper: strip HTML tags (if BS4 missing, fallback to regex)
+# Helper: strip HTML
 # ----------------------------------------------------------------------
 def strip_html(html):
     if not html:
@@ -42,11 +51,37 @@ def strip_html(html):
         return re.sub(r'<[^>]+>', ' ', html).strip()
 
 # ----------------------------------------------------------------------
-# Fetch page with cloudscraper (bypasses Cloudflare)
+# Fetch page with Selenium + Firefox (headless)
 # ----------------------------------------------------------------------
-def fetch_page(url):
+def fetch_page_selenium(url):
+    if not HAS_SELENIUM:
+        return None
+    try:
+        options = FirefoxOptions()
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--window-size=1920,1080')
+        # Set a realistic user agent
+        options.set_preference("general.useragent.override",
+                               "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/120.0")
+        # Use geckodriver from webdriver-manager
+        service = Service(GeckoDriverManager().install())
+        driver = webdriver.Firefox(service=service, options=options)
+        driver.get(url)
+        time.sleep(4)  # let JS render
+        html = driver.page_source
+        driver.quit()
+        return html
+    except Exception as e:
+        print(f"❌ Selenium (Firefox) fetch failed: {e}")
+        return None
+
+# ----------------------------------------------------------------------
+# Fetch page with cloudscraper (fallback)
+# ----------------------------------------------------------------------
+def fetch_page_static(url):
     if not HAS_CLOUDSCRAPER:
-        print("❌ cloudscraper required.")
         return None
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -54,7 +89,6 @@ def fetch_page(url):
         'Accept-Language': 'en-US,en;q=0.9',
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
     }
     try:
         scraper = cloudscraper.create_scraper()
@@ -62,27 +96,21 @@ def fetch_page(url):
         response.raise_for_status()
         return response.text
     except Exception as e:
-        print(f"❌ Fetch failed: {e}")
+        print(f"❌ Static fetch failed: {e}")
         return None
 
 # ----------------------------------------------------------------------
-# Extract articles from JSON inside <script> tags
+# Extract articles from JSON inside scripts
 # ----------------------------------------------------------------------
 def extract_from_json(html):
-    """Search for JSON‑LD or custom script data containing article list."""
-    # Common patterns: <script type="application/ld+json"> ... </script>
-    # or a script containing "articleList" or similar.
     script_pattern = r'<script[^>]*>(.*?)</script>'
     scripts = re.findall(script_pattern, html, re.DOTALL | re.IGNORECASE)
     for script in scripts:
-        # Try to parse as JSON
         try:
             data = json.loads(script)
-            # Recursively search for article URLs/titles in the JSON
             articles = []
             def find_articles(obj, path=""):
                 if isinstance(obj, dict):
-                    # Look for keys that might contain article info
                     if 'url' in obj and 'name' in obj:
                         url = obj.get('url')
                         name = obj.get('name')
@@ -109,7 +137,6 @@ def extract_from_html(html):
     soup = BeautifulSoup(html, "html.parser")
     articles = []
     seen = set()
-    # Find all links that point to archives
     for a in soup.find_all('a', href=re.compile(r'/games/Genshin-Impact/archives/')):
         href = a.get('href')
         if not href or href in seen:
@@ -117,7 +144,6 @@ def extract_from_html(html):
         seen.add(href)
         title = a.get_text(strip=True)
         if not title or len(title) < 3:
-            # maybe the title is inside a heading within the <a>
             parent = a.parent
             if parent and parent.name in ['h2', 'h3', 'h4']:
                 title = parent.get_text(strip=True)
@@ -127,7 +153,6 @@ def extract_from_html(html):
         if title.lower() in ['home', 'games', 'search', 'login']:
             continue
         full_url = href if href.startswith('http') else "https://game8.co" + href
-        # Try to get a description snippet
         description = title
         next_p = a.find_next('p')
         if next_p:
@@ -142,16 +167,14 @@ def extract_from_html(html):
     return articles
 
 # ----------------------------------------------------------------------
-# Fetch full article content
+# Fetch full article content (Selenium first, then static)
 # ----------------------------------------------------------------------
 def fetch_full_article_content(url):
-    html = fetch_page(url)
+    html = fetch_page_selenium(url) or fetch_page_static(url)
     if not html:
         return "Content unavailable"
-    # Use BeautifulSoup to extract paragraphs
     if HAS_BS4:
         soup = BeautifulSoup(html, "html.parser")
-        # Try to find the main content container
         main = soup.find('div', class_=re.compile(r'article-body|post-content|entry-content|content'))
         if main:
             paragraphs = main.find_all('p')
@@ -162,7 +185,7 @@ def fetch_full_article_content(url):
             text = re.sub(r'\s+', ' ', text).strip()
             text = re.sub(r'\bGame8\b.*?(?:\n|$)', '', text)
             return text
-    # Fallback to regex
+    # fallback regex
     html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
     html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
     paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
@@ -203,34 +226,34 @@ def main():
     global items_data
 
     print("🔍 Fetching Game8 Genshin Impact archives...")
-    html = fetch_page(ARCHIVE_URL)
+    
+    # Try Selenium with Firefox first
+    html = fetch_page_selenium(ARCHIVE_URL)
     if not html:
-        print("❌ Failed to fetch page. Exiting.")
+        print("⚠️ Selenium (Firefox) failed, falling back to cloudscraper...")
+        html = fetch_page_static(ARCHIVE_URL)
+    if not html:
+        print("❌ All fetch attempts failed. Exiting.")
         sys.exit(1)
 
-    # Debug: print first 500 characters to see what we got
-    print(f"📄 Fetched {len(html)} bytes. Snippet:\n{html[:500]}\n")
+    print(f"📄 Fetched {len(html)} bytes. Snippet:\n{html[:300]}\n")
 
-    # 1. Try to extract from JSON in scripts
+    # Extract articles
     articles_json = extract_from_json(html)
     if articles_json:
         print(f"✅ Found {len(articles_json)} articles from JSON.")
         articles = [{'title': title, 'link': url, 'description': title} for url, title in articles_json]
     else:
-        # 2. Fallback to HTML parsing
         print("⚠️ No JSON articles found. Trying HTML parsing...")
         articles = extract_from_html(html)
         if articles:
             print(f"✅ Found {len(articles)} articles from HTML.")
         else:
-            print("❌ No articles found at all.")
-            # Save a snippet for debugging
+            print("❌ No articles found. Saving debug.html for inspection.")
             with open('debug.html', 'w', encoding='utf-8') as f:
                 f.write(html)
-            print("💾 Saved full HTML as debug.html for inspection.")
             sys.exit(1)
 
-    # Limit and process articles
     print(f"📊 Processing up to {MAX_ITEMS} articles...")
     processed = 0
     for article in articles:
@@ -254,7 +277,6 @@ def main():
 
     print(f"✅ Processed {processed} items")
 
-    # Write RSS file
     try:
         os.makedirs('./notif', exist_ok=True)
         filename = './notif/game8_feed.xml'
