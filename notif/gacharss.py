@@ -5,7 +5,6 @@ import time
 import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
-from xml.sax.saxutils import escape
 from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
@@ -87,10 +86,10 @@ def parse_rss_items(rss_xml):
     return items
 
 # ----------------------------------------------------------------------
-# Fetch and clean article content
+# Fetch and clean article content with line breaks
 # ----------------------------------------------------------------------
 def fetch_article_content(url):
-    """Fetch and extract the main article content, stripping away navigation, ads, etc."""
+    """Fetch the main article content and return it with <br> between paragraphs."""
     headers = {'User-Agent': USER_AGENT}
     req = urllib.request.Request(url, headers=headers)
     try:
@@ -109,31 +108,35 @@ def fetch_article_content(url):
             tag.decompose()
 
         # Try to find the main content container
-        # Common WordPress classes: entry-content, post-content, article-content
         content_div = soup.find('div', class_=re.compile(r'entry-content|post-content|article-content'))
         if not content_div:
-            # Fallback: look for any div with 'content' in its class
             content_div = soup.find('div', class_=re.compile(r'content'))
 
         if content_div:
-            # Extract all paragraphs from the content area
+            # Extract paragraphs from the content area
             paragraphs = content_div.find_all('p')
             if paragraphs:
-                text = ' '.join(p.get_text(separator=" ").strip() for p in paragraphs)
-                text = re.sub(r'\s+', ' ', text).strip()
-                return text
+                # Get text from each paragraph, filter short ones (navigation, ads)
+                texts = []
+                for p in paragraphs:
+                    p_text = p.get_text(separator=" ").strip()
+                    # Keep paragraphs longer than 20 chars (likely real content)
+                    if len(p_text) > 20:
+                        texts.append(p_text)
+                if texts:
+                    # Join with <br> to preserve line breaks
+                    return '<br>'.join(texts)
 
-        # If no content div found, fall back to all paragraphs, but filter out short/navigation ones
+        # If no content div, fall back to all paragraphs, but filter
         all_paragraphs = soup.find_all('p')
         if all_paragraphs:
             clean_texts = []
             for p in all_paragraphs:
                 p_text = p.get_text(separator=" ").strip()
-                # Keep paragraphs longer than 50 chars (likely real content)
-                if len(p_text) > 50:
+                if len(p_text) > 20:
                     clean_texts.append(p_text)
             if clean_texts:
-                return ' '.join(clean_texts)
+                return '<br>'.join(clean_texts)
 
     # Fallback: regex-based extraction (less accurate but better than nothing)
     html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
@@ -146,19 +149,19 @@ def fetch_article_content(url):
 
     paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
     if paragraphs:
-        # Join and clean
-        full_text = ' '.join(strip_html(p) for p in paragraphs)
-        full_text = re.sub(r'\s+', ' ', full_text).strip()
-        # Filter out short segments (likely navigation or ad text)
-        sentences = [s for s in full_text.split('. ') if len(s) > 30]
-        if sentences:
-            return '. '.join(sentences)
-        return full_text
+        # Get text from each paragraph
+        texts = []
+        for p in paragraphs:
+            p_text = strip_html(p).strip()
+            if len(p_text) > 20:
+                texts.append(p_text)
+        if texts:
+            return '<br>'.join(texts)
 
     return None
 
 # ----------------------------------------------------------------------
-# Generate new RSS feed
+# Generate new RSS feed (with CDATA for description)
 # ----------------------------------------------------------------------
 def generate_rss():
     rss = f'''<?xml version="1.0" encoding="UTF-8" ?>
@@ -171,7 +174,8 @@ def generate_rss():
     for item in items_data:
         safe_title = escape(item['title'])
         safe_link = escape(item['link'])
-        safe_description = escape(item['description'])
+        # Wrap description in CDATA to preserve HTML like <br>
+        safe_description = f"<![CDATA[{item['description']}]]>"
         rss += f'''
 <item>
     <title>{safe_title}</title>
@@ -211,7 +215,7 @@ def main():
                 'description': content
             })
             processed += 1
-            print(f"  ✅ Extracted {len(content.split())} words")
+            print(f"  ✅ Extracted {len(content.split())} words, {content.count('<br>')+1} paragraphs")
         else:
             print(f"  ⚠️ No content extracted, skipping")
 
