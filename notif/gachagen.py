@@ -1,13 +1,13 @@
 import os
 import sys
 import re
-import time
 import json
+import time
 import urllib.parse
 from xml.sax.saxutils import escape
 
 # ----------------------------------------------------------------------
-# Ensure we have the necessary libraries
+# Optional imports – we use what's available
 # ----------------------------------------------------------------------
 try:
     import cloudscraper
@@ -23,13 +23,6 @@ except ImportError:
     HAS_BS4 = False
     print("⚠️ BeautifulSoup not installed. Install with: pip install beautifulsoup4")
 
-try:
-    from requests_html import HTMLSession
-    HAS_REQUESTS_HTML = True
-except ImportError:
-    HAS_REQUESTS_HTML = False
-    print("⚠️ requests-html not installed. Install with: pip install requests-html")
-
 # ----------------------------------------------------------------------
 # Configuration
 # ----------------------------------------------------------------------
@@ -38,21 +31,22 @@ MAX_ITEMS = 15
 items_data = []
 
 # ----------------------------------------------------------------------
-# Helper functions
+# Helper: strip HTML tags (if BS4 missing, fallback to regex)
 # ----------------------------------------------------------------------
 def strip_html(html):
     if not html:
         return ""
-    # quick and dirty: remove tags, but we'll use BeautifulSoup if available
     if HAS_BS4:
         return BeautifulSoup(html, "html.parser").get_text(separator=" ").strip()
     else:
-        # fallback regex
         return re.sub(r'<[^>]+>', ' ', html).strip()
 
-def fetch_page_static(url):
-    """Fetch HTML using cloudscraper (bypasses Cloudflare)."""
+# ----------------------------------------------------------------------
+# Fetch page with cloudscraper (bypasses Cloudflare)
+# ----------------------------------------------------------------------
+def fetch_page(url):
     if not HAS_CLOUDSCRAPER:
+        print("❌ cloudscraper required.")
         return None
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -60,6 +54,7 @@ def fetch_page_static(url):
         'Accept-Language': 'en-US,en;q=0.9',
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
     }
     try:
         scraper = cloudscraper.create_scraper()
@@ -67,47 +62,107 @@ def fetch_page_static(url):
         response.raise_for_status()
         return response.text
     except Exception as e:
-        print(f"❌ Static fetch failed: {e}")
+        print(f"❌ Fetch failed: {e}")
         return None
 
-def fetch_page_with_js(url):
-    """Fetch HTML using requests-html with JavaScript rendering."""
-    if not HAS_REQUESTS_HTML:
-        return None
-    try:
-        session = HTMLSession()
-        response = session.get(url)
-        # Render with a timeout; headless browser may take a few seconds
-        response.html.render(timeout=30, sleep=2, keep_page=True)
-        return response.html.html
-    except Exception as e:
-        print(f"❌ JS rendering failed: {e}")
-        return None
+# ----------------------------------------------------------------------
+# Extract articles from JSON inside <script> tags
+# ----------------------------------------------------------------------
+def extract_from_json(html):
+    """Search for JSON‑LD or custom script data containing article list."""
+    # Common patterns: <script type="application/ld+json"> ... </script>
+    # or a script containing "articleList" or similar.
+    script_pattern = r'<script[^>]*>(.*?)</script>'
+    scripts = re.findall(script_pattern, html, re.DOTALL | re.IGNORECASE)
+    for script in scripts:
+        # Try to parse as JSON
+        try:
+            data = json.loads(script)
+            # Recursively search for article URLs/titles in the JSON
+            articles = []
+            def find_articles(obj, path=""):
+                if isinstance(obj, dict):
+                    # Look for keys that might contain article info
+                    if 'url' in obj and 'name' in obj:
+                        url = obj.get('url')
+                        name = obj.get('name')
+                        if url and name and '/archives/' in url:
+                            articles.append((url, name))
+                    for k, v in obj.items():
+                        find_articles(v, path + "." + k)
+                elif isinstance(obj, list):
+                    for i, item in enumerate(obj):
+                        find_articles(item, path + f"[{i}]")
+            find_articles(data)
+            if articles:
+                return articles
+        except json.JSONDecodeError:
+            continue
+    return None
 
-def fetch_full_page_content(url):
-    """Fetch full article text from its URL."""
-    html = fetch_page_static(url)
+# ----------------------------------------------------------------------
+# Extract articles using BeautifulSoup (fallback)
+# ----------------------------------------------------------------------
+def extract_from_html(html):
+    if not HAS_BS4:
+        return []
+    soup = BeautifulSoup(html, "html.parser")
+    articles = []
+    seen = set()
+    # Find all links that point to archives
+    for a in soup.find_all('a', href=re.compile(r'/games/Genshin-Impact/archives/')):
+        href = a.get('href')
+        if not href or href in seen:
+            continue
+        seen.add(href)
+        title = a.get_text(strip=True)
+        if not title or len(title) < 3:
+            # maybe the title is inside a heading within the <a>
+            parent = a.parent
+            if parent and parent.name in ['h2', 'h3', 'h4']:
+                title = parent.get_text(strip=True)
+            else:
+                continue
+        title = re.sub(r'\s+', ' ', title).strip()
+        if title.lower() in ['home', 'games', 'search', 'login']:
+            continue
+        full_url = href if href.startswith('http') else "https://game8.co" + href
+        # Try to get a description snippet
+        description = title
+        next_p = a.find_next('p')
+        if next_p:
+            desc = next_p.get_text(strip=True)
+            if len(desc) > 20:
+                description = desc
+        articles.append({
+            'title': title,
+            'link': full_url,
+            'description': description
+        })
+    return articles
+
+# ----------------------------------------------------------------------
+# Fetch full article content
+# ----------------------------------------------------------------------
+def fetch_full_article_content(url):
+    html = fetch_page(url)
     if not html:
         return "Content unavailable"
-
-    # Use BeautifulSoup if available to extract <p> tags
+    # Use BeautifulSoup to extract paragraphs
     if HAS_BS4:
         soup = BeautifulSoup(html, "html.parser")
-        # Try to get article content: find main content container (common patterns)
-        # Look for div with class 'article-body', 'post-content', etc.
-        content_div = soup.find('div', class_=re.compile(r'article-body|post-content|entry-content|content'))
-        if content_div:
-            paragraphs = content_div.find_all('p')
+        # Try to find the main content container
+        main = soup.find('div', class_=re.compile(r'article-body|post-content|entry-content|content'))
+        if main:
+            paragraphs = main.find_all('p')
         else:
             paragraphs = soup.find_all('p')
         if paragraphs:
             text = ' '.join(p.get_text(separator=" ").strip() for p in paragraphs)
             text = re.sub(r'\s+', ' ', text).strip()
-            # Remove common boilerplate
             text = re.sub(r'\bGame8\b.*?(?:\n|$)', '', text)
             return text
-
-    # Fallback: regex extraction
+    # Fallback to regex
     html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
     html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
     paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
@@ -115,75 +170,10 @@ def fetch_full_page_content(url):
         full_text = ' '.join(strip_html(p) for p in paragraphs)
         full_text = re.sub(r'\s+', ' ', full_text).strip()
         return full_text
-    else:
-        full_text = strip_html(html)
-        full_text = re.sub(r'\s+', ' ', full_text).strip()
-        return full_text
+    return strip_html(html)
 
 # ----------------------------------------------------------------------
-# Article extraction
-# ----------------------------------------------------------------------
-def extract_articles_from_html(html):
-    """Extract article links, titles, and descriptions using BeautifulSoup."""
-    if not HAS_BS4:
-        print("❌ BeautifulSoup required for extraction.")
-        return []
-    soup = BeautifulSoup(html, "html.parser")
-    
-    # Find all links that point to article archives
-    # Typically: <a href="/games/Genshin-Impact/archives/...">
-    links = soup.find_all('a', href=re.compile(r'/games/Genshin-Impact/archives/'))
-    
-    articles = []
-    seen = set()
-    for a in links:
-        href = a.get('href')
-        if not href:
-            continue
-        # Skip if it's a fragment or navigation
-        if href in seen or href.startswith('#') or href.startswith('javascript:'):
-            continue
-        seen.add(href)
-        
-        # Get title text
-        title_text = a.get_text(strip=True)
-        if not title_text or len(title_text) < 3:
-            # Maybe the title is inside a heading element within the link?
-            parent = a.parent
-            if parent and parent.name in ['h2', 'h3', 'h4']:
-                title_text = parent.get_text(strip=True)
-            elif a.find('h2') or a.find('h3'):
-                title_text = a.get_text(strip=True)
-            else:
-                continue
-        
-        # Clean title
-        title = re.sub(r'\s+', ' ', title_text).strip()
-        if title.lower() in ['home', 'games', 'search', 'login', 'sign up', 'archives']:
-            continue
-        
-        # Build full URL
-        full_url = href if href.startswith('http') else "https://game8.co" + href
-        
-        # Try to find a description snippet (e.g., a following paragraph)
-        description = title
-        # Find next sibling or parent's next sibling that is a p
-        next_p = a.find_next('p')
-        if next_p:
-            desc_text = next_p.get_text(strip=True)
-            if len(desc_text) > 20:
-                description = desc_text
-        
-        articles.append({
-            'title': title,
-            'link': full_url,
-            'description': description
-        })
-    
-    return articles
-
-# ----------------------------------------------------------------------
-# RSS generation
+# Generate RSS
 # ----------------------------------------------------------------------
 def generate_rss():
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
@@ -213,50 +203,34 @@ def main():
     global items_data
 
     print("🔍 Fetching Game8 Genshin Impact archives...")
-
-    # 1. Try static fetch first (fast, may work if no JS needed)
-    html = fetch_page_static(ARCHIVE_URL)
-    if html:
-        articles = extract_articles_from_html(html)
-        if articles:
-            print(f"✅ Found {len(articles)} articles using static fetch.")
-        else:
-            print("⚠️ Static fetch returned no articles. Trying JS rendering...")
-            # 2. Try JS rendering
-            html_js = fetch_page_with_js(ARCHIVE_URL)
-            if html_js:
-                articles = extract_articles_from_html(html_js)
-                if articles:
-                    print(f"✅ Found {len(articles)} articles using JS rendering.")
-                else:
-                    print("❌ JS rendering also found no articles.")
-                    # dump snippet for debugging
-                    snippet = html_js[:500] if html_js else ""
-                    print(f"📄 HTML snippet: {snippet}")
-                    sys.exit(1)
-            else:
-                print("❌ JS rendering failed.")
-                sys.exit(1)
-    else:
-        print("❌ Static fetch failed. Trying JS rendering...")
-        html_js = fetch_page_with_js(ARCHIVE_URL)
-        if html_js:
-            articles = extract_articles_from_html(html_js)
-            if articles:
-                print(f"✅ Found {len(articles)} articles using JS rendering.")
-            else:
-                print("❌ JS rendering found no articles.")
-                snippet = html_js[:500] if html_js else ""
-                print(f"📄 HTML snippet: {snippet}")
-                sys.exit(1)
-        else:
-            print("❌ All fetch attempts failed. Exiting.")
-            sys.exit(1)
-
-    if not articles:
-        print("❌ No articles extracted. Exiting.")
+    html = fetch_page(ARCHIVE_URL)
+    if not html:
+        print("❌ Failed to fetch page. Exiting.")
         sys.exit(1)
 
+    # Debug: print first 500 characters to see what we got
+    print(f"📄 Fetched {len(html)} bytes. Snippet:\n{html[:500]}\n")
+
+    # 1. Try to extract from JSON in scripts
+    articles_json = extract_from_json(html)
+    if articles_json:
+        print(f"✅ Found {len(articles_json)} articles from JSON.")
+        articles = [{'title': title, 'link': url, 'description': title} for url, title in articles_json]
+    else:
+        # 2. Fallback to HTML parsing
+        print("⚠️ No JSON articles found. Trying HTML parsing...")
+        articles = extract_from_html(html)
+        if articles:
+            print(f"✅ Found {len(articles)} articles from HTML.")
+        else:
+            print("❌ No articles found at all.")
+            # Save a snippet for debugging
+            with open('debug.html', 'w', encoding='utf-8') as f:
+                f.write(html)
+            print("💾 Saved full HTML as debug.html for inspection.")
+            sys.exit(1)
+
+    # Limit and process articles
     print(f"📊 Processing up to {MAX_ITEMS} articles...")
     processed = 0
     for article in articles:
@@ -266,15 +240,13 @@ def main():
         link = article['link']
         print(f"🔄 Processing: {title[:50]}...")
         print(f"📡 Fetching full content from: {link[:50]}...")
-        full_content = fetch_full_page_content(link)
-        if len(full_content.split()) > 20:
-            content_to_use = full_content
-        else:
-            content_to_use = article['description']
+        full_content = fetch_full_article_content(link)
+        if len(full_content.split()) < 20:
+            full_content = article.get('description', title)
         items_data.append({
             'title': title,
             'link': link,
-            'description': content_to_use
+            'description': full_content
         })
         processed += 1
         if processed < min(len(articles), MAX_ITEMS):
