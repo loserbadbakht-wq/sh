@@ -1,18 +1,16 @@
 import requests
 import os
 import sys
-import re  # NEW
+import re
 from datetime import datetime
 from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS, ORIENTATION
 
-# ---- Load .env if available (local development) ----
 try:
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
     pass
 
-# ---- Environment variables ----
 API_KEY = os.environ.get("KEY", "").strip()
 USER_ID = os.environ.get("ID", "").strip()
 
@@ -20,40 +18,28 @@ print(f"🔑 KEY is {'SET' if API_KEY else 'EMPTY'}")
 print(f"🆔 ID is {'SET' if USER_ID else 'EMPTY'}")
 
 if not API_KEY or not USER_ID:
-    print("❌ ERROR: KEY or ID environment variable missing or empty.")
-    print("   For local: create a .env file with KEY=... and ID=...")
-    print("   For GitHub Actions: set secrets KEY and ID.")
+    print("❌ ERROR: KEY or ID missing.")
     sys.exit(1)
 
-# ---- Blocked tags ----
 BLOCKED_TAGS = [
     "guro", "snuff", "scat", "bestiality", "rape",
     "loli", "shota", "incest", "mind_break", "netorare",
 ]
 
 def build_blocked_filter():
-    """Convert blocked tags to Gelbooru's exclude syntax: -tag1 -tag2 ..."""
     return " " + " ".join(f"-{tag}" for tag in BLOCKED_TAGS)
 
-# ---- NEW: CDN conversion function ----
 def convert_to_cdn(url):
-    """
-    Convert a Gelbooru image URL (sample or full) to a booruview.b-cdn.net URL.
-    Example:
-        https://img4.gelbooru.com//samples/fa/ca/sample_faca198da02e948c7245024411ccc8db.jpg
-        -> https://booruview.b-cdn.net/faca198da02e948c7245024411ccc8db.webp
-    """
     filename = url.split('/')[-1]
     if filename.startswith('sample_'):
-        filename = filename[7:]  # remove "sample_"
+        filename = filename[7:]
     match = re.search(r'([a-f0-9]{32})\.', filename)
     if not match:
-        return url  # fallback to original if no hash found
+        return url
     file_hash = match.group(1)
     return f"https://booruview.b-cdn.net/{file_hash}.webp"
 
 def fetch_posts(tag, limit=50):
-    """Fetch posts with a specific tag from Gelbooru."""
     url = "https://gelbooru.com/index.php"
     params = {
         "page": "dapi",
@@ -66,15 +52,10 @@ def fetch_posts(tag, limit=50):
         "api_key": API_KEY,
         "user_id": USER_ID,
     }
-
     response = requests.get(url, params=params, headers={"User-Agent": "Mozilla/5.0"})
-
     if response.status_code != 200:
         print(f"⚠️ API error: {response.status_code}")
-        if response.status_code == 401:
-            print("   → Unauthorized. Check your API_KEY and USER_ID.")
         return []
-
     data = response.json()
     posts = []
     for post in data.get("post", []):
@@ -88,12 +69,9 @@ def fetch_posts(tag, limit=50):
             "file_url": post.get("file_url", ""),
         })
     print(f"✅ Fetched {len(posts)} posts for '{tag}'")
-    if posts:
-        print(f"   First 3 IDs: {[p['id'] for p in posts[:3]]}")
     return posts
 
 def get_latest(limit=50):
-    """Fetch yuri and yaoi posts, merge, deduplicate, and sort by newest."""
     yuri_posts = fetch_posts("yuri", limit)
     yaoi_posts = fetch_posts("yaoi", limit)
     all_posts = {post["id"]: post for post in yuri_posts + yaoi_posts}.values()
@@ -102,27 +80,22 @@ def get_latest(limit=50):
     return sorted_posts
 
 def generate_rss():
-    """Generate the full RSS XML string."""
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
-<title>Gelbooru Yuri & Yaoi </title>
+<title>Gelbooru Yuri & Yaoi</title>
 <link>https://github.com</link>
-<description>Latest yuri or yaoi images from Gelbooru </description>
+<description>Latest yuri or yaoi images from Gelbooru</description>
 """
     posts = get_latest()
     print(f"📝 Adding {len(posts)} items to RSS")
 
     for post in posts:
         all_tags = post["tags"].split()
-
         copyright_tags = [t for t in all_tags if t in COPYRIGHT_TAGS]
         character_tags = [t for t in all_tags if t in CHARACTER_TAGS]
         orientation_tags = [t for t in all_tags if t in ORIENTATION]
-        other_tags = [t for t in all_tags 
-                      if t not in COPYRIGHT_TAGS 
-                      and t not in CHARACTER_TAGS 
-                      and t not in ORIENTATION]
+        other_tags = [t for t in all_tags if t not in COPYRIGHT_TAGS and t not in CHARACTER_TAGS and t not in ORIENTATION]
 
         copy_str = " ".join(copyright_tags) if copyright_tags else "Cannot guess"
         char_str = " ".join(character_tags) if character_tags else "Cannot guess"
@@ -133,51 +106,36 @@ def generate_rss():
 
         title = " ".join(all_tags[:3]) if all_tags else f"Image {post['id']}"
 
-        # ---- CDN conversion ----
+        # ---- Image preview uses CDN ----
         cdn_sample = convert_to_cdn(post["sample_url"])
-        cdn_file = convert_to_cdn(post["file_url"])
 
-        # Description uses CDN sample image, and original size link uses CDN full
         desc_text = (f'<img src="{cdn_sample}" referrerpolicy="no-referrer" /><br/><br/>'
                      f"<b>Copyright:</b> {copy_str}<br/><br/>"
                      f"<b>Character(s):</b> {char_str}<br/><br/>"
                      f"<b>Orientation:</b> {orien_str}<br/><br/>"
                      f"<b>Tags:</b> {tags_str}")
 
-        # Link is now the CDN full image (direct, no redirect)
-        link = cdn_file
+        # ---- <link> unchanged (source or sample_url) ----
+        link = post["source"] if post["source"] else post["sample_url"]
 
+        # ---- "original size" link uses the original file_url (reverted) ----
         rss += f"""
 <item>
     <title>{title}</title>
     <link>{link}</link>
-    <description><![CDATA[{desc_text} <br/><br/> <a href="{cdn_file}">original size</a>]]></description>
+    <description><![CDATA[{desc_text} <br/><br/> <a href="{post["file_url"]}">original size</a>]]></description>
 </item>"""
 
     rss += "\n</channel>\n</rss>"
     print(f"📝 Generated RSS length: {len(rss)} characters")
     return rss
 
-# ---- Main execution ----
 try:
     os.makedirs("./gelbooru", exist_ok=True)
     filename = "./gelbooru/gelbooru-yy-rss.xml"
-    abs_path = os.path.abspath(filename)
-    print(f"📁 Writing to: {abs_path}")
-
-    rss_content = generate_rss().strip()
     with open(filename, "w", encoding="utf-8") as f:
-        f.write(rss_content)
-
-    # Verify file size
-    file_size = os.path.getsize(abs_path)
-    print(f"📄 File size after write: {file_size} bytes")
-    if file_size < 1000:
-        print("⚠️ File is very small – likely no items were added.")
-    else:
-        print("✅ RSS saved successfully.")
+        f.write(generate_rss().strip())
+    print("✅ RSS saved to ./gelbooru/gelbooru-yy-rss.xml")
 except Exception as e:
     print(f"❌ Failed: {e}")
-    import traceback
-    traceback.print_exc()
     sys.exit(1)
