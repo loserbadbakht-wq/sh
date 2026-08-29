@@ -7,14 +7,15 @@ import urllib.parse
 from xml.sax.saxutils import escape
 
 # ----------------------------------------------------------------------
-# Use undetected-chromedriver if available, else fallback to selenium
+# Install playwright and its browsers before running:
+# pip install playwright && playwright install firefox
 # ----------------------------------------------------------------------
 try:
-    import undetected_chromedriver as uc
-    HAS_UNDETECTED = True
+    from playwright.sync_api import sync_playwright
+    HAS_PLAYWRIGHT = True
 except ImportError:
-    HAS_UNDETECTED = False
-    print("⚠️ undetected-chromedriver not installed. Install with: pip install undetected-chromedriver")
+    HAS_PLAYWRIGHT = False
+    print("⚠️ Playwright not installed. Install with: pip install playwright && playwright install firefox")
 
 try:
     from bs4 import BeautifulSoup
@@ -36,9 +37,12 @@ ARCHIVE_URL = "https://game8.co/games/Genshin-Impact/archives"
 MAX_ITEMS = 15
 items_data = []
 
-# Optional proxy (set to None if not used)
-PROXY = None  # e.g., "http://user:pass@ip:port" or "socks5://..."
+# Optional proxy – set to None if not used
+PROXY = None  # e.g., "http://user:pass@ip:port"
 
+# ----------------------------------------------------------------------
+# Strip HTML
+# ----------------------------------------------------------------------
 def strip_html(html):
     if not html:
         return ""
@@ -48,35 +52,50 @@ def strip_html(html):
         return re.sub(r'<[^>]+>', ' ', html).strip()
 
 # ----------------------------------------------------------------------
-# Fetch with undetected-chromedriver (supports proxies)
+# Fetch with Playwright + Firefox (headless + stealth)
 # ----------------------------------------------------------------------
-def fetch_page_undetected(url):
-    if not HAS_UNDETECTED:
+def fetch_page_playwright(url):
+    if not HAS_PLAYWRIGHT:
         return None
     try:
-        options = uc.ChromeOptions()
-        options.add_argument('--headless')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--window-size=1920,1080')
-        options.add_argument('--disable-gpu')
-        options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', False)
-        if PROXY:
-            options.add_argument(f'--proxy-server={PROXY}')
-        driver = uc.Chrome(options=options)
-        driver.get(url)
-        time.sleep(5)
-        html = driver.page_source
-        driver.quit()
-        return html
+        with sync_playwright() as p:
+            # Launch Firefox with anti-detection arguments
+            browser = p.firefox.launch(
+                headless=True,
+                proxy={"server": PROXY} if PROXY else None,
+                args=[
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                    "--window-size=1920,1080",
+                ]
+            )
+            context = browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/120.0",
+                viewport={"width": 1920, "height": 1080},
+                locale="en-US",
+                timezone_id="America/New_York",
+                extra_http_headers={
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                    "Accept-Language": "en-US,en;q=0.9",
+                    "Accept-Encoding": "gzip, deflate, br",
+                    "Connection": "keep-alive",
+                    "Upgrade-Insecure-Requests": "1",
+                }
+            )
+            page = context.new_page()
+            page.goto(url, wait_until="networkidle", timeout=60000)
+            # Wait for content to load – if there's a challenge, wait a bit longer
+            time.sleep(3)
+            html = page.content()
+            browser.close()
+            return html
     except Exception as e:
-        print(f"❌ Undetected fetch failed: {e}")
+        print(f"❌ Playwright fetch failed: {e}")
         return None
 
 # ----------------------------------------------------------------------
-# Fallback: cloudscraper (if no proxy, likely fails)
+# Fallback: cloudscraper (still may be blocked, but try)
 # ----------------------------------------------------------------------
 def fetch_page_static(url):
     if not HAS_CLOUDSCRAPER:
@@ -100,7 +119,7 @@ def fetch_page_static(url):
         return None
 
 # ----------------------------------------------------------------------
-# Article extraction (unchanged)
+# Extract articles from JSON or HTML
 # ----------------------------------------------------------------------
 def extract_from_json(html):
     script_pattern = r'<script[^>]*>(.*?)</script>'
@@ -163,8 +182,11 @@ def extract_from_html(html):
         })
     return articles
 
+# ----------------------------------------------------------------------
+# Fetch full article content (same logic)
+# ----------------------------------------------------------------------
 def fetch_full_article_content(url):
-    html = fetch_page_undetected(url) or fetch_page_static(url)
+    html = fetch_page_playwright(url) or fetch_page_static(url)
     if not html:
         return "Content unavailable"
     if HAS_BS4:
@@ -188,6 +210,9 @@ def fetch_full_article_content(url):
         return full_text
     return strip_html(html)
 
+# ----------------------------------------------------------------------
+# Generate RSS
+# ----------------------------------------------------------------------
 def generate_rss():
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
@@ -217,7 +242,7 @@ def main():
 
     print("🔍 Fetching Game8 Genshin Impact archives...")
     
-    html = fetch_page_undetected(ARCHIVE_URL) or fetch_page_static(ARCHIVE_URL)
+    html = fetch_page_playwright(ARCHIVE_URL) or fetch_page_static(ARCHIVE_URL)
     if not html:
         print("❌ All fetch attempts failed. Exiting.")
         sys.exit(1)
