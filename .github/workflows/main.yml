@@ -1,4 +1,4 @@
-name: Generate rss feeds
+uses: Generate rss feeds
 
 on:
   push:
@@ -55,6 +55,10 @@ jobs:
     - name: Generate rss (air)
       run: |
         python ./notif/new1.py
+    
+    - name: Generate rss (air)
+      run: |
+        python ./notif/gacharss.py
     
     - uses: stefanzweifel/git-auto-commit-action@v7
       with:
