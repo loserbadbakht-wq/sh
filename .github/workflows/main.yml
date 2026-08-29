@@ -1,4 +1,4 @@
-uses: Generate rss feeds
+name: Generate rss feeds
 
 on:
   push:
