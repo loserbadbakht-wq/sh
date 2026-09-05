@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Oshi no Ko S3</title>
+    <link>https://myanimelist.net/anime.php?q=Oshi%20no%20Ko</link>
+    <description>اومد! Oshi no Ko S3</description>
+</item>
+<item>
     <title>Saijo no Osewa - 10</title>
     <link>https://myanimelist.net/anime.php?q=Saijo%20no%20Osewa</link>
     <description>اومد! Saijo no Osewa - 10</description>
@@ -249,11 +254,6 @@
     <title>Tefuda ga Oome no Victoria - 09</title>
     <link>https://myanimelist.net/anime.php?q=Tefuda%20ga%20Oome%20no%20Victoria</link>
     <description>اومد! Tefuda ga Oome no Victoria - 09</description>
-</item>
-<item>
-    <title>Yoroi Shin Den Samurai Troopers - 21</title>
-    <link>https://myanimelist.net/anime.php?q=Yoroi%20Shin%20Den%20Samurai%20Troopers</link>
-    <description>اومد! Yoroi Shin Den Samurai Troopers - 21</description>
 </item>
 </channel>
 </rss>
