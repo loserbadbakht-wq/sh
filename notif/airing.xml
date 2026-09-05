@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Rilakkuma - 23</title>
+    <link>https://myanimelist.net/anime.php?q=Rilakkuma</link>
+    <description>اومد! Rilakkuma - 23</description>
+</item>
+<item>
     <title>Hell Mode S2 - 10</title>
     <link>https://myanimelist.net/anime.php?q=Hell%20Mode</link>
     <description>اومد! Hell Mode S2 - 10</description>
@@ -249,11 +254,6 @@
     <title>Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou S3</title>
     <link>https://myanimelist.net/anime.php?q=Jidou%20Hanbaiki%20ni%20Umarekawatta%20Ore%20wa%20Meikyuu%20wo%20Samayou</link>
     <description>اومد! Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou S3</description>
-</item>
-<item>
-    <title>Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou S2</title>
-    <link>https://myanimelist.net/anime.php?q=Jidou%20Hanbaiki%20ni%20Umarekawatta%20Ore%20wa%20Meikyuu%20wo%20Samayou</link>
-    <description>اومد! Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou S2</description>
 </item>
 </channel>
 </rss>
