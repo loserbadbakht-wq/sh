@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Hyakkano - 34</title>
+    <link>https://myanimelist.net/anime.php?q=Hyakkano</link>
+    <description>اومد! Hyakkano - 34</description>
+</item>
+<item>
+    <title>Sekai Saikyou no Kouei - 10</title>
+    <link>https://myanimelist.net/anime.php?q=Sekai%20Saikyou%20no%20Kouei</link>
+    <description>اومد! Sekai Saikyou no Kouei - 10</description>
+</item>
+<item>
     <title>Tetsunabe no Jan! - 10</title>
     <link>https://myanimelist.net/anime.php?q=Tetsunabe%20no%20Jan%21</link>
     <description>اومد! Tetsunabe no Jan! - 10</description>
@@ -244,16 +254,6 @@
     <title>All Works Maid - 11</title>
     <link>https://myanimelist.net/anime.php?q=All%20Works%20Maid</link>
     <description>اومد! All Works Maid - 11</description>
-</item>
-<item>
-    <title>Re Zero kara Hajimeru Isekai Seikatsu - 81</title>
-    <link>https://myanimelist.net/anime.php?q=Re%20Zero%20kara%20Hajimeru%20Isekai%20Seikatsu</link>
-    <description>اومد! Re Zero kara Hajimeru Isekai Seikatsu - 81</description>
-</item>
-<item>
-    <title>Youjo Senki S2 - 09</title>
-    <link>https://myanimelist.net/anime.php?q=Youjo%20Senki</link>
-    <description>اومد! Youjo Senki S2 - 09</description>
 </item>
 </channel>
 </rss>
