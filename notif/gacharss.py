@@ -5,7 +5,7 @@ import time
 import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
-from xml.sax.saxutils import escape   # <-- import added
+from xml.sax.saxutils import escape
 from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
@@ -79,7 +79,7 @@ def parse_rss_items(rss_xml):
         url_match = re.search(r'(https?://[^\s]+)', description)
         article_url = url_match.group(1) if url_match else ""
         if link and article_url:
-            # Filter out non-article URLs (e.g., /advertise, /zenless-zone-zero-blind-ranking)
+            # Skip non-article pages
             if '/advertise' in article_url or '/blind-ranking' in article_url or '/tag/' in article_url:
                 continue
             items.append({
@@ -90,10 +90,10 @@ def parse_rss_items(rss_xml):
     return items
 
 # ----------------------------------------------------------------------
-# Fetch and clean article content (returns <br>-separated paragraphs)
+# Fetch article: returns (title, content_with_br) or (None, None)
 # ----------------------------------------------------------------------
-def fetch_article_content(url):
-    """Fetch article and return paragraphs joined with <br>."""
+def fetch_article(url):
+    """Fetch article and return (title, paragraphs joined with <br>)."""
     headers = {'User-Agent': USER_AGENT}
     req = urllib.request.Request(url, headers=headers)
     try:
@@ -101,20 +101,38 @@ def fetch_article_content(url):
             html = response.read().decode('utf-8', errors='ignore')
     except Exception as e:
         print(f"  ⚠️ Could not fetch article: {e}")
-        return None
+        return None, None
 
-    # Use BeautifulSoup if available (preferred)
+    title = None
+    content = None
+
     if HAS_BS4:
         soup = BeautifulSoup(html, "html.parser")
 
+        # ---- Extract title ----
+        # Try <h1> inside content area first
+        content_div = soup.find('div', class_=re.compile(r'entry-content|post-content|article-content'))
+        if content_div:
+            h1 = content_div.find('h1')
+            if h1:
+                title = h1.get_text(strip=True)
+        if not title:
+            # Fallback: <h1> anywhere (common for article titles)
+            h1 = soup.find('h1')
+            if h1:
+                title = h1.get_text(strip=True)
+        if not title:
+            # Fallback: <title> tag, strip site suffix
+            title_tag = soup.find('title')
+            if title_tag:
+                title = title_tag.get_text(strip=True)
+                # Remove common suffixes like " - Gacha Go!" or " | Gacha Go!"
+                title = re.sub(r'\s*[-|]\s*Gacha Go!.*$', '', title)
+
+        # ---- Extract content paragraphs ----
         # Remove unwanted elements
         for tag in soup(['script', 'style', 'ins', 'iframe', 'noscript', 'nav', 'header', 'footer', 'aside']):
             tag.decompose()
-
-        # Try main content container
-        content_div = soup.find('div', class_=re.compile(r'entry-content|post-content|article-content'))
-        if not content_div:
-            content_div = soup.find('div', class_=re.compile(r'content'))
 
         if content_div:
             paragraphs = content_div.find_all('p')
@@ -122,43 +140,54 @@ def fetch_article_content(url):
                 texts = []
                 for p in paragraphs:
                     p_text = p.get_text(separator=" ").strip()
-                    # Keep paragraphs longer than 20 chars (likely real content)
                     if len(p_text) > 20:
                         texts.append(p_text)
                 if texts:
-                    return '<br>'.join(texts)
+                    content = '<br>'.join(texts)
 
-        # Fallback: all paragraphs
-        all_paragraphs = soup.find_all('p')
-        if all_paragraphs:
-            clean_texts = []
-            for p in all_paragraphs:
-                p_text = p.get_text(separator=" ").strip()
+        if not content:
+            # Fallback: all paragraphs
+            all_paragraphs = soup.find_all('p')
+            if all_paragraphs:
+                clean_texts = []
+                for p in all_paragraphs:
+                    p_text = p.get_text(separator=" ").strip()
+                    if len(p_text) > 20:
+                        clean_texts.append(p_text)
+                if clean_texts:
+                    content = '<br>'.join(clean_texts)
+
+    # Regex fallback if BeautifulSoup not available
+    if not content:
+        html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<nav.*?>.*?</nav>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<footer.*?>.*?</footer>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<header.*?>.*?</header>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<aside.*?>.*?</aside>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<ins.*?>.*?</ins>', '', html, flags=re.DOTALL | re.IGNORECASE)
+
+        paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
+        if paragraphs:
+            texts = []
+            for p in paragraphs:
+                p_text = strip_html(p).strip()
                 if len(p_text) > 20:
-                    clean_texts.append(p_text)
-            if clean_texts:
-                return '<br>'.join(clean_texts)
+                    texts.append(p_text)
+            if texts:
+                content = '<br>'.join(texts)
 
-    # Regex fallback
-    html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<nav.*?>.*?</nav>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<footer.*?>.*?</footer>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<header.*?>.*?</header>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<aside.*?>.*?</aside>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<ins.*?>.*?</ins>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        # Try to get title from <title> tag via regex
+        if not title:
+            title_match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE)
+            if title_match:
+                title = strip_html(title_match.group(1))
+                title = re.sub(r'\s*[-|]\s*Gacha Go!.*$', '', title)
 
-    paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
-    if paragraphs:
-        texts = []
-        for p in paragraphs:
-            p_text = strip_html(p).strip()
-            if len(p_text) > 20:
-                texts.append(p_text)
-        if texts:
-            return '<br>'.join(texts)
+    if not title:
+        title = "Gacha Go! Article"
 
-    return None
+    return title, content
 
 # ----------------------------------------------------------------------
 # Generate the new RSS feed with CDATA-wrapped description
@@ -209,19 +238,20 @@ def main():
         article_url = item['article_url']
         print(f"🔄 Processing: {article_url}")
 
-        content = fetch_article_content(article_url)
+        title, content = fetch_article(article_url)
 
-        # Always add an item, even if content extraction fails
         if content is None:
             content = "Content could not be retrieved."
+        if title is None:
+            title = "Gacha Go! Article"
 
         items_data.append({
-            'title': "Gacha Go! Article",
+            'title': title,
             'link': article_url,
             'description': content
         })
         processed += 1
-        print(f"  ✅ Added item {processed}")
+        print(f"  ✅ Added item {processed}: {title[:50]}...")
 
         if processed < min(len(items), MAX_ITEMS):
             time.sleep(1)
