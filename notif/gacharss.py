@@ -9,16 +9,6 @@ from xml.sax.saxutils import escape
 from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
-# Optional: BeautifulSoup for better parsing (recommended)
-# ----------------------------------------------------------------------
-try:
-    from bs4 import BeautifulSoup
-    HAS_BS4 = True
-except ImportError:
-    HAS_BS4 = False
-    print("⚠️ BeautifulSoup not installed. Install with: pip install beautifulsoup4")
-
-# ----------------------------------------------------------------------
 # Configuration
 # ----------------------------------------------------------------------
 SOURCE_RSS = "https://bsky.app/profile/did:plc:z6tuqt4wk6dmvhxnotxmamvi/rss"
@@ -28,7 +18,7 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 items_data = []
 
 # ----------------------------------------------------------------------
-# Helper: strip HTML tags (fallback if BeautifulSoup is missing)
+# HTML stripping helper
 # ----------------------------------------------------------------------
 class MLStripper(HTMLParser):
     def __init__(self):
@@ -47,7 +37,7 @@ def strip_html(html):
     return s.get_data().strip()
 
 # ----------------------------------------------------------------------
-# Fetch the source RSS feed
+# Fetch RSS feed
 # ----------------------------------------------------------------------
 def fetch_rss(url):
     headers = {'User-Agent': USER_AGENT}
@@ -90,7 +80,7 @@ def parse_rss_items(rss_xml):
     return items
 
 # ----------------------------------------------------------------------
-# Fetch article: returns (title, content_with_br) or (None, None)
+# Fetch article: returns (title, content_with_br) – no external libs
 # ----------------------------------------------------------------------
 def fetch_article(url):
     """Fetch article and return (title, paragraphs joined with <br>)."""
@@ -103,94 +93,53 @@ def fetch_article(url):
         print(f"  ⚠️ Could not fetch article: {e}")
         return None, None
 
-    title = None
-    content = None
-
-    if HAS_BS4:
-        soup = BeautifulSoup(html, "html.parser")
-
-        # ---- Extract title ----
-        # Try <h1> inside content area first
-        content_div = soup.find('div', class_=re.compile(r'entry-content|post-content|article-content'))
-        if content_div:
-            h1 = content_div.find('h1')
-            if h1:
-                title = h1.get_text(strip=True)
+    # ---- Extract title ----
+    title_match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE | re.DOTALL)
+    if title_match:
+        title = strip_html(title_match.group(1)).strip()
+        # Remove site suffix like " - Gacha Go!" or " | Gacha Go!"
+        title = re.sub(r'\s*[-|]\s*Gacha Go!.*$', '', title)
         if not title:
-            # Fallback: <h1> anywhere (common for article titles)
-            h1 = soup.find('h1')
-            if h1:
-                title = h1.get_text(strip=True)
-        if not title:
-            # Fallback: <title> tag, strip site suffix
-            title_tag = soup.find('title')
-            if title_tag:
-                title = title_tag.get_text(strip=True)
-                # Remove common suffixes like " - Gacha Go!" or " | Gacha Go!"
-                title = re.sub(r'\s*[-|]\s*Gacha Go!.*$', '', title)
-
-        # ---- Extract content paragraphs ----
-        # Remove unwanted elements
-        for tag in soup(['script', 'style', 'ins', 'iframe', 'noscript', 'nav', 'header', 'footer', 'aside']):
-            tag.decompose()
-
-        if content_div:
-            paragraphs = content_div.find_all('p')
-            if paragraphs:
-                texts = []
-                for p in paragraphs:
-                    p_text = p.get_text(separator=" ").strip()
-                    if len(p_text) > 20:
-                        texts.append(p_text)
-                if texts:
-                    content = '<br>'.join(texts)
-
-        if not content:
-            # Fallback: all paragraphs
-            all_paragraphs = soup.find_all('p')
-            if all_paragraphs:
-                clean_texts = []
-                for p in all_paragraphs:
-                    p_text = p.get_text(separator=" ").strip()
-                    if len(p_text) > 20:
-                        clean_texts.append(p_text)
-                if clean_texts:
-                    content = '<br>'.join(clean_texts)
-
-    # Regex fallback if BeautifulSoup not available
-    if not content:
-        html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
-        html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
-        html = re.sub(r'<nav.*?>.*?</nav>', '', html, flags=re.DOTALL | re.IGNORECASE)
-        html = re.sub(r'<footer.*?>.*?</footer>', '', html, flags=re.DOTALL | re.IGNORECASE)
-        html = re.sub(r'<header.*?>.*?</header>', '', html, flags=re.DOTALL | re.IGNORECASE)
-        html = re.sub(r'<aside.*?>.*?</aside>', '', html, flags=re.DOTALL | re.IGNORECASE)
-        html = re.sub(r'<ins.*?>.*?</ins>', '', html, flags=re.DOTALL | re.IGNORECASE)
-
-        paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
-        if paragraphs:
-            texts = []
-            for p in paragraphs:
-                p_text = strip_html(p).strip()
-                if len(p_text) > 20:
-                    texts.append(p_text)
-            if texts:
-                content = '<br>'.join(texts)
-
-        # Try to get title from <title> tag via regex
-        if not title:
-            title_match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE)
-            if title_match:
-                title = strip_html(title_match.group(1))
-                title = re.sub(r'\s*[-|]\s*Gacha Go!.*$', '', title)
-
-    if not title:
+            title = "Gacha Go! Article"
+    else:
         title = "Gacha Go! Article"
 
-    return title, content
+    # ---- Extract content paragraphs ----
+    # Remove scripts, styles, nav, header, footer, aside
+    html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    html = re.sub(r'<nav.*?>.*?</nav>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    html = re.sub(r'<header.*?>.*?</header>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    html = re.sub(r'<footer.*?>.*?</footer>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    html = re.sub(r'<aside.*?>.*?</aside>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    html = re.sub(r'<ins.*?>.*?</ins>', '', html, flags=re.DOTALL | re.IGNORECASE)
+
+    # Extract all <p>...</p> blocks
+    paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
+
+    if paragraphs:
+        texts = []
+        for p in paragraphs:
+            p_text = strip_html(p).strip()
+            # Keep only substantial paragraphs (>= 30 chars) to skip navigation/ads
+            if len(p_text) >= 30:
+                texts.append(p_text)
+        if texts:
+            content = '<br>'.join(texts)
+            return title, content
+
+    # Fallback: split by newlines or periods if no <p> tags
+    text = strip_html(html)
+    # Split into sentences by period, keep long ones
+    sentences = [s.strip() for s in text.split('. ') if len(s) > 30]
+    if sentences:
+        content = '<br>'.join(sentences)
+        return title, content
+
+    return title, None  # No content found
 
 # ----------------------------------------------------------------------
-# Generate the new RSS feed with CDATA-wrapped description
+# Generate RSS with CDATA
 # ----------------------------------------------------------------------
 def generate_rss():
     rss = f'''<?xml version="1.0" encoding="UTF-8" ?>
@@ -203,9 +152,7 @@ def generate_rss():
     for item in items_data:
         safe_title = escape(item['title'])
         safe_link = escape(item['link'])
-        # Use CDATA to preserve <br> tags in description
         description = item['description'] if item['description'] else "No content available"
-        # Escape any CDATA closing sequence to avoid breaking XML
         description = description.replace(']]>', ']]]]><![CDATA[>')
         safe_description = f"<![CDATA[{description}]]>"
         rss += f'''
@@ -240,10 +187,14 @@ def main():
 
         title, content = fetch_article(article_url)
 
-        if content is None:
-            content = "Content could not be retrieved."
         if title is None:
             title = "Gacha Go! Article"
+        if content is None:
+            content = "No content could be retrieved."
+        else:
+            # Log how many paragraphs we got
+            para_count = content.count('<br>') + 1
+            print(f"  📝 Extracted {para_count} paragraphs, {len(content.split())} words")
 
         items_data.append({
             'title': title,
@@ -251,14 +202,13 @@ def main():
             'description': content
         })
         processed += 1
-        print(f"  ✅ Added item {processed}: {title[:50]}...")
+        print(f"  ✅ Added item {processed}: {title[:50]}")
 
         if processed < min(len(items), MAX_ITEMS):
             time.sleep(1)
 
     print(f"✅ Processed {processed} items")
 
-    # Write the RSS file
     try:
         os.makedirs('./notif', exist_ok=True)
         filename = './notif/gachago_feed.xml'
