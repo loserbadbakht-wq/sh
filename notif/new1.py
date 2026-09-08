@@ -1,6 +1,7 @@
 import os
 import sys
 import re
+import time
 import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -52,7 +53,7 @@ def fetch_rss(url):
         sys.exit(1)
 
 def fetch_page_content(url):
-    """Fetch and extract plain text from a webpage."""
+    """Fetch article content and return paragraphs joined with <br>."""
     try:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -60,31 +61,33 @@ def fetch_page_content(url):
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=15) as response:
             content = response.read().decode('utf-8', errors='ignore')
-            # Try to extract the main article content (simplified approach)
-            # Remove scripts and styles (basic stripping)
+            # Remove scripts and styles
             content = re.sub(r'<script.*?>.*?</script>', '', content, flags=re.DOTALL | re.IGNORECASE)
             content = re.sub(r'<style.*?>.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
             # Extract text from paragraphs
             paragraphs = re.findall(r'<p.*?>(.*?)</p>', content, re.DOTALL | re.IGNORECASE)
             if paragraphs:
-                # Join first few paragraphs to get a summary
-                text = ' '.join(strip_html(p) for p in paragraphs[:5])
-                # Clean up whitespace
-                text = re.sub(r'\s+', ' ', text).strip()
-                # Limit to a reasonable length for description
-                if len(text) > 5000:
-                    text = text[:5000] + "..."
-                return text
+                # Clean each paragraph and join with <br>
+                texts = []
+                for p in paragraphs:
+                    p_text = strip_html(p).strip()
+                    if len(p_text) > 20:  # filter out short/navigation paragraphs
+                        texts.append(p_text)
+                if texts:
+                    return '<br>'.join(texts)
             else:
-                # Fallback: get all text
+                # Fallback: get all text (split by newlines or periods)
                 text = strip_html(content)
                 text = re.sub(r'\s+', ' ', text).strip()
-                if len(text) > 5000:
-                    text = text[:5000] + "..."
+                # Split into sentences and join with <br> (approximate)
+                sentences = [s.strip() for s in text.split('. ') if len(s) > 20]
+                if sentences:
+                    return '<br>'.join(sentences)
                 return text
     except Exception as e:
         print(f"⚠️ Could not fetch {url}: {e}")
         return "Content unavailable"
+    return "Content unavailable"
 
 def get_all_items(rss_xml):
     """Parse RSS and return a list of (title, description, link) for all items."""
@@ -116,7 +119,7 @@ def get_all_items(rss_xml):
     return result
 
 # ----------------------------------------------------------------------
-# generate_rss() now uses the global items_data
+# generate_rss() now uses CDATA for description
 # ----------------------------------------------------------------------
 def generate_rss():
     """Generate RSS feed with transformed items."""
@@ -130,9 +133,13 @@ def generate_rss():
 """
     # Add each item
     for item in items_data:
-        safe_title = escape(item['title'])  # IGN description as our title
-        safe_link = escape(item['link'])    # Original IGN link
-        safe_description = escape(item['description'])  # Content from the link page
+        safe_title = escape(item['title'])      # IGN description as our title
+        safe_link = escape(item['link'])        # Original IGN link
+        # Wrap description in CDATA to preserve <br> tags
+        description = item['description'] if item['description'] else "No content available"
+        # Escape any CDATA closing sequence
+        description = description.replace(']]>', ']]]]><![CDATA[>')
+        safe_description = f"<![CDATA[{description}]]>"
         
         rss += f"""
 <item>
@@ -157,8 +164,8 @@ def main():
     all_items = get_all_items(rss_xml)
     print(f"📊 Found {len(all_items)} items")
 
-    # Process each item (limit to 10 items to avoid excessive requests)
-    max_items = 50  # Adjust as needed
+    # Process each item (limit to 50 items to avoid excessive requests)
+    max_items = 50
     processed = 0
     
     for orig_title, orig_description, orig_link in all_items:
@@ -172,21 +179,19 @@ def main():
         page_content = fetch_page_content(orig_link)
         
         items_data.append({
-            'title': orig_description,  # IGN description becomes our title
-            'link': orig_link,          # Original link stays the same
-            'description': page_content  # Content from the link page
+            'title': orig_description,   # IGN description becomes our title
+            'link': orig_link,           # Original link stays the same
+            'description': page_content  # Content with <br> formatting
         })
         processed += 1
         
         # Add a small delay to be nice to the servers
-        # (not strictly necessary but good practice)
         if processed < min(len(all_items), max_items):
-            import time
             time.sleep(1)
 
     print(f"✅ Processed {processed} items")
 
-    # Write to file using the exact generate_rss() and try/except block
+    # Write to file
     try:
         os.makedirs('./notif', exist_ok=True)
         filename = './notif/new1.xml'
