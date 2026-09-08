@@ -12,13 +12,13 @@ from html.parser import HTMLParser
 # Configuration
 # ----------------------------------------------------------------------
 SOURCE_RSS = "https://bsky.app/profile/did:plc:z6tuqt4wk6dmvhxnotxmamvi/rss"
-MAX_ITEMS = 5   # reduced for testing
+MAX_ITEMS = 10
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 items_data = []
 
 # ----------------------------------------------------------------------
-# HTML stripping helper
+# HTML stripper (for regex fallback)
 # ----------------------------------------------------------------------
 class MLStripper(HTMLParser):
     def __init__(self):
@@ -65,6 +65,7 @@ def parse_rss_items(rss_xml):
         desc_elem = item.find('description')
         link = link_elem.text.strip() if link_elem is not None and link_elem.text else ""
         description = desc_elem.text.strip() if desc_elem is not None and desc_elem.text else ""
+        # Extract article URL from description
         url_match = re.search(r'(https?://[^\s]+)', description)
         article_url = url_match.group(1) if url_match else ""
         if link and article_url:
@@ -76,6 +77,38 @@ def parse_rss_items(rss_xml):
                 'description': description
             })
     return items
+
+# ----------------------------------------------------------------------
+# Extract the content div with matching closing tag (stack-based)
+# ----------------------------------------------------------------------
+def extract_div_content(html, div_class):
+    """Return the inner HTML of the first <div> with the given class."""
+    # Find the opening <div> with the class
+    pattern = r'<div[^>]*class="[^"]*' + re.escape(div_class) + r'[^"]*"[^>]*>'
+    match = re.search(pattern, html, re.IGNORECASE)
+    if not match:
+        return None
+    start = match.end()
+    # Now find the matching closing </div> using a stack
+    depth = 1
+    pos = start
+    while depth > 0 and pos < len(html):
+        # Find the next <div or </div>
+        next_open = html.find('<div', pos)
+        next_close = html.find('</div>', pos)
+        if next_close == -1:
+            break
+        if next_open != -1 and next_open < next_close:
+            # It's an opening div
+            depth += 1
+            pos = next_open + 4
+        else:
+            # It's a closing div
+            depth -= 1
+            if depth == 0:
+                return html[start:next_close]
+            pos = next_close + 6
+    return None
 
 # ----------------------------------------------------------------------
 # Fetch article: returns (title, content_with_br)
@@ -91,17 +124,12 @@ def fetch_article(url):
         print(f"  ⚠️ Could not fetch article: {e}")
         return None, None
 
-    # ---- DEBUG: show first 500 chars ----
-    print(f"  📄 HTML snippet (first 500 chars):\n{html[:500]}\n")
-
     # ---- Extract title ----
-    title = "Gacha Go! Article"  # default
-    # Try <h1> first (common article heading)
+    title = "Gacha Go! Article"
     h1_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.IGNORECASE | re.DOTALL)
     if h1_match:
         title = strip_html(h1_match.group(1)).strip()
     else:
-        # Fallback to <title>
         title_match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE | re.DOTALL)
         if title_match:
             title = strip_html(title_match.group(1)).strip()
@@ -109,46 +137,43 @@ def fetch_article(url):
     if not title:
         title = "Gacha Go! Article"
 
-    # ---- Extract content paragraphs ----
-    # Remove scripts, styles, nav, header, footer, aside
-    html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<nav.*?>.*?</nav>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<header.*?>.*?</header>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<footer.*?>.*?</footer>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<aside.*?>.*?</aside>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<ins.*?>.*?</ins>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    # ---- Extract content paragraphs from entry-content div ----
+    content_html = extract_div_content(html, "entry-content")
+    if not content_html:
+        # Fallback: try to find any content div
+        content_html = extract_div_content(html, "post-content")
+    if not content_html:
+        content_html = extract_div_content(html, "content")
 
-    # Try to find the main content by looking for a div with 'entry-content' or 'post-content'
-    content_div = re.search(r'<div[^>]*class="[^"]*entry-content[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL | re.IGNORECASE)
-    if not content_div:
-        content_div = re.search(r'<div[^>]*class="[^"]*post-content[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL | re.IGNORECASE)
-    if not content_div:
-        # Fallback: extract all paragraphs
-        paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
+    paragraphs = []
+    if content_html:
+        # Extract all <p> tags from the content_html
+        p_matches = re.findall(r'<p.*?>(.*?)</p>', content_html, re.DOTALL | re.IGNORECASE)
+        for p in p_matches:
+            p_text = strip_html(p).strip()
+            # Filter short paragraphs and common junk
+            if len(p_text) >= 30 and not re.search(r'advertisement|fund your pulls|cashback|affiliate|discord|subscribe|newsletter|register|login', p_text, re.IGNORECASE):
+                paragraphs.append(p_text)
     else:
-        # Extract paragraphs within the content div
-        inner_html = content_div.group(1)
-        paragraphs = re.findall(r'<p.*?>(.*?)</p>', inner_html, re.DOTALL | re.IGNORECASE)
+        # If no content div found, fallback to all paragraphs but remove navigation blocks
+        # Remove nav, header, footer, aside
+        html = re.sub(r'<nav.*?>.*?</nav>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<header.*?>.*?</header>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<footer.*?>.*?</footer>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<aside.*?>.*?</aside>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        p_matches = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
+        for p in p_matches:
+            p_text = strip_html(p).strip()
+            if len(p_text) >= 30 and not re.search(r'advertisement|fund your pulls|cashback|affiliate|discord|subscribe|newsletter|register|login', p_text, re.IGNORECASE):
+                paragraphs.append(p_text)
 
     if paragraphs:
-        texts = []
-        for p in paragraphs:
-            p_text = strip_html(p).strip()
-            if len(p_text) >= 30:
-                texts.append(p_text)
-        if texts:
-            content = '<br>'.join(texts)
-            return title, content
-
-    # If still no content, try splitting the whole text into sentences
-    text = strip_html(html)
-    sentences = [s.strip() for s in text.split('. ') if len(s) > 30]
-    if sentences:
-        content = '<br>'.join(sentences)
+        # Join with <br>
+        content = '<br>'.join(paragraphs)
         return title, content
 
-    return title, None  # No content found
+    # If still no content, return title only
+    return title, None
 
 # ----------------------------------------------------------------------
 # Generate RSS with CDATA
