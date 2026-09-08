@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 # Configuration
 # ----------------------------------------------------------------------
 SOURCE_RSS = "https://bsky.app/profile/did:plc:z6tuqt4wk6dmvhxnotxmamvi/rss"
-MAX_ITEMS = 10
+MAX_ITEMS = 5   # reduced for testing
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 items_data = []
@@ -65,11 +65,9 @@ def parse_rss_items(rss_xml):
         desc_elem = item.find('description')
         link = link_elem.text.strip() if link_elem is not None and link_elem.text else ""
         description = desc_elem.text.strip() if desc_elem is not None and desc_elem.text else ""
-        # Extract article URL from description
         url_match = re.search(r'(https?://[^\s]+)', description)
         article_url = url_match.group(1) if url_match else ""
         if link and article_url:
-            # Skip non-article pages
             if '/advertise' in article_url or '/blind-ranking' in article_url or '/tag/' in article_url:
                 continue
             items.append({
@@ -80,7 +78,7 @@ def parse_rss_items(rss_xml):
     return items
 
 # ----------------------------------------------------------------------
-# Fetch article: returns (title, content_with_br) – no external libs
+# Fetch article: returns (title, content_with_br)
 # ----------------------------------------------------------------------
 def fetch_article(url):
     """Fetch article and return (title, paragraphs joined with <br>)."""
@@ -93,15 +91,22 @@ def fetch_article(url):
         print(f"  ⚠️ Could not fetch article: {e}")
         return None, None
 
+    # ---- DEBUG: show first 500 chars ----
+    print(f"  📄 HTML snippet (first 500 chars):\n{html[:500]}\n")
+
     # ---- Extract title ----
-    title_match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE | re.DOTALL)
-    if title_match:
-        title = strip_html(title_match.group(1)).strip()
-        # Remove site suffix like " - Gacha Go!" or " | Gacha Go!"
-        title = re.sub(r'\s*[-|]\s*Gacha Go!.*$', '', title)
-        if not title:
-            title = "Gacha Go! Article"
+    title = "Gacha Go! Article"  # default
+    # Try <h1> first (common article heading)
+    h1_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.IGNORECASE | re.DOTALL)
+    if h1_match:
+        title = strip_html(h1_match.group(1)).strip()
     else:
+        # Fallback to <title>
+        title_match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE | re.DOTALL)
+        if title_match:
+            title = strip_html(title_match.group(1)).strip()
+            title = re.sub(r'\s*[-|]\s*Gacha Go!.*$', '', title)
+    if not title:
         title = "Gacha Go! Article"
 
     # ---- Extract content paragraphs ----
@@ -114,23 +119,30 @@ def fetch_article(url):
     html = re.sub(r'<aside.*?>.*?</aside>', '', html, flags=re.DOTALL | re.IGNORECASE)
     html = re.sub(r'<ins.*?>.*?</ins>', '', html, flags=re.DOTALL | re.IGNORECASE)
 
-    # Extract all <p>...</p> blocks
-    paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
+    # Try to find the main content by looking for a div with 'entry-content' or 'post-content'
+    content_div = re.search(r'<div[^>]*class="[^"]*entry-content[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL | re.IGNORECASE)
+    if not content_div:
+        content_div = re.search(r'<div[^>]*class="[^"]*post-content[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL | re.IGNORECASE)
+    if not content_div:
+        # Fallback: extract all paragraphs
+        paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
+    else:
+        # Extract paragraphs within the content div
+        inner_html = content_div.group(1)
+        paragraphs = re.findall(r'<p.*?>(.*?)</p>', inner_html, re.DOTALL | re.IGNORECASE)
 
     if paragraphs:
         texts = []
         for p in paragraphs:
             p_text = strip_html(p).strip()
-            # Keep only substantial paragraphs (>= 30 chars) to skip navigation/ads
             if len(p_text) >= 30:
                 texts.append(p_text)
         if texts:
             content = '<br>'.join(texts)
             return title, content
 
-    # Fallback: split by newlines or periods if no <p> tags
+    # If still no content, try splitting the whole text into sentences
     text = strip_html(html)
-    # Split into sentences by period, keep long ones
     sentences = [s.strip() for s in text.split('. ') if len(s) > 30]
     if sentences:
         content = '<br>'.join(sentences)
@@ -183,31 +195,28 @@ def main():
             break
 
         article_url = item['article_url']
-        print(f"🔄 Processing: {article_url}")
+        print(f"\n🔄 Processing: {article_url}")
 
         title, content = fetch_article(article_url)
 
-        if title is None:
-            title = "Gacha Go! Article"
         if content is None:
             content = "No content could be retrieved."
         else:
-            # Log how many paragraphs we got
             para_count = content.count('<br>') + 1
-            print(f"  📝 Extracted {para_count} paragraphs, {len(content.split())} words")
+            print(f"  ✅ Extracted {para_count} paragraphs, {len(content.split())} words")
 
         items_data.append({
-            'title': title,
+            'title': title or "Gacha Go! Article",
             'link': article_url,
             'description': content
         })
         processed += 1
-        print(f"  ✅ Added item {processed}: {title[:50]}")
+        print(f"  ➕ Added item {processed}: {items_data[-1]['title'][:50]}")
 
         if processed < min(len(items), MAX_ITEMS):
             time.sleep(1)
 
-    print(f"✅ Processed {processed} items")
+    print(f"\n✅ Processed {processed} items")
 
     try:
         os.makedirs('./notif', exist_ok=True)
