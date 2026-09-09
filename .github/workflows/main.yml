@@ -66,7 +66,7 @@ jobs:
         # Defaults to "Apply automatic changes"
         commit_message: Apply automatic changes
 
-        file_pattern: ./*.xml
+        file_pattern: './*.xml ./*.jpg ./*.png'
 
         # Optional local file path to the repository
         # Defaults to the root of the repository
