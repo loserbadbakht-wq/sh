@@ -9,6 +9,11 @@ from xml.sax.saxutils import escape
 from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
+# Base URL for GitHub raw images – now using the new repository
+# ----------------------------------------------------------------------
+RAW_BASE = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/ign_tumb/"
+
+# ----------------------------------------------------------------------
 # Sanitize title for use in filename
 # ----------------------------------------------------------------------
 def sanitize_filename(title):
@@ -23,39 +28,34 @@ def sanitize_filename(title):
 # ----------------------------------------------------------------------
 def extract_image_url(html):
     """Return the URL of the main article image (og:image, twitter:image, or first img)."""
-    # 1. Open Graph image
     og_match = re.search(r'<meta\s+property=["\']og:image["\']\s+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
     if og_match:
         return og_match.group(1)
-    # 2. Twitter card image
     tw_match = re.search(r'<meta\s+name=["\']twitter:image["\']\s+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
     if tw_match:
         return tw_match.group(1)
-    # 3. First <img> inside article content (try to find a likely candidate)
-    # Look for <img> tags within <div> with class containing "content" or "post" or "article"
     content_div = re.search(r'<div[^>]*class="[^"]*(?:content|post|article)[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL | re.IGNORECASE)
     if content_div:
         img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', content_div.group(1), re.IGNORECASE)
         if img_match:
             return img_match.group(1)
-    # 4. Fallback: first img with src (avoid icons/ads)
     all_imgs = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', html, re.IGNORECASE)
     for img_url in all_imgs:
-        # skip tiny images, logos, ads
         if 'logo' in img_url.lower() or 'icon' in img_url.lower() or 'ad' in img_url.lower():
             continue
         return img_url
     return None
 
 # ----------------------------------------------------------------------
-# Download image and save to ./notif/ign_tumb/
+# Download thumbnail and return remote GitHub raw URL
 # ----------------------------------------------------------------------
 def download_thumbnail(article_url, sanitized_title):
     """
-    Fetch the article, extract the main image, download it and save to notif/ign_tumb/.
-    Returns the local relative path (e.g., 'ign_tumb/foo.jpg') or None on failure.
+    Fetch the article, extract the main image, download it to ./notif/ign_tumb/,
+    and return the remote GitHub raw URL for the image.
+    Returns the remote URL string or None on failure.
     """
-    # Create directory if not exists
+    # Create local directory if not exists
     tumb_dir = os.path.join('notif', 'ign_tumb')
     os.makedirs(tumb_dir, exist_ok=True)
 
@@ -80,13 +80,11 @@ def download_thumbnail(article_url, sanitized_title):
     if image_url.startswith('//'):
         image_url = 'https:' + image_url
     elif image_url.startswith('/'):
-        # Use the article's domain
         parsed = urllib.parse.urlparse(article_url)
         base = f"{parsed.scheme}://{parsed.netloc}"
         image_url = base + image_url
 
     # Determine file extension
-    # Use the extension from the URL or fallback to .jpg
     ext = os.path.splitext(urllib.parse.urlparse(image_url).path)[1]
     if not ext or ext.lower() not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
         ext = '.jpg'  # default
@@ -94,16 +92,18 @@ def download_thumbnail(article_url, sanitized_title):
     local_filename = sanitized_title + ext
     local_path = os.path.join(tumb_dir, local_filename)
 
-    # Download the image
+    # Download the image locally (for archiving)
     try:
         print(f"  📥 Downloading thumbnail: {image_url[:80]}...")
         urllib.request.urlretrieve(image_url, local_path)
         print(f"  ✅ Saved thumbnail: {local_path}")
-        # Return relative path for use in <img> (relative to XML location)
-        return os.path.join('ign_tumb', local_filename)
     except Exception as e:
-        print(f"  ⚠️ Failed to download thumbnail: {e}")
-        return None
+        print(f"  ⚠️ Failed to download thumbnail locally: {e}")
+        # Continue anyway; we can still use the remote URL if we can construct it
+
+    # Build remote GitHub raw URL (now using the new repository)
+    remote_url = RAW_BASE + local_filename
+    return remote_url
 
 # ----------------------------------------------------------------------
 # Fetch and parse the original IGN RSS feed
@@ -158,25 +158,20 @@ def fetch_page_content(url):
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=15) as response:
             content = response.read().decode('utf-8', errors='ignore')
-            # Remove scripts and styles
             content = re.sub(r'<script.*?>.*?</script>', '', content, flags=re.DOTALL | re.IGNORECASE)
             content = re.sub(r'<style.*?>.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
-            # Extract text from paragraphs
             paragraphs = re.findall(r'<p.*?>(.*?)</p>', content, re.DOTALL | re.IGNORECASE)
             if paragraphs:
-                # Clean each paragraph and join with <br>
                 texts = []
                 for p in paragraphs:
                     p_text = strip_html(p).strip()
-                    if len(p_text) > 20:  # filter out short/navigation paragraphs
+                    if len(p_text) > 20:
                         texts.append(p_text)
                 if texts:
                     return '<br>'.join(texts)
             else:
-                # Fallback: get all text (split by newlines or periods)
                 text = strip_html(content)
                 text = re.sub(r'\s+', ' ', text).strip()
-                # Split into sentences and join with <br> (approximate)
                 sentences = [s.strip() for s in text.split('. ') if len(s) > 20]
                 if sentences:
                     return '<br>'.join(sentences)
@@ -207,11 +202,10 @@ def get_all_items(rss_xml):
         
         title = title_elem.text.strip() if title_elem is not None and title_elem.text else ""
         description = desc_elem.text.strip() if desc_elem is not None and desc_elem.text else ""
-        # Remove HTML tags from description for clean text
         description = strip_html(description)
         link = link_elem.text.strip() if link_elem is not None and link_elem.text else ""
         
-        if title and link:  # Only include items with at least title and link
+        if title and link:
             result.append((title, description, link))
     return result
 
@@ -220,7 +214,6 @@ def get_all_items(rss_xml):
 # ----------------------------------------------------------------------
 def generate_rss():
     """Generate RSS feed with transformed items."""
-    # Build the channel header
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
@@ -228,13 +221,10 @@ def generate_rss():
 <link>https://feeds.feedburner.com/ign/news</link>
 <description>Transformed IGN News Feed</description>
 """
-    # Add each item
     for item in items_data:
-        safe_title = escape(item['title'])      # IGN description as our title
-        safe_link = escape(item['link'])        # Original IGN link
-        # Wrap description in CDATA to preserve <br> tags and HTML
+        safe_title = escape(item['title'])
+        safe_link = escape(item['link'])
         description = item['description'] if item['description'] else "No content available"
-        # Escape any CDATA closing sequence
         description = description.replace(']]>', ']]]]><![CDATA[>')
         safe_description = f"<![CDATA[{description}]]>"
         
@@ -244,7 +234,6 @@ def generate_rss():
     <link>{safe_link}</link>
     <description>{safe_description}</description>
 </item>"""
-    # Close channel and rss
     rss += '\n</channel>\n</rss>'
     return rss
 
@@ -261,7 +250,6 @@ def main():
     all_items = get_all_items(rss_xml)
     print(f"📊 Found {len(all_items)} items")
 
-    # Process each item (limit to 50 items to avoid excessive requests)
     max_items = 50
     processed = 0
     
@@ -270,21 +258,14 @@ def main():
             break
             
         print(f"🔄 Processing: {orig_title[:50]}...")
-        
-        # Fetch content from the link
         print(f"📡 Fetching content from: {orig_link[:50]}...")
         page_content = fetch_page_content(orig_link)
         
-        # Sanitize title for image filename
         sanitized = sanitize_filename(orig_title)
+        remote_image_url = download_thumbnail(orig_link, sanitized)
         
-        # Download thumbnail
-        local_image_path = download_thumbnail(orig_link, sanitized)
-        
-        # Build description with image and content
-        if local_image_path:
-            # Use relative path to XML file (XML is in ./notif/, so image path is ./ign_tumb/...)
-            img_tag = f'<img src="{local_image_path}" />'
+        if remote_image_url:
+            img_tag = f'<img src="{remote_image_url}" />'
         else:
             img_tag = ''
         if page_content:
@@ -293,19 +274,17 @@ def main():
             description = f'{img_tag}<br>No content available' if img_tag else "No content available"
         
         items_data.append({
-            'title': orig_description,   # IGN description becomes our title
-            'link': orig_link,           # Original link stays the same
-            'description': description   # Content with image and <br> formatting
+            'title': orig_description,
+            'link': orig_link,
+            'description': description
         })
         processed += 1
         
-        # Add a small delay to be nice to the servers
         if processed < min(len(all_items), max_items):
             time.sleep(1)
 
     print(f"✅ Processed {processed} items")
 
-    # Write to file
     try:
         os.makedirs('./notif', exist_ok=True)
         filename = './notif/new1.xml'
