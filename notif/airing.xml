@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Ao no Miburo S2</title>
+    <link>https://myanimelist.net/anime.php?q=Ao%20no%20Miburo</link>
+    <description>اومد! Ao no Miburo S2</description>
+</item>
+<item>
     <title>Otome Kaijuu Carameliser - 11</title>
     <link>https://myanimelist.net/anime.php?q=Otome%20Kaijuu%20Carameliser</link>
     <description>اومد! Otome Kaijuu Carameliser - 11</description>
@@ -249,11 +254,6 @@
     <title>Oni no Hanayome - 10</title>
     <link>https://myanimelist.net/anime.php?q=Oni%20no%20Hanayome</link>
     <description>اومد! Oni no Hanayome - 10</description>
-</item>
-<item>
-    <title>Kimiai - 10</title>
-    <link>https://myanimelist.net/anime.php?q=Kimiai</link>
-    <description>اومد! Kimiai - 10</description>
 </item>
 </channel>
 </rss>
