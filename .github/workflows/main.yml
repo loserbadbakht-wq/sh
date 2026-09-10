@@ -52,13 +52,17 @@ jobs:
       run: |
         python ./notif/generate.py
         
-    - name: Generate rss (air)
+    - name: Generate rss (I)
       run: |
         python ./notif/new1.py
     
-    - name: Generate rss (air)
+    - name: Generate rss (gacha)
       run: |
         python ./notif/gacharss.py
+    
+    - name: Generate rss (E)
+      run: |
+        python ./notif/new2.py
     
     - uses: stefanzweifel/git-auto-commit-action@v7
       with:
