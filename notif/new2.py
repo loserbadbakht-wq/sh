@@ -51,12 +51,12 @@ def extract_image_url(html):
 # ----------------------------------------------------------------------
 def download_thumbnail(article_url, sanitized_title):
     """
-    Fetch the article, extract the main image, download it to ./notif/ign_tumb/,
+    Fetch the article, extract the main image, download it to ./notif/euro_tumb/,
     and return the remote GitHub raw URL for the image.
     Returns the remote URL string or None on failure.
     """
     # Create local directory if not exists
-    tumb_dir = os.path.join('notif', 'ign_tumb')
+    tumb_dir = os.path.join('notif', 'euro_tumb')
     os.makedirs(tumb_dir, exist_ok=True)
 
     # Fetch the article HTML
