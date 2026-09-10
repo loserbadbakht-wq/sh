@@ -9,6 +9,107 @@ from xml.sax.saxutils import escape
 from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
+# Base URL for GitHub raw images – Gacha Go thumbnails
+# ----------------------------------------------------------------------
+RAW_BASE = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/gachago_tumb/"
+
+# ----------------------------------------------------------------------
+# Sanitize title for use in filename
+# ----------------------------------------------------------------------
+def sanitize_filename(title):
+    """Remove problematic characters and replace spaces/hyphens with underscores."""
+    title = re.sub(r'[\\/*?:"<>|]', '', title)   # remove invalid filename chars
+    title = re.sub(r'[-\s]+', '_', title)        # replace spaces and hyphens with underscore
+    title = title.strip('_.')                    # strip leading/trailing underscores/dots
+    return title[:255] or "untitled"             # ensure non-empty
+
+# ----------------------------------------------------------------------
+# Extract thumbnail image URL from article HTML
+# ----------------------------------------------------------------------
+def extract_image_url(html):
+    """Return the URL of the main article image (og:image, twitter:image, or first img)."""
+    # 1. Open Graph image
+    og_match = re.search(r'<meta\s+property=["\']og:image["\']\s+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
+    if og_match:
+        return og_match.group(1)
+    # 2. Twitter card image
+    tw_match = re.search(r'<meta\s+name=["\']twitter:image["\']\s+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
+    if tw_match:
+        return tw_match.group(1)
+    # 3. First <img> inside article content (try to find a likely candidate)
+    content_div = re.search(r'<div[^>]*class="[^"]*(?:content|post|article)[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL | re.IGNORECASE)
+    if content_div:
+        img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', content_div.group(1), re.IGNORECASE)
+        if img_match:
+            return img_match.group(1)
+    # 4. Fallback: first img with src (avoid icons/ads)
+    all_imgs = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', html, re.IGNORECASE)
+    for img_url in all_imgs:
+        if 'logo' in img_url.lower() or 'icon' in img_url.lower() or 'ad' in img_url.lower():
+            continue
+        return img_url
+    return None
+
+# ----------------------------------------------------------------------
+# Download thumbnail and return remote GitHub raw URL
+# ----------------------------------------------------------------------
+def download_thumbnail(article_url, sanitized_title):
+    """
+    Fetch the article, extract the main image, download it to ./notif/gachago_tumb/,
+    and return the remote GitHub raw URL for the image.
+    Returns the remote URL string or None on failure.
+    """
+    # Create local directory if not exists
+    tumb_dir = os.path.join('notif', 'gachago_tumb')
+    os.makedirs(tumb_dir, exist_ok=True)
+
+    # Fetch the article HTML
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+    req = urllib.request.Request(article_url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=15) as response:
+            html = response.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        print(f"  ⚠️ Could not fetch article for thumbnail: {e}")
+        return None
+
+    image_url = extract_image_url(html)
+    if not image_url:
+        print("  ⚠️ No image found in article.")
+        return None
+
+    # Resolve relative URLs
+    if image_url.startswith('//'):
+        image_url = 'https:' + image_url
+    elif image_url.startswith('/'):
+        parsed = urllib.parse.urlparse(article_url)
+        base = f"{parsed.scheme}://{parsed.netloc}"
+        image_url = base + image_url
+
+    # Determine file extension
+    ext = os.path.splitext(urllib.parse.urlparse(image_url).path)[1]
+    if not ext or ext.lower() not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
+        ext = '.jpg'  # default
+
+    local_filename = sanitized_title + ext
+    local_path = os.path.join(tumb_dir, local_filename)
+
+    # Download the image locally (for archiving)
+    try:
+        print(f"  📥 Downloading thumbnail: {image_url[:80]}...")
+        urllib.request.urlretrieve(image_url, local_path)
+        print(f"  ✅ Saved thumbnail: {local_path}")
+    except Exception as e:
+        print(f"  ⚠️ Failed to download thumbnail locally: {e}")
+        # Continue anyway; we can still use the remote URL if we can construct it
+
+    # Build remote GitHub raw URL
+    remote_url = RAW_BASE + local_filename
+    return remote_url
+
+# ----------------------------------------------------------------------
 # Configuration
 # ----------------------------------------------------------------------
 SOURCE_RSS = "https://bsky.app/profile/did:plc:z6tuqt4wk6dmvhxnotxmamvi/rss"
@@ -226,14 +327,27 @@ def main():
 
         if content is None:
             content = "No content could be retrieved."
+
+        # Sanitize title for image filename
+        sanitized = sanitize_filename(title)
+
+        # Download thumbnail and get remote URL
+        remote_image_url = download_thumbnail(article_url, sanitized)
+
+        # Build description with image (using remote URL) and content
+        if remote_image_url:
+            img_tag = f'<img src="{remote_image_url}" />'
         else:
-            para_count = content.count('<br>') + 1
-            print(f"  ✅ Extracted {para_count} paragraphs, {len(content.split())} words")
+            img_tag = ''
+        if content and content != "No content could be retrieved.":
+            description = f'{img_tag}<br>{content}' if img_tag else content
+        else:
+            description = f'{img_tag}<br>No content available' if img_tag else "No content available"
 
         items_data.append({
             'title': title or "Gacha Go! Article",
             'link': article_url,
-            'description': content
+            'description': description
         })
         processed += 1
         print(f"  ➕ Added item {processed}: {items_data[-1]['title'][:50]}")
