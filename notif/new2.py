@@ -9,7 +9,7 @@ from xml.sax.saxutils import escape
 from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
-# Base URL for GitHub raw images – now using the new repository
+# Base URL for GitHub raw images
 # ----------------------------------------------------------------------
 RAW_BASE = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/euro_tumb/"
 
@@ -17,17 +17,17 @@ RAW_BASE = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/mai
 # Sanitize title for use in filename
 # ----------------------------------------------------------------------
 def sanitize_filename(title):
-    """Remove problematic characters and replace spaces/hyphens with underscores."""
-    title = re.sub(r'[\\/*?:"<>|]', '', title)   # remove invalid filename chars
-    title = re.sub(r'[-\s]+', '_', title)        # replace spaces and hyphens with underscore
-    title = title.strip('_.')                    # strip leading/trailing underscores/dots
-    return title[:255] or "untitled"             # ensure non-empty
+    title = re.sub(r'[\\/*?:"<>|]', '', title)
+    title = re.sub(r'[-\s]+', '_', title)
+    title = title.strip('_.')
+    title = title.encode('ascii', 'ignore').decode('ascii')
+    title = re.sub(r'[^a-zA-Z0-9_.]', '_', title)
+    return title[:255] or "untitled"
 
 # ----------------------------------------------------------------------
 # Extract thumbnail image URL from article HTML
 # ----------------------------------------------------------------------
 def extract_image_url(html):
-    """Return the URL of the main article image (og:image, twitter:image, or first img)."""
     og_match = re.search(r'<meta\s+property=["\']og:image["\']\s+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
     if og_match:
         return og_match.group(1)
@@ -47,19 +47,12 @@ def extract_image_url(html):
     return None
 
 # ----------------------------------------------------------------------
-# Download thumbnail and return remote GitHub raw URL
+# Download thumbnail
 # ----------------------------------------------------------------------
 def download_thumbnail(article_url, sanitized_title):
-    """
-    Fetch the article, extract the main image, download it to ./notif/euro_tumb/,
-    and return the remote GitHub raw URL for the image.
-    Returns the remote URL string or None on failure.
-    """
-    # Create local directory if not exists
     tumb_dir = os.path.join('notif', 'euro_tumb')
     os.makedirs(tumb_dir, exist_ok=True)
 
-    # Fetch the article HTML
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     }
@@ -76,7 +69,6 @@ def download_thumbnail(article_url, sanitized_title):
         print("  ⚠️ No image found in article.")
         return None
 
-    # Resolve relative URLs
     if image_url.startswith('//'):
         image_url = 'https:' + image_url
     elif image_url.startswith('/'):
@@ -84,52 +76,41 @@ def download_thumbnail(article_url, sanitized_title):
         base = f"{parsed.scheme}://{parsed.netloc}"
         image_url = base + image_url
 
-    # Determine file extension
     ext = os.path.splitext(urllib.parse.urlparse(image_url).path)[1]
     if not ext or ext.lower() not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
-        ext = '.jpg'  # default
+        ext = '.jpg'
 
     local_filename = sanitized_title + ext
     local_path = os.path.join(tumb_dir, local_filename)
 
-    # Download the image locally (for archiving)
     try:
-        print(f"  📥 Downloading thumbnail: {image_url[:80]}...")
-        urllib.request.urlretrieve(image_url, local_path)
+        img_req = urllib.request.Request(image_url, headers=headers)
+        with urllib.request.urlopen(img_req, timeout=15) as response:
+            image_data = response.read()
+            with open(local_path, 'wb') as f:
+                f.write(image_data)
         print(f"  ✅ Saved thumbnail: {local_path}")
     except Exception as e:
-        print(f"  ⚠️ Failed to download thumbnail locally: {e}")
-        # Continue anyway; we can still use the remote URL if we can construct it
+        print(f"  ⚠️ Failed to download thumbnail: {e}")
 
-    # Build remote GitHub raw URL (now using the new repository)
-    remote_url = RAW_BASE + local_filename
-    return remote_url
+    return RAW_BASE + local_filename
 
 # ----------------------------------------------------------------------
-# Fetch and parse the original     RSS feed
+# RSS / HTML helpers
 # ----------------------------------------------------------------------
 RSS_URL = "https://www.eurogamer.net/feed"
-
-# Global list to hold all processed items
 items_data = []
 
 class MLStripper(HTMLParser):
-    """Simple HTML stripper to get plain text from HTML content."""
     def __init__(self):
         super().__init__()
-        self.reset()
-        self.strict = False
-        self.convert_charrefs = True
         self.text = []
-    
     def handle_data(self, d):
         self.text.append(d)
-    
     def get_data(self):
         return ''.join(self.text)
 
 def strip_html(html):
-    """Strip HTML tags and return plain text."""
     if not html:
         return ""
     s = MLStripper()
@@ -137,7 +118,6 @@ def strip_html(html):
     return s.get_data().strip()
 
 def fetch_rss(url):
-    """Fetch RSS content with a proper User-Agent header."""
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     }
@@ -149,40 +129,118 @@ def fetch_rss(url):
         print(f"❌ Failed to fetch RSS: {e}")
         sys.exit(1)
 
+# ----------------------------------------------------------------------
+# Stack-based extraction of a container (div or section) by class
+# ----------------------------------------------------------------------
+def extract_container_by_class(html, tag, class_substring):
+    """
+    Return the inner HTML of the first <tag> whose class attribute contains class_substring.
+    Handles nested <tag> correctly using a depth counter.
+    """
+    # Find the opening tag
+    pattern = r'<' + tag + r'[^>]*class="[^"]*' + re.escape(class_substring) + r'[^"]*"[^>]*>'
+    match = re.search(pattern, html, re.IGNORECASE)
+    if not match:
+        return None
+    start = match.end()
+
+    open_tag = '<' + tag
+    close_tag = '</' + tag + '>'
+
+    depth = 1
+    pos = start
+    while depth > 0 and pos < len(html):
+        next_open = html.lower().find(open_tag, pos)
+        next_close = html.lower().find(close_tag, pos)
+        if next_close == -1:
+            return None
+        if next_open != -1 and next_open < next_close:
+            # Ensure it's actually the same tag (not <divx>)
+            char_after = html[next_open + len(open_tag):next_open + len(open_tag) + 1]
+            if char_after in (' ', '>', '\n', '\t', '\r'):
+                depth += 1
+            pos = next_open + len(open_tag)
+        else:
+            depth -= 1
+            if depth == 0:
+                return html[start:next_close]
+            pos = next_close + len(close_tag)
+    return None
+
+# ----------------------------------------------------------------------
+# Fetch article content – clean, paragraphs only
+# ----------------------------------------------------------------------
 def fetch_page_content(url):
-    """Fetch article content and return paragraphs joined with <br>."""
+    """Fetch article content and return only the article body paragraphs joined with <br>."""
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+    req = urllib.request.Request(url, headers=headers)
     try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        }
-        req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=15) as response:
             content = response.read().decode('utf-8', errors='ignore')
-            content = re.sub(r'<script.*?>.*?</script>', '', content, flags=re.DOTALL | re.IGNORECASE)
-            content = re.sub(r'<style.*?>.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
-            paragraphs = re.findall(r'<p.*?>(.*?)</p>', content, re.DOTALL | re.IGNORECASE)
-            if paragraphs:
-                texts = []
-                for p in paragraphs:
-                    p_text = strip_html(p).strip()
-                    if len(p_text) > 20:
-                        texts.append(p_text)
-                if texts:
-                    return '<br>'.join(texts)
-            else:
-                text = strip_html(content)
-                text = re.sub(r'\s+', ' ', text).strip()
-                sentences = [s.strip() for s in text.split('. ') if len(s) > 20]
-                if sentences:
-                    return '<br>'.join(sentences)
-                return text
     except Exception as e:
         print(f"⚠️ Could not fetch {url}: {e}")
         return "Content unavailable"
+
+    # ---- Isolate the article body ----
+    # Eurogamer commonly uses: <section class="article_body"> or <div class="article_body">
+    article_html = None
+    for candidate in ['article_body', 'article-body', 'article__body', 'article-content']:
+        article_html = extract_container_by_class(content, 'section', candidate)
+        if not article_html:
+            article_html = extract_container_by_class(content, 'div', candidate)
+        if article_html:
+            break
+
+    # If we couldn't find the article body, fall back to whole page but strip structure
+    if not article_html:
+        print("  ⚠️ Could not find article body container; falling back to page-wide extraction.")
+        article_html = content
+
+    # ---- Remove unwanted elements from the isolated HTML ----
+    article_html = re.sub(r'<script.*?>.*?</script>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
+    article_html = re.sub(r'<style.*?>.*?</style>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
+    article_html = re.sub(r'<aside.*?>.*?</aside>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
+    article_html = re.sub(r'<figure.*?>.*?</figure>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
+    article_html = re.sub(r'<figcaption.*?>.*?</figcaption>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
+    article_html = re.sub(r'<nav.*?>.*?</nav>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
+    # Remove embedded ads / promos
+    article_html = re.sub(r'<div[^>]*class="[^"]*(?:ad|promo|newsletter|related|share|social|embed)[^"]*"[^>]*>.*?</div>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
+
+    # ---- Extract paragraphs ----
+    paragraphs = re.findall(r'<p.*?>(.*?)</p>', article_html, re.DOTALL | re.IGNORECASE)
+
+    texts = []
+    for p in paragraphs:
+        p_text = strip_html(p).strip()
+        # Filter short paragraphs and common Eurogamer noise
+        if len(p_text) < 30:
+            continue
+        if re.search(
+            r'(read more|sign up|subscribe|newsletter|advertisement|affiliate|'
+            r'support us|become a supporter|follow us|share this|related:|'
+            r'click here|comments?|loading|skip to)',
+            p_text, re.IGNORECASE
+        ):
+            continue
+        texts.append(p_text)
+
+    if texts:
+        return '<br>'.join(texts)
+
+    # ---- Fallback: whole page text (last resort) ----
+    text = strip_html(content)
+    text = re.sub(r'\s+', ' ', text).strip()
+    sentences = [s.strip() for s in text.split('. ') if len(s) > 40]
+    if sentences:
+        return '<br>'.join(sentences)
     return "Content unavailable"
 
+# ----------------------------------------------------------------------
+# Parse RSS
+# ----------------------------------------------------------------------
 def get_all_items(rss_xml):
-    """Parse RSS and return a list of (title, description, link) for all items."""
     try:
         root = ET.fromstring(rss_xml)
     except ET.ParseError as e:
@@ -199,21 +257,20 @@ def get_all_items(rss_xml):
         title_elem = item.find('title')
         desc_elem = item.find('description')
         link_elem = item.find('link')
-        
+
         title = title_elem.text.strip() if title_elem is not None and title_elem.text else ""
         description = desc_elem.text.strip() if desc_elem is not None and desc_elem.text else ""
         description = strip_html(description)
         link = link_elem.text.strip() if link_elem is not None and link_elem.text else ""
-        
+
         if title and link:
             result.append((title, description, link))
     return result
 
 # ----------------------------------------------------------------------
-# generate_rss() now uses CDATA for description
+# Generate RSS
 # ----------------------------------------------------------------------
 def generate_rss():
-    """Generate RSS feed with transformed items."""
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
@@ -227,7 +284,7 @@ def generate_rss():
         description = item['description'] if item['description'] else "No content available"
         description = description.replace(']]>', ']]]]><![CDATA[>')
         safe_description = f"<![CDATA[{description}]]>"
-        
+
         rss += f"""
 <item>
     <title>{safe_title}</title>
@@ -238,32 +295,32 @@ def generate_rss():
     return rss
 
 # ----------------------------------------------------------------------
-# Main execution
+# Main
 # ----------------------------------------------------------------------
 def main():
     global items_data
 
-    print("🔍 Fetching IGN RSS feed...")
+    print("🔍 Fetching Eurogamer RSS feed...")
     rss_xml = fetch_rss(RSS_URL)
-    
+
     print("📋 Parsing RSS items...")
     all_items = get_all_items(rss_xml)
     print(f"📊 Found {len(all_items)} items")
 
     max_items = 50
     processed = 0
-    
+
     for orig_title, orig_description, orig_link in all_items:
         if processed >= max_items:
             break
-            
+
         print(f"🔄 Processing: {orig_title[:50]}...")
         print(f"📡 Fetching content from: {orig_link[:50]}...")
         page_content = fetch_page_content(orig_link)
-        
+
         sanitized = sanitize_filename(orig_title)
         remote_image_url = download_thumbnail(orig_link, sanitized)
-        
+
         if remote_image_url:
             img_tag = f'<img src="{remote_image_url}" />'
         else:
@@ -272,14 +329,14 @@ def main():
             description = f'{img_tag}<br>{page_content}' if img_tag else page_content
         else:
             description = f'{img_tag}<br>No content available' if img_tag else "No content available"
-        
+
         items_data.append({
             'title': orig_description,
             'link': orig_link,
             'description': description
         })
         processed += 1
-        
+
         if processed < min(len(all_items), max_items):
             time.sleep(1)
 
