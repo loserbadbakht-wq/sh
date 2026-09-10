@@ -14,35 +14,39 @@ from html.parser import HTMLParser
 RAW_BASE = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/gachago_tumb/"
 
 # ----------------------------------------------------------------------
-# Sanitize title for use in filename
+# Sanitize title for use in filename (ASCII only)
 # ----------------------------------------------------------------------
 def sanitize_filename(title):
-    """Remove problematic characters and replace spaces/hyphens with underscores."""
-    title = re.sub(r'[\\/*?:"<>|]', '', title)   # remove invalid filename chars
-    title = re.sub(r'[-\s]+', '_', title)        # replace spaces and hyphens with underscore
-    title = title.strip('_.')                    # strip leading/trailing underscores/dots
-    return title[:255] or "untitled"             # ensure non-empty
+    """Remove problematic characters, replace spaces/hyphens with underscores, and keep ASCII."""
+    # Remove invalid filename chars
+    title = re.sub(r'[\\/*?:"<>|]', '', title)
+    # Replace spaces and hyphens with underscore
+    title = re.sub(r'[-\s]+', '_', title)
+    # Strip leading/trailing underscores/dots
+    title = title.strip('_.')
+    # Convert to ASCII, replacing non-ASCII chars with '_'
+    title = title.encode('ascii', 'ignore').decode('ascii')
+    # Remove any remaining non-alnum except underscore and dot
+    title = re.sub(r'[^a-zA-Z0-9_.]', '_', title)
+    # Ensure non-empty
+    return title[:255] or "untitled"
 
 # ----------------------------------------------------------------------
 # Extract thumbnail image URL from article HTML
 # ----------------------------------------------------------------------
 def extract_image_url(html):
     """Return the URL of the main article image (og:image, twitter:image, or first img)."""
-    # 1. Open Graph image
     og_match = re.search(r'<meta\s+property=["\']og:image["\']\s+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
     if og_match:
         return og_match.group(1)
-    # 2. Twitter card image
     tw_match = re.search(r'<meta\s+name=["\']twitter:image["\']\s+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
     if tw_match:
         return tw_match.group(1)
-    # 3. First <img> inside article content (try to find a likely candidate)
     content_div = re.search(r'<div[^>]*class="[^"]*(?:content|post|article)[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL | re.IGNORECASE)
     if content_div:
         img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', content_div.group(1), re.IGNORECASE)
         if img_match:
             return img_match.group(1)
-    # 4. Fallback: first img with src (avoid icons/ads)
     all_imgs = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', html, re.IGNORECASE)
     for img_url in all_imgs:
         if 'logo' in img_url.lower() or 'icon' in img_url.lower() or 'ad' in img_url.lower():
@@ -96,10 +100,16 @@ def download_thumbnail(article_url, sanitized_title):
     local_filename = sanitized_title + ext
     local_path = os.path.join(tumb_dir, local_filename)
 
-    # Download the image locally (for archiving)
+    # Download the image with proper User-Agent
     try:
-        print(f"  📥 Downloading thumbnail: {image_url[:80]}...")
-        urllib.request.urlretrieve(image_url, local_path)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        img_req = urllib.request.Request(image_url, headers=headers)
+        with urllib.request.urlopen(img_req, timeout=15) as response:
+            image_data = response.read()
+            with open(local_path, 'wb') as f:
+                f.write(image_data)
         print(f"  ✅ Saved thumbnail: {local_path}")
     except Exception as e:
         print(f"  ⚠️ Failed to download thumbnail locally: {e}")
@@ -184,27 +194,22 @@ def parse_rss_items(rss_xml):
 # ----------------------------------------------------------------------
 def extract_div_content(html, div_class):
     """Return the inner HTML of the first <div> with the given class."""
-    # Find the opening <div> with the class
     pattern = r'<div[^>]*class="[^"]*' + re.escape(div_class) + r'[^"]*"[^>]*>'
     match = re.search(pattern, html, re.IGNORECASE)
     if not match:
         return None
     start = match.end()
-    # Now find the matching closing </div> using a stack
     depth = 1
     pos = start
     while depth > 0 and pos < len(html):
-        # Find the next <div or </div>
         next_open = html.find('<div', pos)
         next_close = html.find('</div>', pos)
         if next_close == -1:
             break
         if next_open != -1 and next_open < next_close:
-            # It's an opening div
             depth += 1
             pos = next_open + 4
         else:
-            # It's a closing div
             depth -= 1
             if depth == 0:
                 return html[start:next_close]
@@ -225,7 +230,6 @@ def fetch_article(url):
         print(f"  ⚠️ Could not fetch article: {e}")
         return None, None
 
-    # ---- Extract title ----
     title = "Gacha Go! Article"
     h1_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.IGNORECASE | re.DOTALL)
     if h1_match:
@@ -238,26 +242,20 @@ def fetch_article(url):
     if not title:
         title = "Gacha Go! Article"
 
-    # ---- Extract content paragraphs from entry-content div ----
     content_html = extract_div_content(html, "entry-content")
     if not content_html:
-        # Fallback: try to find any content div
         content_html = extract_div_content(html, "post-content")
     if not content_html:
         content_html = extract_div_content(html, "content")
 
     paragraphs = []
     if content_html:
-        # Extract all <p> tags from the content_html
         p_matches = re.findall(r'<p.*?>(.*?)</p>', content_html, re.DOTALL | re.IGNORECASE)
         for p in p_matches:
             p_text = strip_html(p).strip()
-            # Filter short paragraphs and common junk
             if len(p_text) >= 30 and not re.search(r'advertisement|fund your pulls|cashback|affiliate|discord|subscribe|newsletter|register|login', p_text, re.IGNORECASE):
                 paragraphs.append(p_text)
     else:
-        # If no content div found, fallback to all paragraphs but remove navigation blocks
-        # Remove nav, header, footer, aside
         html = re.sub(r'<nav.*?>.*?</nav>', '', html, flags=re.DOTALL | re.IGNORECASE)
         html = re.sub(r'<header.*?>.*?</header>', '', html, flags=re.DOTALL | re.IGNORECASE)
         html = re.sub(r'<footer.*?>.*?</footer>', '', html, flags=re.DOTALL | re.IGNORECASE)
@@ -269,11 +267,9 @@ def fetch_article(url):
                 paragraphs.append(p_text)
 
     if paragraphs:
-        # Join with <br>
         content = '<br>'.join(paragraphs)
         return title, content
 
-    # If still no content, return title only
     return title, None
 
 # ----------------------------------------------------------------------
@@ -328,13 +324,9 @@ def main():
         if content is None:
             content = "No content could be retrieved."
 
-        # Sanitize title for image filename
         sanitized = sanitize_filename(title)
-
-        # Download thumbnail and get remote URL
         remote_image_url = download_thumbnail(article_url, sanitized)
 
-        # Build description with image (using remote URL) and content
         if remote_image_url:
             img_tag = f'<img src="{remote_image_url}" />'
         else:
