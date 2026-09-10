@@ -106,9 +106,9 @@ def download_thumbnail(article_url, sanitized_title):
     return remote_url
 
 # ----------------------------------------------------------------------
-# Fetch and parse the original IGN RSS feed
+# Fetch and parse the original     RSS feed
 # ----------------------------------------------------------------------
-RSS_URL = "https://feeds.feedburner.com/ign/news"
+RSS_URL = "https://www.eurogamer.net/feed"
 
 # Global list to hold all processed items
 items_data = []
@@ -218,7 +218,7 @@ def generate_rss():
 <rss version="2.0">
 <channel>
 <title>Eurogamer News RSS</title>
-<link>https://feeds.feedburner.com/ign/news</link>
+<link>https://www.eurogamer.net/feed</link>
 <description>Eurogamer News Feed</description>
 """
     for item in items_data:
@@ -292,7 +292,7 @@ def main():
             os.remove(filename)
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(generate_rss().strip())
-        print('✅ IGN RSS generated successfully.')
+        print('✅ Eurogamer RSS generated successfully.')
         print(f'📁 Output file: {filename}')
     except Exception as e:
         print(f'❌ Failed: {e}')
