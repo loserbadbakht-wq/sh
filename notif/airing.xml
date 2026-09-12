@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Rilakkuma - 24</title>
+    <link>https://myanimelist.net/anime.php?q=Rilakkuma</link>
+    <description>اومد! Rilakkuma - 24</description>
+</item>
+<item>
     <title>Hell Mode S2 - 11</title>
     <link>https://myanimelist.net/anime.php?q=Hell%20Mode</link>
     <description>اومد! Hell Mode S2 - 11</description>
@@ -249,11 +254,6 @@
     <title>Kuroneko to Majo no Kyoushitsu - 22</title>
     <link>https://myanimelist.net/anime.php?q=Kuroneko%20to%20Majo%20no%20Kyoushitsu</link>
     <description>اومد! Kuroneko to Majo no Kyoushitsu - 22</description>
-</item>
-<item>
-    <title>Hyakkano - 34</title>
-    <link>https://myanimelist.net/anime.php?q=Hyakkano</link>
-    <description>اومد! Hyakkano - 34</description>
 </item>
 </channel>
 </rss>
