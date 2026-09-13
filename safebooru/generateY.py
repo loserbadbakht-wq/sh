@@ -2,6 +2,7 @@ import requests
 import os
 import sys
 import re
+from urllib.parse import urlparse
 from datetime import datetime
 from tags_config import COPYRIGHT_TAGS, CHARACTER_TAGS, ORIENTATION
 
@@ -35,24 +36,37 @@ def build_blocked_filter():
     """Convert blocked tags to Gelbooru's exclude syntax: -tag1 -tag2 ..."""
     return " " + " ".join(f"-{tag}" for tag in BLOCKED_TAGS)
 
-# ---- CDN conversion function ----
+# ---- NEW: CDN conversion function ----
 def convert_to_cdn(url):
     """
-    Convert a Gelbooru image URL (sample or full) to a booruview.b-cdn.net URL.
+    Convert a Gelbooru image URL to a media.booruview.com URL.
     Example:
-        https://img4.gelbooru.com//samples/fa/ca/sample_faca198da02e948c7245024411ccc8db.jpg
-        -> https://booruview.b-cdn.net/faca198da02e948c7245024411ccc8db.webp
+        https://img4.gelbooru.com/images/4a/f1/4af17cc61d5be4de11961366470d224b.jpg
+        -> https://media.booruview.com/4a/f1/4af17cc61d5be4de11961366470d224b.webp
     """
     if not url:
         return ""
-    filename = url.split('/')[-1]
+    parsed = urlparse(url)
+    path = parsed.path
+    parts = [p for p in path.split('/') if p]
+    if not parts:
+        return url  # fallback
+    # Skip 'images' or 'samples' if present
+    if parts[0] in ('images', 'samples'):
+        parts = parts[1:]
+    if not parts:
+        return url
+    filename = parts[-1]
+    subdirs = parts[:-1]
+    # Remove 'sample_' prefix
     if filename.startswith('sample_'):
-        filename = filename[7:]  # remove "sample_"
-    match = re.search(r'([a-f0-9]{32})\.', filename)
-    if not match:
-        return url  # fallback to original if no hash found
-    file_hash = match.group(1)
-    return f"https://booruview.b-cdn.net/{file_hash}.webp"
+        filename = filename[7:]
+    # Remove extension and add .webp
+    filename_no_ext = os.path.splitext(filename)[0]
+    new_filename = filename_no_ext + '.webp'
+    # Build new URL
+    new_path = '/'.join(subdirs + [new_filename])
+    return f"https://media.booruview.com/{new_path}"
 
 def fetch_posts(tag, limit=50):
     """Fetch posts with a specific tag from Gelbooru."""
