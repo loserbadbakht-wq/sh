@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Lv999 no Murabito</title>
+    <link>https://myanimelist.net/anime.php?q=Lv999%20no%20Murabito</link>
+    <description>اومد! Lv999 no Murabito</description>
+</item>
+<item>
     <title>LIAR GAME - 24</title>
     <link>https://myanimelist.net/anime.php?q=LIAR%20GAME</link>
     <description>اومد! LIAR GAME - 24</description>
@@ -249,11 +254,6 @@
     <title>Link Click S3 - 06</title>
     <link>https://myanimelist.net/anime.php?q=Link%20Click</link>
     <description>اومد! Link Click S3 - 06</description>
-</item>
-<item>
-    <title>Ao no Miburo S2</title>
-    <link>https://myanimelist.net/anime.php?q=Ao%20no%20Miburo</link>
-    <description>اومد! Ao no Miburo S2</description>
 </item>
 </channel>
 </rss>
