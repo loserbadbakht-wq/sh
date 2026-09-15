@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>BanG Dream! Yumemita</title>
+    <link>https://myanimelist.net/anime.php?q=BanG%20Dream%21%20Yumemita</link>
+    <description>اومد! BanG Dream! Yumemita</description>
+</item>
+<item>
+    <title>Rakudai Kenja no Gakuin Musou</title>
+    <link>https://myanimelist.net/anime.php?q=Rakudai%20Kenja%20no%20Gakuin%20Musou</link>
+    <description>اومد! Rakudai Kenja no Gakuin Musou</description>
+</item>
+<item>
     <title>Sora wa Akai Kawa no Hotori - 11</title>
     <link>https://myanimelist.net/anime.php?q=Sora%20wa%20Akai%20Kawa%20no%20Hotori</link>
     <description>اومد! Sora wa Akai Kawa no Hotori - 11</description>
@@ -244,16 +254,6 @@
     <title>Uchi no Otouto-domo ga Sumimasen - 11</title>
     <link>https://myanimelist.net/anime.php?q=Uchi%20no%20Otouto-domo%20ga%20Sumimasen</link>
     <description>اومد! Uchi no Otouto-domo ga Sumimasen - 11</description>
-</item>
-<item>
-    <title>Nige Jouzu no Wakagimi S2 - 09</title>
-    <link>https://myanimelist.net/anime.php?q=Nige%20Jouzu%20no%20Wakagimi</link>
-    <description>اومد! Nige Jouzu no Wakagimi S2 - 09</description>
-</item>
-<item>
-    <title>Kore Kaite Shine - 10</title>
-    <link>https://myanimelist.net/anime.php?q=Kore%20Kaite%20Shine</link>
-    <description>اومد! Kore Kaite Shine - 10</description>
 </item>
 </channel>
 </rss>
