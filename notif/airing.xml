@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Link Click S3 - 07</title>
+    <link>https://myanimelist.net/anime.php?q=Link%20Click</link>
+    <description>اومد! Link Click S3 - 07</description>
+</item>
+<item>
     <title>Otome Kaijuu Carameliser - 12</title>
     <link>https://myanimelist.net/anime.php?q=Otome%20Kaijuu%20Carameliser</link>
     <description>اومد! Otome Kaijuu Carameliser - 12</description>
@@ -249,11 +254,6 @@
     <title>Bleach - Sennen Kessen Hen - 48</title>
     <link>https://myanimelist.net/anime.php?q=Bleach</link>
     <description>اومد! Bleach - Sennen Kessen Hen - 48</description>
-</item>
-<item>
-    <title>Mahou Shoujo Lyrical Nanoha EXCEEDS - Gun Blaze Vengeance - 11</title>
-    <link>https://myanimelist.net/anime.php?q=Mahou%20Shoujo%20Lyrical%20Nanoha%20EXCEEDS</link>
-    <description>اومد! Mahou Shoujo Lyrical Nanoha EXCEEDS - Gun Blaze Vengeance - 11</description>
 </item>
 </channel>
 </rss>
