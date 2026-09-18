@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Kokoore - 12</title>
+    <link>https://myanimelist.net/anime.php?q=Kokoore</link>
+    <description>اومد! Kokoore - 12</description>
+</item>
+<item>
+    <title>Ryoumin 0-nin Start no Henkyou Ryoushu-sama - 12</title>
+    <link>https://myanimelist.net/anime.php?q=Ryoumin%200-nin%20Start%20no%20Henkyou%20Ryoushu-sama</link>
+    <description>اومد! Ryoumin 0-nin Start no Henkyou Ryoushu-sama - 12</description>
+</item>
+<item>
     <title>Link Click S3 - 07</title>
     <link>https://myanimelist.net/anime.php?q=Link%20Click</link>
     <description>اومد! Link Click S3 - 07</description>
@@ -244,16 +254,6 @@
     <title>Kimiai - 11</title>
     <link>https://myanimelist.net/anime.php?q=Kimiai</link>
     <description>اومد! Kimiai - 11</description>
-</item>
-<item>
-    <title>Oni no Hanayome - 11</title>
-    <link>https://myanimelist.net/anime.php?q=Oni%20no%20Hanayome</link>
-    <description>اومد! Oni no Hanayome - 11</description>
-</item>
-<item>
-    <title>Bleach - Sennen Kessen Hen - 48</title>
-    <link>https://myanimelist.net/anime.php?q=Bleach</link>
-    <description>اومد! Bleach - Sennen Kessen Hen - 48</description>
 </item>
 </channel>
 </rss>
