@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Tenmaku no Jaadugar</title>
+    <link>https://myanimelist.net/anime.php?q=Tenmaku%20no%20Jaadugar</link>
+    <description>اومد! Tenmaku no Jaadugar</description>
+</item>
+<item>
     <title>Tenmaku no Jaadugar - 12v2</title>
     <link>https://myanimelist.net/anime.php?q=Tenmaku%20no%20Jaadugar</link>
     <description>اومد! Tenmaku no Jaadugar - 12v2</description>
@@ -249,11 +254,6 @@
     <title>Hyakkano - 35</title>
     <link>https://myanimelist.net/anime.php?q=Hyakkano</link>
     <description>اومد! Hyakkano - 35</description>
-</item>
-<item>
-    <title>Sekai Saikyou no Kouei - 11</title>
-    <link>https://myanimelist.net/anime.php?q=Sekai%20Saikyou%20no%20Kouei</link>
-    <description>اومد! Sekai Saikyou no Kouei - 11</description>
 </item>
 </channel>
 </rss>
