@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Mujikaku Seijo wa Kyou mo Muishiki ni Chikara wo Tare Nagasu</title>
+    <link>https://myanimelist.net/anime.php?q=Mujikaku%20Seijo%20wa%20Kyou%20mo%20Muishiki%20ni%20Chikara%20wo%20Tare%20Nagasu</link>
+    <description>اومد! Mujikaku Seijo wa Kyou mo Muishiki ni Chikara wo Tare Nagasu</description>
+</item>
+<item>
     <title>Saijo no Osewa - 12</title>
     <link>https://myanimelist.net/anime.php?q=Saijo%20no%20Osewa</link>
     <description>اومد! Saijo no Osewa - 12</description>
@@ -249,11 +254,6 @@
     <title>LIAR GAME - 24</title>
     <link>https://myanimelist.net/anime.php?q=LIAR%20GAME</link>
     <description>اومد! LIAR GAME - 24</description>
-</item>
-<item>
-    <title>Grand Blue S3 - 11</title>
-    <link>https://myanimelist.net/anime.php?q=Grand%20Blue</link>
-    <description>اومد! Grand Blue S3 - 11</description>
 </item>
 </channel>
 </rss>
