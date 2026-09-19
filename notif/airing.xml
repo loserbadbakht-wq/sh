@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Neko to Ryuu</title>
+    <link>https://myanimelist.net/anime.php?q=Neko%20to%20Ryuu</link>
+    <description>اومد! Neko to Ryuu</description>
+</item>
+<item>
     <title>Tenmaku no Jaadugar</title>
     <link>https://myanimelist.net/anime.php?q=Tenmaku%20no%20Jaadugar</link>
     <description>اومد! Tenmaku no Jaadugar</description>
@@ -249,11 +254,6 @@
     <title>Kuroneko to Majo no Kyoushitsu - 23</title>
     <link>https://myanimelist.net/anime.php?q=Kuroneko%20to%20Majo%20no%20Kyoushitsu</link>
     <description>اومد! Kuroneko to Majo no Kyoushitsu - 23</description>
-</item>
-<item>
-    <title>Hyakkano - 35</title>
-    <link>https://myanimelist.net/anime.php?q=Hyakkano</link>
-    <description>اومد! Hyakkano - 35</description>
 </item>
 </channel>
 </rss>
