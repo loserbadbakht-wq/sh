@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Otome Kaijuu Carameliser</title>
+    <link>https://myanimelist.net/anime.php?q=Otome%20Kaijuu%20Carameliser</link>
+    <description>اومد! Otome Kaijuu Carameliser</description>
+</item>
+<item>
     <title>Hanazakari no Kimitachi e S2</title>
     <link>https://myanimelist.net/anime.php?q=Hanazakari%20no%20Kimitachi%20e</link>
     <description>اومد! Hanazakari no Kimitachi e S2</description>
@@ -249,11 +254,6 @@
     <title>Link Click S3 - 07</title>
     <link>https://myanimelist.net/anime.php?q=Link%20Click</link>
     <description>اومد! Link Click S3 - 07</description>
-</item>
-<item>
-    <title>Otome Kaijuu Carameliser - 12</title>
-    <link>https://myanimelist.net/anime.php?q=Otome%20Kaijuu%20Carameliser</link>
-    <description>اومد! Otome Kaijuu Carameliser - 12</description>
 </item>
 </channel>
 </rss>
