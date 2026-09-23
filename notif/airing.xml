@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Kami no Shizuku</title>
+    <link>https://myanimelist.net/anime.php?q=Kami%20no%20Shizuku</link>
+    <description>اومد! Kami no Shizuku</description>
+</item>
+<item>
     <title>Otome Game Sekai wa Mob ni Kibishii Sekai desu S2 - 12</title>
     <link>https://myanimelist.net/anime.php?q=Otome%20Game%20Sekai%20wa%20Mob%20ni%20Kibishii%20Sekai%20desu</link>
     <description>اومد! Otome Game Sekai wa Mob ni Kibishii Sekai desu S2 - 12</description>
@@ -249,11 +254,6 @@
     <title>Neko to Ryuu</title>
     <link>https://myanimelist.net/anime.php?q=Neko%20to%20Ryuu</link>
     <description>اومد! Neko to Ryuu</description>
-</item>
-<item>
-    <title>Tenmaku no Jaadugar</title>
-    <link>https://myanimelist.net/anime.php?q=Tenmaku%20no%20Jaadugar</link>
-    <description>اومد! Tenmaku no Jaadugar</description>
 </item>
 </channel>
 </rss>
