@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Black Torch</title>
+    <link>https://myanimelist.net/anime.php?q=Black%20Torch</link>
+    <description>اومد! Black Torch</description>
+</item>
+<item>
     <title>Kami no Shizuku</title>
     <link>https://myanimelist.net/anime.php?q=Kami%20no%20Shizuku</link>
     <description>اومد! Kami no Shizuku</description>
@@ -249,11 +254,6 @@
     <title>Rilakkuma - 25</title>
     <link>https://myanimelist.net/anime.php?q=Rilakkuma</link>
     <description>اومد! Rilakkuma - 25</description>
-</item>
-<item>
-    <title>Neko to Ryuu</title>
-    <link>https://myanimelist.net/anime.php?q=Neko%20to%20Ryuu</link>
-    <description>اومد! Neko to Ryuu</description>
 </item>
 </channel>
 </rss>
