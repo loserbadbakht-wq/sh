@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Link Click S3 - 08</title>
+    <link>https://myanimelist.net/anime.php?q=Link%20Click</link>
+    <description>اومد! Link Click S3 - 08</description>
+</item>
+<item>
+    <title>Iwamoto-senpai no Suisen</title>
+    <link>https://myanimelist.net/anime.php?q=Iwamoto-senpai%20no%20Suisen</link>
+    <description>اومد! Iwamoto-senpai no Suisen</description>
+</item>
+<item>
     <title>Yomi no Tsugai</title>
     <link>https://myanimelist.net/anime.php?q=Yomi%20no%20Tsugai</link>
     <description>اومد! Yomi no Tsugai</description>
@@ -244,16 +254,6 @@
     <title>Yomi no Tsugai - 24</title>
     <link>https://myanimelist.net/anime.php?q=Yomi%20no%20Tsugai</link>
     <description>اومد! Yomi no Tsugai - 24</description>
-</item>
-<item>
-    <title>Iwamoto-senpai no Suisen - 12</title>
-    <link>https://myanimelist.net/anime.php?q=Iwamoto-senpai%20no%20Suisen</link>
-    <description>اومد! Iwamoto-senpai no Suisen - 12</description>
-</item>
-<item>
-    <title>Black Torch - 12</title>
-    <link>https://myanimelist.net/anime.php?q=Black%20Torch</link>
-    <description>اومد! Black Torch - 12</description>
 </item>
 </channel>
 </rss>
