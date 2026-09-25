@@ -30,6 +30,7 @@ if not API_KEY or not USER_ID:
 BLOCKED_TAGS = [
     "guro", "snuff", "scat", "bestiality", "rape",
     "loli", "shota", "incest", "mind_break", "netorare",
+    "mahou_shoujo_madoka_magica",
 ]
 
 def build_blocked_filter():
