@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Kimiai</title>
+    <link>https://myanimelist.net/anime.php?q=Kimiai</link>
+    <description>اومد! Kimiai</description>
+</item>
+<item>
     <title>Hell Mode S2 - 13</title>
     <link>https://myanimelist.net/anime.php?q=Hell%20Mode</link>
     <description>اومد! Hell Mode S2 - 13</description>
@@ -249,11 +254,6 @@
     <title>Hanaori-san wa Tensei shitemo Kenka ga Shitai - 11</title>
     <link>https://myanimelist.net/anime.php?q=Hanaori-san%20wa%20Tensei%20shitemo%20Kenka%20ga%20Shitai</link>
     <description>اومد! Hanaori-san wa Tensei shitemo Kenka ga Shitai - 11</description>
-</item>
-<item>
-    <title>Kimiai - 12</title>
-    <link>https://myanimelist.net/anime.php?q=Kimiai</link>
-    <description>اومد! Kimiai - 12</description>
 </item>
 </channel>
 </rss>
