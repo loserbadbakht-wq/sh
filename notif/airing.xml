@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Oni no Hanayome</title>
+    <link>https://myanimelist.net/anime.php?q=Oni%20no%20Hanayome</link>
+    <description>اومد! Oni no Hanayome</description>
+</item>
+<item>
     <title>One Piece - 1180</title>
     <link>https://myanimelist.net/anime.php?q=One%20Piece</link>
     <description>اومد! One Piece - 1180</description>
@@ -249,11 +254,6 @@
     <title>World Is Dancing - 13</title>
     <link>https://myanimelist.net/anime.php?q=World%20Is%20Dancing</link>
     <description>اومد! World Is Dancing - 13</description>
-</item>
-<item>
-    <title>Gaikotsu Kishi-sama, Tadaima Isekai e Odekakechuu S2 - 12</title>
-    <link>https://myanimelist.net/anime.php?q=Gaikotsu%20Kishi-sama%2C%20Tadaima%20Isekai%20e%20Odekakechuu</link>
-    <description>اومد! Gaikotsu Kishi-sama, Tadaima Isekai e Odekakechuu S2 - 12</description>
 </item>
 </channel>
 </rss>
