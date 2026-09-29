@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Hyakkano</title>
+    <link>https://myanimelist.net/anime.php?q=Hyakkano</link>
+    <description>اومد! Hyakkano</description>
+</item>
+<item>
+    <title>Hyakkano</title>
+    <link>https://myanimelist.net/anime.php?q=Hyakkano</link>
+    <description>اومد! Hyakkano</description>
+</item>
+<item>
     <title>Sora wa Akai Kawa no Hotori - 13</title>
     <link>https://myanimelist.net/anime.php?q=Sora%20wa%20Akai%20Kawa%20no%20Hotori</link>
     <description>اومد! Sora wa Akai Kawa no Hotori - 13</description>
@@ -244,16 +254,6 @@
     <title>Kimi ga Shinu made Koi wo Shitai - 12</title>
     <link>https://myanimelist.net/anime.php?q=Kimi%20ga%20Shinu%20made%20Koi%20wo%20Shitai</link>
     <description>اومد! Kimi ga Shinu made Koi wo Shitai - 12</description>
-</item>
-<item>
-    <title>Tai-Ari deshita. Ojousama wa Kakutou Game nante Shinai - 12</title>
-    <link>https://myanimelist.net/anime.php?q=Tai-Ari%20deshita.%20Ojousama%20wa%20Kakutou%20Game%20nante%20Shinai</link>
-    <description>اومد! Tai-Ari deshita. Ojousama wa Kakutou Game nante Shinai - 12</description>
-</item>
-<item>
-    <title>Otome Kaijuu Carameliser</title>
-    <link>https://myanimelist.net/anime.php?q=Otome%20Kaijuu%20Carameliser</link>
-    <description>اومد! Otome Kaijuu Carameliser</description>
 </item>
 </channel>
 </rss>
