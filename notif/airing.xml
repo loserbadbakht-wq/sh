@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>FX Senshi Kurumi-chan - 01</title>
+    <link>https://myanimelist.net/anime.php?q=FX%20Senshi%20Kurumi-chan</link>
+    <description>اومد! FX Senshi Kurumi-chan - 01</description>
+</item>
+<item>
     <title>Toukutsu Ou - 12</title>
     <link>https://myanimelist.net/anime.php?q=Toukutsu%20Ou</link>
     <description>اومد! Toukutsu Ou - 12</description>
@@ -249,11 +254,6 @@
     <title>Black Torch</title>
     <link>https://myanimelist.net/anime.php?q=Black%20Torch</link>
     <description>اومد! Black Torch</description>
-</item>
-<item>
-    <title>Kami no Shizuku</title>
-    <link>https://myanimelist.net/anime.php?q=Kami%20no%20Shizuku</link>
-    <description>اومد! Kami no Shizuku</description>
 </item>
 </channel>
 </rss>
