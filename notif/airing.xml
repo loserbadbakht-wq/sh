@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Link Click S3 - 09</title>
+    <link>https://myanimelist.net/anime.php?q=Link%20Click</link>
+    <description>اومد! Link Click S3 - 09</description>
+</item>
+<item>
     <title>The Prince of Tennis II - U-17 World Cup Semifinal</title>
     <link>https://myanimelist.net/anime.php?q=The%20Prince%20of%20Tennis%20II</link>
     <description>اومد! The Prince of Tennis II - U-17 World Cup Semifinal</description>
@@ -249,11 +254,6 @@
     <title>Super no Ura de Yani Suu Futari - 12</title>
     <link>https://myanimelist.net/anime.php?q=Super%20no%20Ura%20de%20Yani%20Suu%20Futari</link>
     <description>اومد! Super no Ura de Yani Suu Futari - 12</description>
-</item>
-<item>
-    <title>Mebius Dust - 12</title>
-    <link>https://myanimelist.net/anime.php?q=Mebius%20Dust</link>
-    <description>اومد! Mebius Dust - 12</description>
 </item>
 </channel>
 </rss>
