@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Rilakkuma - 26</title>
+    <link>https://myanimelist.net/anime.php?q=Rilakkuma</link>
+    <description>اومد! Rilakkuma - 26</description>
+</item>
+<item>
     <title>Azur Lane - Bisoku Zenshin! S2</title>
     <link>https://myanimelist.net/anime.php?q=Azur%20Lane</link>
     <description>اومد! Azur Lane - Bisoku Zenshin! S2</description>
@@ -249,11 +254,6 @@
     <title>Hell Mode S2 - 13</title>
     <link>https://myanimelist.net/anime.php?q=Hell%20Mode</link>
     <description>اومد! Hell Mode S2 - 13</description>
-</item>
-<item>
-    <title>Nige Jouzu no Wakagimi S2 - 11</title>
-    <link>https://myanimelist.net/anime.php?q=Nige%20Jouzu%20no%20Wakagimi</link>
-    <description>اومد! Nige Jouzu no Wakagimi S2 - 11</description>
 </item>
 </channel>
 </rss>
