@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Hell Mode S2</title>
+    <link>https://myanimelist.net/anime.php?q=Hell%20Mode</link>
+    <description>اومد! Hell Mode S2</description>
+</item>
+<item>
+    <title>Kusuriya no Hitorigoto - 49v2</title>
+    <link>https://myanimelist.net/anime.php?q=Kusuriya%20no%20Hitorigoto</link>
+    <description>اومد! Kusuriya no Hitorigoto - 49v2</description>
+</item>
+<item>
     <title>Kashita Maryoku wa Revo Barai de Kyousei Choushuu - 01</title>
     <link>https://myanimelist.net/anime.php?q=Kashita%20Maryoku%20wa%20Revo%20Barai%20de%20Kyousei%20Choushuu</link>
     <description>اومد! Kashita Maryoku wa Revo Barai de Kyousei Choushuu - 01</description>
@@ -244,16 +254,6 @@
     <title>Mushoku Tensei S3 - 14</title>
     <link>https://myanimelist.net/anime.php?q=Mushoku%20Tensei</link>
     <description>اومد! Mushoku Tensei S3 - 14</description>
-</item>
-<item>
-    <title>Tempal - Item no Chikara - 01</title>
-    <link>https://myanimelist.net/anime.php?q=Tempal</link>
-    <description>اومد! Tempal - Item no Chikara - 01</description>
-</item>
-<item>
-    <title>Seihantai na Kimi to Boku - 24</title>
-    <link>https://myanimelist.net/anime.php?q=Seihantai%20na%20Kimi%20to%20Boku</link>
-    <description>اومد! Seihantai na Kimi to Boku - 24</description>
 </item>
 </channel>
 </rss>
