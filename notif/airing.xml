@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Youjo Senki S2</title>
+    <link>https://myanimelist.net/anime.php?q=Youjo%20Senki</link>
+    <description>اومد! Youjo Senki S2</description>
+</item>
+<item>
+    <title>Super no Ura de Yani Suu Futari</title>
+    <link>https://myanimelist.net/anime.php?q=Super%20no%20Ura%20de%20Yani%20Suu%20Futari</link>
+    <description>اومد! Super no Ura de Yani Suu Futari</description>
+</item>
+<item>
     <title>PSYREN - 01</title>
     <link>https://myanimelist.net/anime.php?q=PSYREN</link>
     <description>اومد! PSYREN - 01</description>
@@ -244,16 +254,6 @@
     <title>Sayonara Lara</title>
     <link>https://myanimelist.net/anime.php?q=Sayonara%20Lara</link>
     <description>اومد! Sayonara Lara</description>
-</item>
-<item>
-    <title>Tensei Shitara Ken Deshita S2 - 01</title>
-    <link>https://myanimelist.net/anime.php?q=Tensei%20Shitara%20Ken%20Deshita</link>
-    <description>اومد! Tensei Shitara Ken Deshita S2 - 01</description>
-</item>
-<item>
-    <title>The Prince of Tennis II - U-17 World Cup Final Member Selection Match - 01</title>
-    <link>https://myanimelist.net/anime.php?q=The%20Prince%20of%20Tennis%20II</link>
-    <description>اومد! The Prince of Tennis II - U-17 World Cup Final Member Selection Match - 01</description>
 </item>
 </channel>
 </rss>
