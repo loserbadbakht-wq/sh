@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Let's Go Kaiki-gumi</title>
+    <link>https://myanimelist.net/anime.php?q=Let%27s%20Go%20Kaiki-gumi</link>
+    <description>اومد! Let's Go Kaiki-gumi</description>
+</item>
+<item>
+    <title>Kore Kaite Shine</title>
+    <link>https://myanimelist.net/anime.php?q=Kore%20Kaite%20Shine</link>
+    <description>اومد! Kore Kaite Shine</description>
+</item>
+<item>
     <title>Mebius Dust</title>
     <link>https://myanimelist.net/anime.php?q=Mebius%20Dust</link>
     <description>اومد! Mebius Dust</description>
@@ -244,16 +254,6 @@
     <title>Kusuriya no Hitorigoto - 49</title>
     <link>https://myanimelist.net/anime.php?q=Kusuriya%20no%20Hitorigoto</link>
     <description>اومد! Kusuriya no Hitorigoto - 49</description>
-</item>
-<item>
-    <title>Tougen Anki - Nikko Kegon no Taki-hen - 01</title>
-    <link>https://myanimelist.net/anime.php?q=Tougen%20Anki</link>
-    <description>اومد! Tougen Anki - Nikko Kegon no Taki-hen - 01</description>
-</item>
-<item>
-    <title>Nige Jouzu no Wakagimi S2 - 12</title>
-    <link>https://myanimelist.net/anime.php?q=Nige%20Jouzu%20no%20Wakagimi</link>
-    <description>اومد! Nige Jouzu no Wakagimi S2 - 12</description>
 </item>
 </channel>
 </rss>
