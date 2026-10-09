@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Link Click S3 - 10</title>
+    <link>https://myanimelist.net/anime.php?q=Link%20Click</link>
+    <description>اومد! Link Click S3 - 10</description>
+</item>
+<item>
     <title>Hyouken no Majutsushi ga Sekai wo Suberu S2 - 01</title>
     <link>https://myanimelist.net/anime.php?q=Hyouken%20no%20Majutsushi%20ga%20Sekai%20wo%20Suberu</link>
     <description>اومد! Hyouken no Majutsushi ga Sekai wo Suberu S2 - 01</description>
@@ -249,11 +254,6 @@
     <title>VERTEX FORCE - 01</title>
     <link>https://myanimelist.net/anime.php?q=VERTEX%20FORCE</link>
     <description>اومد! VERTEX FORCE - 01</description>
-</item>
-<item>
-    <title>Black Clover - 171</title>
-    <link>https://myanimelist.net/anime.php?q=Black%20Clover</link>
-    <description>اومد! Black Clover - 171</description>
 </item>
 </channel>
 </rss>
