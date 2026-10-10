@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Shuiro no Kamen - 01</title>
+    <link>https://myanimelist.net/anime.php?q=Shuiro%20no%20Kamen</link>
+    <description>اومد! Shuiro no Kamen - 01</description>
+</item>
+<item>
     <title>Kuroneko to Majo no Kyoushitsu - 22v2</title>
     <link>https://myanimelist.net/anime.php?q=Kuroneko%20to%20Majo%20no%20Kyoushitsu</link>
     <description>اومد! Kuroneko to Majo no Kyoushitsu - 22v2</description>
@@ -249,11 +254,6 @@
     <title>Tempal - Item no Chikara - 02</title>
     <link>https://myanimelist.net/anime.php?q=Tempal</link>
     <description>اومد! Tempal - Item no Chikara - 02</description>
-</item>
-<item>
-    <title>Saikyosoubi - 01</title>
-    <link>https://myanimelist.net/anime.php?q=Saikyosoubi</link>
-    <description>اومد! Saikyosoubi - 01</description>
 </item>
 </channel>
 </rss>
