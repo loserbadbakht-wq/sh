@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Mairimashita! Iruma-kun S3</title>
+    <link>https://myanimelist.net/anime.php?q=Mairimashita%21%20Iruma-kun</link>
+    <description>اومد! Mairimashita! Iruma-kun S3</description>
+</item>
+<item>
     <title>Gaikotsu Kishi-sama, Tadaima Isekai e Odekakechuu S2</title>
     <link>https://myanimelist.net/anime.php?q=Gaikotsu%20Kishi-sama%2C%20Tadaima%20Isekai%20e%20Odekakechuu</link>
     <description>اومد! Gaikotsu Kishi-sama, Tadaima Isekai e Odekakechuu S2</description>
@@ -249,11 +254,6 @@
     <title>Tougen Anki - Nikko Kegon no Taki-hen - 02</title>
     <link>https://myanimelist.net/anime.php?q=Tougen%20Anki</link>
     <description>اومد! Tougen Anki - Nikko Kegon no Taki-hen - 02</description>
-</item>
-<item>
-    <title>Hotaru no Yomeiri - 01</title>
-    <link>https://myanimelist.net/anime.php?q=Hotaru%20no%20Yomeiri</link>
-    <description>اومد! Hotaru no Yomeiri - 01</description>
 </item>
 </channel>
 </rss>
