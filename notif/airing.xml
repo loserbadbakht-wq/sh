@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Mairimashita! Iruma-kun S4</title>
+    <link>https://myanimelist.net/anime.php?q=Mairimashita%21%20Iruma-kun</link>
+    <description>اومد! Mairimashita! Iruma-kun S4</description>
+</item>
+<item>
     <title>Kimi ga Shinu made Koi wo Shitai</title>
     <link>https://myanimelist.net/anime.php?q=Kimi%20ga%20Shinu%20made%20Koi%20wo%20Shitai</link>
     <description>اومد! Kimi ga Shinu made Koi wo Shitai</description>
@@ -249,11 +254,6 @@
     <title>Paw and Palaces - 04</title>
     <link>https://myanimelist.net/anime.php?q=Paw%20and%20Palaces</link>
     <description>اومد! Paw and Palaces - 04</description>
-</item>
-<item>
-    <title>Paw and Palaces - 03</title>
-    <link>https://myanimelist.net/anime.php?q=Paw%20and%20Palaces</link>
-    <description>اومد! Paw and Palaces - 03</description>
 </item>
 </channel>
 </rss>
