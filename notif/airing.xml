@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>LIAR GAME</title>
+    <link>https://myanimelist.net/anime.php?q=LIAR%20GAME</link>
+    <description>اومد! LIAR GAME</description>
+</item>
+<item>
     <title>Hyouken no Majutsushi ga Sekai wo Suberu S2 - 02</title>
     <link>https://myanimelist.net/anime.php?q=Hyouken%20no%20Majutsushi%20ga%20Sekai%20wo%20Suberu</link>
     <description>اومد! Hyouken no Majutsushi ga Sekai wo Suberu S2 - 02</description>
@@ -249,11 +254,6 @@
     <title>Black Clover - 172</title>
     <link>https://myanimelist.net/anime.php?q=Black%20Clover</link>
     <description>اومد! Black Clover - 172</description>
-</item>
-<item>
-    <title>Zombie Sagashitemasu - 02</title>
-    <link>https://myanimelist.net/anime.php?q=Zombie%20Sagashitemasu</link>
-    <description>اومد! Zombie Sagashitemasu - 02</description>
 </item>
 </channel>
 </rss>
