@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Clevatess</title>
+    <link>https://myanimelist.net/anime.php?q=Clevatess</link>
+    <description>اومد! Clevatess</description>
+</item>
+<item>
     <title>Uchi no Otouto-domo ga Sumimasen - 15</title>
     <link>https://myanimelist.net/anime.php?q=Uchi%20no%20Otouto-domo%20ga%20Sumimasen</link>
     <description>اومد! Uchi no Otouto-domo ga Sumimasen - 15</description>
@@ -249,11 +254,6 @@
     <title>Ace of Diamond Act II S2 - 14</title>
     <link>https://myanimelist.net/anime.php?q=Ace%20of%20Diamond%20Act%20II</link>
     <description>اومد! Ace of Diamond Act II S2 - 14</description>
-</item>
-<item>
-    <title>Meitantei Precure! - 37</title>
-    <link>https://myanimelist.net/anime.php?q=Meitantei%20Precure%21</link>
-    <description>اومد! Meitantei Precure! - 37</description>
 </item>
 </channel>
 </rss>
