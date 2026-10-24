@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Romelia Senki - 04</title>
+    <link>https://myanimelist.net/anime.php?q=Romelia%20Senki</link>
+    <description>اومد! Romelia Senki - 04</description>
+</item>
+<item>
     <title>Shuiro no Kamen - 03</title>
     <link>https://myanimelist.net/anime.php?q=Shuiro%20no%20Kamen</link>
     <description>اومد! Shuiro no Kamen - 03</description>
@@ -249,11 +254,6 @@
     <title>Yowaki Max - 03</title>
     <link>https://myanimelist.net/anime.php?q=Yowaki%20Max</link>
     <description>اومد! Yowaki Max - 03</description>
-</item>
-<item>
-    <title>Tempal - Item no Chikara - 04</title>
-    <link>https://myanimelist.net/anime.php?q=Tempal</link>
-    <description>اومد! Tempal - Item no Chikara - 04</description>
 </item>
 </channel>
 </rss>
