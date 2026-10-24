@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import time
+import hashlib
 import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -14,14 +15,34 @@ from html.parser import HTMLParser
 RAW_BASE = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/ign_tumb/"
 
 # ----------------------------------------------------------------------
-# Sanitize title for use in filename
+# STABLE filename derived from article URL slug (not the mutable title)
+# ----------------------------------------------------------------------
+def get_stable_filename(article_url):
+    """
+    Derive a stable, sanitized filename from the article URL slug.
+
+    IGN rewrites headlines frequently but keeps URL slugs fixed, so this
+    guarantees that re-runs map to the same image filename and prevent
+    404s in previously generated XML.
+    """
+    parsed = urllib.parse.urlparse(article_url)
+    slug = parsed.path.rstrip('/').split('/')[-1]
+    if not slug:
+        slug = hashlib.md5(article_url.encode()).hexdigest()[:16]
+    slug = re.sub(r'[\\/*?:"<>|]', '', slug)   # remove invalid filename chars
+    slug = re.sub(r'[-\s]+', '_', slug)        # replace spaces and hyphens with underscore
+    slug = slug.strip('_.')                    # strip leading/trailing underscores/dots
+    return slug[:255] or "untitled"
+
+# ----------------------------------------------------------------------
+# Sanitize title (kept for backwards compat / fallback use)
 # ----------------------------------------------------------------------
 def sanitize_filename(title):
     """Remove problematic characters and replace spaces/hyphens with underscores."""
-    title = re.sub(r'[\\/*?:"<>|]', '', title)   # remove invalid filename chars
-    title = re.sub(r'[-\s]+', '_', title)        # replace spaces and hyphens with underscore
-    title = title.strip('_.')                    # strip leading/trailing underscores/dots
-    return title[:255] or "untitled"             # ensure non-empty
+    title = re.sub(r'[\\/*?:"<>|]', '', title)
+    title = re.sub(r'[-\s]+', '_', title)
+    title = title.strip('_.')
+    return title[:255] or "untitled"
 
 # ----------------------------------------------------------------------
 # Extract thumbnail image URL from article HTML
@@ -49,19 +70,18 @@ def extract_image_url(html):
 # ----------------------------------------------------------------------
 # Download thumbnail and return remote GitHub raw URL
 # ----------------------------------------------------------------------
-def download_thumbnail(article_url, sanitized_title):
+def download_thumbnail(article_url, stable_name):
     """
     Fetch the article, extract the main image, download it to ./notif/ign_tumb/,
     and return the remote GitHub raw URL for the image.
     Returns the remote URL string or None on failure.
     """
-    # Create local directory if not exists
     tumb_dir = os.path.join('notif', 'ign_tumb')
     os.makedirs(tumb_dir, exist_ok=True)
 
-    # Fetch the article HTML
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                      '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     }
     req = urllib.request.Request(article_url, headers=headers)
     try:
@@ -89,19 +109,19 @@ def download_thumbnail(article_url, sanitized_title):
     if not ext or ext.lower() not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
         ext = '.jpg'  # default
 
-    local_filename = sanitized_title + ext
+    local_filename = stable_name + ext
     local_path = os.path.join(tumb_dir, local_filename)
 
-    # Download the image locally (for archiving)
+    # Download the image locally (for archiving + GitHub push)
     try:
         print(f"  📥 Downloading thumbnail: {image_url[:80]}...")
         urllib.request.urlretrieve(image_url, local_path)
         print(f"  ✅ Saved thumbnail: {local_path}")
     except Exception as e:
         print(f"  ⚠️ Failed to download thumbnail locally: {e}")
-        # Continue anyway; we can still use the remote URL if we can construct it
+        # Continue anyway; remote URL may already exist on GitHub
 
-    # Build remote GitHub raw URL (now using the new repository)
+    # Build remote GitHub raw URL
     remote_url = RAW_BASE + local_filename
     return remote_url
 
@@ -110,7 +130,6 @@ def download_thumbnail(article_url, sanitized_title):
 # ----------------------------------------------------------------------
 RSS_URL = "https://feeds.feedburner.com/ign/news"
 
-# Global list to hold all processed items
 items_data = []
 
 class MLStripper(HTMLParser):
@@ -121,10 +140,10 @@ class MLStripper(HTMLParser):
         self.strict = False
         self.convert_charrefs = True
         self.text = []
-    
+
     def handle_data(self, d):
         self.text.append(d)
-    
+
     def get_data(self):
         return ''.join(self.text)
 
@@ -139,7 +158,8 @@ def strip_html(html):
 def fetch_rss(url):
     """Fetch RSS content with a proper User-Agent header."""
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                      '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     }
     req = urllib.request.Request(url, headers=headers)
     try:
@@ -153,7 +173,8 @@ def fetch_page_content(url):
     """Fetch article content and return paragraphs joined with <br>."""
     try:
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                          '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=15) as response:
@@ -199,21 +220,20 @@ def get_all_items(rss_xml):
         title_elem = item.find('title')
         desc_elem = item.find('description')
         link_elem = item.find('link')
-        
+
         title = title_elem.text.strip() if title_elem is not None and title_elem.text else ""
         description = desc_elem.text.strip() if desc_elem is not None and desc_elem.text else ""
         description = strip_html(description)
         link = link_elem.text.strip() if link_elem is not None and link_elem.text else ""
-        
+
         if title and link:
             result.append((title, description, link))
     return result
 
 # ----------------------------------------------------------------------
-# generate_rss() now uses CDATA for description
+# Generate RSS with CDATA-wrapped descriptions
 # ----------------------------------------------------------------------
 def generate_rss():
-    """Generate RSS feed with transformed items."""
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
@@ -227,7 +247,7 @@ def generate_rss():
         description = item['description'] if item['description'] else "No content available"
         description = description.replace(']]>', ']]]]><![CDATA[>')
         safe_description = f"<![CDATA[{description}]]>"
-        
+
         rss += f"""
 <item>
     <title>{safe_title}</title>
@@ -238,48 +258,51 @@ def generate_rss():
     return rss
 
 # ----------------------------------------------------------------------
-# Main execution
+# Main
 # ----------------------------------------------------------------------
 def main():
     global items_data
 
     print("🔍 Fetching IGN RSS feed...")
     rss_xml = fetch_rss(RSS_URL)
-    
+
     print("📋 Parsing RSS items...")
     all_items = get_all_items(rss_xml)
     print(f"📊 Found {len(all_items)} items")
 
     max_items = 50
     processed = 0
-    
+
     for orig_title, orig_description, orig_link in all_items:
         if processed >= max_items:
             break
-            
+
         print(f"🔄 Processing: {orig_title[:50]}...")
         print(f"📡 Fetching content from: {orig_link[:50]}...")
+
         page_content = fetch_page_content(orig_link)
-        
-        sanitized = sanitize_filename(orig_title)
-        remote_image_url = download_thumbnail(orig_link, sanitized)
-        
+
+        # ---- STABLE filename keyed on URL slug, not title ----
+        stable_name = get_stable_filename(orig_link)
+        remote_image_url = download_thumbnail(orig_link, stable_name)
+
         if remote_image_url:
             img_tag = f'<img src="{remote_image_url}" />'
         else:
             img_tag = ''
+
         if page_content:
             description = f'{img_tag}<br>{page_content}' if img_tag else page_content
         else:
             description = f'{img_tag}<br>No content available' if img_tag else "No content available"
-        
+
         items_data.append({
-            'title': orig_description,
+            'title': orig_description,   # preserved from original script behaviour
             'link': orig_link,
             'description': description
         })
         processed += 1
-        
+
         if processed < min(len(all_items), max_items):
             time.sleep(1)
 
@@ -294,6 +317,8 @@ def main():
             f.write(generate_rss().strip())
         print('✅ IGN RSS generated successfully.')
         print(f'📁 Output file: {filename}')
+        print('⚠️  REMINDER: commit & push new files under ./notif/ign_tumb/ to GitHub,')
+        print('    otherwise the <img src> URLs will 404 on fresh items.')
     except Exception as e:
         print(f'❌ Failed: {e}')
 
