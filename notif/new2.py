@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import time
+import hashlib
 import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -14,7 +15,37 @@ from html.parser import HTMLParser
 RAW_BASE = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/euro_tumb/"
 
 # ----------------------------------------------------------------------
-# Sanitize title for use in filename
+# STABLE filename derived from article URL slug (not the mutable title)
+# ----------------------------------------------------------------------
+def get_stable_filename(article_url):
+    """
+    Derive a stable, sanitized filename from the article URL slug.
+
+    Eurogamer rewrites headlines frequently but keeps URL slugs fixed, so
+    keying the image filename on the slug (rather than the title) prevents
+    broken <img src> URLs in previously generated XML feeds.
+
+    Example:
+      https://www.eurogamer.net/elden-ring-dlc-announced
+      -> elden_ring_dlc_announced
+    """
+    parsed = urllib.parse.urlparse(article_url)
+    slug = parsed.path.rstrip('/').split('/')[-1]
+
+    # Fallback if the URL has no usable slug
+    if not slug:
+        slug = hashlib.md5(article_url.encode()).hexdigest()[:16]
+
+    # Same sanitization pipeline the old title-based function used
+    slug = re.sub(r'[\\/*?:"<>|]', '', slug)
+    slug = re.sub(r'[-\s]+', '_', slug)
+    slug = slug.strip('_.')
+    slug = slug.encode('ascii', 'ignore').decode('ascii')
+    slug = re.sub(r'[^a-zA-Z0-9_.]', '_', slug)
+    return slug[:255] or "untitled"
+
+# ----------------------------------------------------------------------
+# Sanitize title (kept for backwards compat / fallback)
 # ----------------------------------------------------------------------
 def sanitize_filename(title):
     title = re.sub(r'[\\/*?:"<>|]', '', title)
@@ -49,7 +80,7 @@ def extract_image_url(html):
 # ----------------------------------------------------------------------
 # Download thumbnail
 # ----------------------------------------------------------------------
-def download_thumbnail(article_url, sanitized_title):
+def download_thumbnail(article_url, stable_name):
     tumb_dir = os.path.join('notif', 'euro_tumb')
     os.makedirs(tumb_dir, exist_ok=True)
 
@@ -80,7 +111,7 @@ def download_thumbnail(article_url, sanitized_title):
     if not ext or ext.lower() not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
         ext = '.jpg'
 
-    local_filename = sanitized_title + ext
+    local_filename = stable_name + ext
     local_path = os.path.join(tumb_dir, local_filename)
 
     try:
@@ -137,7 +168,6 @@ def extract_container_by_class(html, tag, class_substring):
     Return the inner HTML of the first <tag> whose class attribute contains class_substring.
     Handles nested <tag> correctly using a depth counter.
     """
-    # Find the opening tag
     pattern = r'<' + tag + r'[^>]*class="[^"]*' + re.escape(class_substring) + r'[^"]*"[^>]*>'
     match = re.search(pattern, html, re.IGNORECASE)
     if not match:
@@ -155,7 +185,6 @@ def extract_container_by_class(html, tag, class_substring):
         if next_close == -1:
             return None
         if next_open != -1 and next_open < next_close:
-            # Ensure it's actually the same tag (not <divx>)
             char_after = html[next_open + len(open_tag):next_open + len(open_tag) + 1]
             if char_after in (' ', '>', '\n', '\t', '\r'):
                 depth += 1
@@ -183,8 +212,6 @@ def fetch_page_content(url):
         print(f"⚠️ Could not fetch {url}: {e}")
         return "Content unavailable"
 
-    # ---- Isolate the article body ----
-    # Eurogamer commonly uses: <section class="article_body"> or <div class="article_body">
     article_html = None
     for candidate in ['article_body', 'article-body', 'article__body', 'article-content']:
         article_html = extract_container_by_class(content, 'section', candidate)
@@ -193,28 +220,23 @@ def fetch_page_content(url):
         if article_html:
             break
 
-    # If we couldn't find the article body, fall back to whole page but strip structure
     if not article_html:
         print("  ⚠️ Could not find article body container; falling back to page-wide extraction.")
         article_html = content
 
-    # ---- Remove unwanted elements from the isolated HTML ----
     article_html = re.sub(r'<script.*?>.*?</script>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
     article_html = re.sub(r'<style.*?>.*?</style>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
     article_html = re.sub(r'<aside.*?>.*?</aside>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
     article_html = re.sub(r'<figure.*?>.*?</figure>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
     article_html = re.sub(r'<figcaption.*?>.*?</figcaption>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
     article_html = re.sub(r'<nav.*?>.*?</nav>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
-    # Remove embedded ads / promos
     article_html = re.sub(r'<div[^>]*class="[^"]*(?:ad|promo|newsletter|related|share|social|embed)[^"]*"[^>]*>.*?</div>', '', article_html, flags=re.DOTALL | re.IGNORECASE)
 
-    # ---- Extract paragraphs ----
     paragraphs = re.findall(r'<p.*?>(.*?)</p>', article_html, re.DOTALL | re.IGNORECASE)
 
     texts = []
     for p in paragraphs:
         p_text = strip_html(p).strip()
-        # Filter short paragraphs and common Eurogamer noise
         if len(p_text) < 30:
             continue
         if re.search(
@@ -229,7 +251,6 @@ def fetch_page_content(url):
     if texts:
         return '<br>'.join(texts)
 
-    # ---- Fallback: whole page text (last resort) ----
     text = strip_html(content)
     text = re.sub(r'\s+', ' ', text).strip()
     sentences = [s.strip() for s in text.split('. ') if len(s) > 40]
@@ -318,8 +339,9 @@ def main():
         print(f"📡 Fetching content from: {orig_link[:50]}...")
         page_content = fetch_page_content(orig_link)
 
-        sanitized = sanitize_filename(orig_title)
-        remote_image_url = download_thumbnail(orig_link, sanitized)
+        # ---- STABLE filename keyed on URL slug, not title ----
+        stable_name = get_stable_filename(orig_link)
+        remote_image_url = download_thumbnail(orig_link, stable_name)
 
         if remote_image_url:
             img_tag = f'<img src="{remote_image_url}" />'
@@ -351,6 +373,8 @@ def main():
             f.write(generate_rss().strip())
         print('✅ Eurogamer RSS generated successfully.')
         print(f'📁 Output file: {filename}')
+        print('⚠️  REMINDER: commit & push new files under ./notif/euro_tumb/ to GitHub,')
+        print('    otherwise the <img src> URLs will 404 on fresh items.')
     except Exception as e:
         print(f'❌ Failed: {e}')
 
