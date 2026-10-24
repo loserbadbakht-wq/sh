@@ -24,24 +24,27 @@ def get_stable_filename(article_url):
     IGN rewrites headlines frequently but keeps URL slugs fixed, so this
     guarantees that re-runs map to the same image filename and prevent
     404s in previously generated XML.
+
+    Note: '%' is stripped because it is a URL metacharacter and, if left
+    in a filename, produces malformed raw.githubusercontent.com URLs.
     """
     parsed = urllib.parse.urlparse(article_url)
     slug = parsed.path.rstrip('/').split('/')[-1]
     if not slug:
         slug = hashlib.md5(article_url.encode()).hexdigest()[:16]
-    slug = re.sub(r'[\\/*?:"<>|]', '', slug)   # remove invalid filename chars
-    slug = re.sub(r'[-\s]+', '_', slug)        # replace spaces and hyphens with underscore
-    slug = slug.strip('_.')                    # strip leading/trailing underscores/dots
+    slug = re.sub(r'[\\/*?:"<>|%]', '', slug)   # remove invalid filename chars (+ %)
+    slug = re.sub(r'[-\s]+', '_', slug)         # replace spaces and hyphens with underscore
+    slug = slug.strip('_.')                     # strip leading/trailing underscores/dots
     return slug[:255] or "untitled"
 
 # ----------------------------------------------------------------------
 # Sanitize title (kept for backwards compat / fallback use)
 # ----------------------------------------------------------------------
 def sanitize_filename(title):
-    """Remove problematic characters and replace spaces/hyphens with underscores."""
-    title = re.sub(r'[\\/*?:"<>|]', '', title)
-    title = re.sub(r'[-\s]+', '_', title)
-    title = title.strip('_.')
+    """Remove problematic characters (incl. %) and replace spaces/hyphens with underscores."""
+    title = re.sub(r'[\\/*?:"<>|%]', '', title)  # remove invalid filename chars (+ %)
+    title = re.sub(r'[-\s]+', '_', title)        # replace spaces and hyphens with underscore
+    title = title.strip('_.')                    # strip leading/trailing underscores/dots
     return title[:255] or "untitled"
 
 # ----------------------------------------------------------------------
@@ -121,8 +124,9 @@ def download_thumbnail(article_url, stable_name):
         print(f"  ⚠️ Failed to download thumbnail locally: {e}")
         # Continue anyway; remote URL may already exist on GitHub
 
-    # Build remote GitHub raw URL
-    remote_url = RAW_BASE + local_filename
+    # Build remote GitHub raw URL — URL-encode the filename so that
+    # characters like % , ( ) and spaces resolve correctly on GitHub.
+    remote_url = RAW_BASE + urllib.parse.quote(local_filename)
     return remote_url
 
 # ----------------------------------------------------------------------
