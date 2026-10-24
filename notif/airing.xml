@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Keroro Gunsou</title>
+    <link>https://myanimelist.net/anime.php?q=Keroro%20Gunsou</link>
+    <description>اومد! Keroro Gunsou</description>
+</item>
+<item>
+    <title>Rilakkuma - 29</title>
+    <link>https://myanimelist.net/anime.php?q=Rilakkuma</link>
+    <description>اومد! Rilakkuma - 29</description>
+</item>
+<item>
     <title>Uchi no Otouto-domo ga Sumimasen - 16</title>
     <link>https://myanimelist.net/anime.php?q=Uchi%20no%20Otouto-domo%20ga%20Sumimasen</link>
     <description>اومد! Uchi no Otouto-domo ga Sumimasen - 16</description>
@@ -244,16 +254,6 @@
     <title>Saikyosoubi - 03</title>
     <link>https://myanimelist.net/anime.php?q=Saikyosoubi</link>
     <description>اومد! Saikyosoubi - 03</description>
-</item>
-<item>
-    <title>Ojisan wa Kawaii Mono ga Osuki. - 03</title>
-    <link>https://myanimelist.net/anime.php?q=Ojisan%20wa%20Kawaii%20Mono%20ga%20Osuki.</link>
-    <description>اومد! Ojisan wa Kawaii Mono ga Osuki. - 03</description>
-</item>
-<item>
-    <title>Ao Ashi S2 - 03</title>
-    <link>https://myanimelist.net/anime.php?q=Ao%20Ashi</link>
-    <description>اومد! Ao Ashi S2 - 03</description>
 </item>
 </channel>
 </rss>
