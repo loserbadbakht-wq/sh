@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Shuiro no Kamen - 03</title>
+    <link>https://myanimelist.net/anime.php?q=Shuiro%20no%20Kamen</link>
+    <description>اومد! Shuiro no Kamen - 03</description>
+</item>
+<item>
     <title>Keroro Gunsou</title>
     <link>https://myanimelist.net/anime.php?q=Keroro%20Gunsou</link>
     <description>اومد! Keroro Gunsou</description>
@@ -249,11 +254,6 @@
     <title>Tempal - Item no Chikara - 04</title>
     <link>https://myanimelist.net/anime.php?q=Tempal</link>
     <description>اومد! Tempal - Item no Chikara - 04</description>
-</item>
-<item>
-    <title>Saikyosoubi - 03</title>
-    <link>https://myanimelist.net/anime.php?q=Saikyosoubi</link>
-    <description>اومد! Saikyosoubi - 03</description>
 </item>
 </channel>
 </rss>
