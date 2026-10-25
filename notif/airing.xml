@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Jujutsu Kaisen</title>
+    <link>https://myanimelist.net/anime.php?q=Jujutsu%20Kaisen</link>
+    <description>اومد! Jujutsu Kaisen</description>
+</item>
+<item>
+    <title>Meitantei Precure! - 39</title>
+    <link>https://myanimelist.net/anime.php?q=Meitantei%20Precure%21</link>
+    <description>اومد! Meitantei Precure! - 39</description>
+</item>
+<item>
     <title>Kashita Maryoku wa Revo Barai de Kyousei Choushuu - 04</title>
     <link>https://myanimelist.net/anime.php?q=Kashita%20Maryoku%20wa%20Revo%20Barai%20de%20Kyousei%20Choushuu</link>
     <description>اومد! Kashita Maryoku wa Revo Barai de Kyousei Choushuu - 04</description>
@@ -244,16 +254,6 @@
     <title>Bleach - Sennen Kessen Hen - 49</title>
     <link>https://myanimelist.net/anime.php?q=Bleach</link>
     <description>اومد! Bleach - Sennen Kessen Hen - 49</description>
-</item>
-<item>
-    <title>PSYREN - 03</title>
-    <link>https://myanimelist.net/anime.php?q=PSYREN</link>
-    <description>اومد! PSYREN - 03</description>
-</item>
-<item>
-    <title>Tensei Goblin dakedo Shitsumon Aru - 04</title>
-    <link>https://myanimelist.net/anime.php?q=Tensei%20Goblin%20dakedo%20Shitsumon%20Aru</link>
-    <description>اومد! Tensei Goblin dakedo Shitsumon Aru - 04</description>
 </item>
 </channel>
 </rss>
