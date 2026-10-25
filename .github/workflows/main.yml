@@ -47,8 +47,8 @@ jobs:
       - name: Generate rss (NTE)
         run: python ./never/NTE.py
 
-      - name: Generate rss (air)
-        run: python ./notif/generate.py
+      - name: Generate rss (gachag)
+        run: python ./notif/gachagen.py
 
       - name: Generate rss (I)
         run: python ./notif/new1.py
