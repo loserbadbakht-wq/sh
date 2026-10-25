@@ -2,217 +2,175 @@ import os
 import sys
 import re
 import time
-import json
+import urllib.request
 import urllib.parse
+import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
+from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
-# Install playwright and its browsers before running:
-# pip install playwright && playwright install firefox
+# Proxy configuration
+# ----------------------------------------------------------------------
+PROXY_BASE = "https://prox.loserbadbakht.workers.dev"
+
+def proxify(url: str) -> str:
+    """Wrap a URL through the proxy worker (?url= query style)."""
+    return f"{PROXY_BASE}/{urllib.parse.quote(url, safe='')}"
+
+# ----------------------------------------------------------------------
+# Try to import requests-html (optional, used only for parsing HTML)
 # ----------------------------------------------------------------------
 try:
-    from playwright.sync_api import sync_playwright
-    HAS_PLAYWRIGHT = True
+    from requests_html import HTMLSession
+    HAS_REQUESTS_HTML = True
 except ImportError:
-    HAS_PLAYWRIGHT = False
-    print("⚠️ Playwright not installed. Install with: pip install playwright && playwright install firefox")
-
-try:
-    from bs4 import BeautifulSoup
-    HAS_BS4 = True
-except ImportError:
-    HAS_BS4 = False
-    print("⚠️ BeautifulSoup not installed. Install with: pip install beautifulsoup4")
-
-try:
-    import cloudscraper
-    HAS_CLOUDSCRAPER = True
-except ImportError:
-    HAS_CLOUDSCRAPER = False
+    HAS_REQUESTS_HTML = False
+    print("⚠️ requests-html not installed. Install with: pip install requests-html")
+    print("⚠️ Falling back to static HTML parsing (may not get all articles).")
 
 # ----------------------------------------------------------------------
 # Configuration
 # ----------------------------------------------------------------------
 ARCHIVE_URL = "https://game8.co/games/Genshin-Impact/archives"
-MAX_ITEMS = 15
+MAX_ITEMS = 15  # Number of articles to include
+
 items_data = []
 
-# Optional proxy – set to None if not used
-PROXY = None  # e.g., "http://user:pass@ip:port"
+class MLStripper(HTMLParser):
+    """Simple HTML stripper to get plain text from HTML content."""
+    def __init__(self):
+        super().__init__()
+        self.reset()
+        self.strict = False
+        self.convert_charrefs = True
+        self.text = []
 
-# ----------------------------------------------------------------------
-# Strip HTML
-# ----------------------------------------------------------------------
+    def handle_data(self, d):
+        self.text.append(d)
+
+    def get_data(self):
+        return ''.join(self.text)
+
 def strip_html(html):
     if not html:
         return ""
-    if HAS_BS4:
-        return BeautifulSoup(html, "html.parser").get_text(separator=" ").strip()
-    else:
-        return re.sub(r'<[^>]+>', ' ', html).strip()
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data().strip()
 
-# ----------------------------------------------------------------------
-# Fetch with Playwright + Firefox (headless + stealth)
-# ----------------------------------------------------------------------
-def fetch_page_playwright(url):
-    if not HAS_PLAYWRIGHT:
-        return None
-    try:
-        with sync_playwright() as p:
-            # Launch Firefox with anti-detection arguments
-            browser = p.firefox.launch(
-                headless=True,
-                proxy={"server": PROXY} if PROXY else None,
-                args=[
-                    "--no-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-gpu",
-                    "--window-size=1920,1080",
-                ]
-            )
-            context = browser.new_context(
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/120.0",
-                viewport={"width": 1920, "height": 1080},
-                locale="en-US",
-                timezone_id="America/New_York",
-                extra_http_headers={
-                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-                    "Accept-Language": "en-US,en;q=0.9",
-                    "Accept-Encoding": "gzip, deflate, br",
-                    "Connection": "keep-alive",
-                    "Upgrade-Insecure-Requests": "1",
-                }
-            )
-            page = context.new_page()
-            page.goto(url, wait_until="networkidle", timeout=60000)
-            # Wait for content to load – if there's a challenge, wait a bit longer
-            time.sleep(3)
-            html = page.content()
-            browser.close()
-            return html
-    except Exception as e:
-        print(f"❌ Playwright fetch failed: {e}")
-        return None
+def fetch_page_with_js(url):
+    """
+    Fetch the archives page through the proxy.
 
-# ----------------------------------------------------------------------
-# Fallback: cloudscraper (still may be blocked, but try)
-# ----------------------------------------------------------------------
-def fetch_page_static(url):
-    if not HAS_CLOUDSCRAPER:
-        return None
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Connection': 'keep-alive',
-    }
-    try:
-        scraper = cloudscraper.create_scraper()
-        if PROXY:
-            scraper.proxies = {'http': PROXY, 'https': PROXY}
-        response = scraper.get(url, headers=headers, timeout=30)
-        response.raise_for_status()
-        return response.text
-    except Exception as e:
-        print(f"❌ Static fetch failed: {e}")
-        return None
+    Note: JS rendering via Chromium is intentionally skipped. A URL-forwarding
+    proxy cannot relay Chromium's requests for sub-resources (JS/CSS/images),
+    so render() would produce an empty / broken page. We fetch the static HTML
+    through the proxy instead, which is what the page's server-side markup
+    already provides.
+    """
+    proxied_url = proxify(url)
+    print(f"🌐 Fetching via proxy: {proxied_url[:90]}...")
 
-# ----------------------------------------------------------------------
-# Extract articles from JSON or HTML
-# ----------------------------------------------------------------------
-def extract_from_json(html):
-    script_pattern = r'<script[^>]*>(.*?)</script>'
-    scripts = re.findall(script_pattern, html, re.DOTALL | re.IGNORECASE)
-    for script in scripts:
+    if HAS_REQUESTS_HTML:
         try:
-            data = json.loads(script)
-            articles = []
-            def find_articles(obj, path=""):
-                if isinstance(obj, dict):
-                    if 'url' in obj and 'name' in obj:
-                        url = obj.get('url')
-                        name = obj.get('name')
-                        if url and name and '/archives/' in url:
-                            articles.append((url, name))
-                    for k, v in obj.items():
-                        find_articles(v, path + "." + k)
-                elif isinstance(obj, list):
-                    for i, item in enumerate(obj):
-                        find_articles(item, path + f"[{i}]")
-            find_articles(data)
-            if articles:
-                return articles
-        except json.JSONDecodeError:
-            continue
-    return None
+            session = HTMLSession()
+            response = session.get(proxied_url, timeout=30)
+            return response.html.html
+        except Exception as e:
+            print(f"⚠️ requests-html fetch failed: {e}")
+            print("⚠️ Falling back to urllib through proxy...")
 
-def extract_from_html(html):
-    if not HAS_BS4:
-        return []
-    soup = BeautifulSoup(html, "html.parser")
-    articles = []
-    seen = set()
-    for a in soup.find_all('a', href=re.compile(r'/games/Genshin-Impact/archives/')):
-        href = a.get('href')
-        if not href or href in seen:
-            continue
-        seen.add(href)
-        title = a.get_text(strip=True)
-        if not title or len(title) < 3:
-            parent = a.parent
-            if parent and parent.name in ['h2', 'h3', 'h4']:
-                title = parent.get_text(strip=True)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                      '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+    req = urllib.request.Request(proxied_url, headers=headers)
+    with urllib.request.urlopen(req, timeout=30) as response:
+        return response.read().decode('utf-8', errors='ignore')
+
+def fetch_full_page_content(url):
+    """Fetch article page through the proxy and extract full plain text."""
+    try:
+        proxied_url = proxify(url)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                          '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        req = urllib.request.Request(proxied_url, headers=headers)
+        with urllib.request.urlopen(req, timeout=30) as response:
+            content = response.read().decode('utf-8', errors='ignore')
+
+            content = re.sub(r'<script.*?>.*?</script>', '', content, flags=re.DOTALL | re.IGNORECASE)
+            content = re.sub(r'<style.*?>.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
+
+            paragraphs = re.findall(r'<p.*?>(.*?)</p>', content, re.DOTALL | re.IGNORECASE)
+
+            if paragraphs:
+                full_text = ' '.join(strip_html(p) for p in paragraphs)
+                full_text = re.sub(r'\s+', ' ', full_text).strip()
+                full_text = re.sub(r'\bGame8\b.*?(?:\n|$)', '', full_text)
+                return full_text
             else:
-                continue
-        title = re.sub(r'\s+', ' ', title).strip()
-        if title.lower() in ['home', 'games', 'search', 'login']:
+                full_text = strip_html(content)
+                full_text = re.sub(r'\s+', ' ', full_text).strip()
+                return full_text
+
+    except Exception as e:
+        print(f"⚠️ Could not fetch {url}: {e}")
+        return "Content unavailable"
+
+def extract_articles_from_html(html):
+    """Extract article titles, links, and descriptions from the archives page."""
+    article_pattern = r'<a\s+(?:[^>]*?\s+)?href="(/games/Genshin-Impact/archives/[^"]+)"[^>]*>(.*?)</a>'
+    title_pattern = r'<h[2-3][^>]*>(.*?)</h[2-3]>'
+
+    links = re.findall(article_pattern, html, re.DOTALL | re.IGNORECASE)
+    headings = re.findall(title_pattern, html, re.DOTALL | re.IGNORECASE)
+
+    if not links:
+        all_links = re.findall(
+            r'<a\s+(?:[^>]*?\s+)?href="([^"]+)"[^>]*>(.*?)</a>',
+            html, re.DOTALL | re.IGNORECASE
+        )
+        links = [(u, t) for u, t in all_links if '/archives/' in u and 'games/Genshin-Impact' in u]
+
+    card_pattern = r'<div[^>]*class="[^"]*article[^"]*"[^>]*>.*?<a\s+href="([^"]+)"[^>]*>(.*?)</a>.*?</div>'
+    card_matches = re.findall(card_pattern, html, re.DOTALL | re.IGNORECASE)
+    if card_matches:
+        links = card_matches
+
+    seen = set()
+    unique_links = []
+    for url, text in links:
+        if url not in seen:
+            seen.add(url)
+            unique_links.append((url, text))
+    links = unique_links
+
+    base_url = "https://game8.co"
+    articles = []
+
+    for url, title_text in links:
+        title = strip_html(title_text).strip()
+        title = re.sub(r'\s+', ' ', title)
+
+        if len(title) < 3 or title.lower() in ['home', 'games', 'search', 'login', 'sign up']:
             continue
-        full_url = href if href.startswith('http') else "https://game8.co" + href
-        description = title
-        next_p = a.find_next('p')
-        if next_p:
-            desc = next_p.get_text(strip=True)
-            if len(desc) > 20:
-                description = desc
+
+        full_url = url if url.startswith('http') else base_url + url
+
+        desc_pattern = f'<a[^>]*href="{re.escape(url)}"[^>]*>.*?</a>\\s*(?:<[^>]+>)*\\s*([^<]+)'
+        desc_matches = re.findall(desc_pattern, html, re.DOTALL | re.IGNORECASE)
+        description = desc_matches[0].strip() if desc_matches else title
+
         articles.append({
             'title': title,
             'link': full_url,
-            'description': description
+            'description': strip_html(description)
         })
+
     return articles
 
-# ----------------------------------------------------------------------
-# Fetch full article content (same logic)
-# ----------------------------------------------------------------------
-def fetch_full_article_content(url):
-    html = fetch_page_playwright(url) or fetch_page_static(url)
-    if not html:
-        return "Content unavailable"
-    if HAS_BS4:
-        soup = BeautifulSoup(html, "html.parser")
-        main = soup.find('div', class_=re.compile(r'article-body|post-content|entry-content|content'))
-        if main:
-            paragraphs = main.find_all('p')
-        else:
-            paragraphs = soup.find_all('p')
-        if paragraphs:
-            text = ' '.join(p.get_text(separator=" ").strip() for p in paragraphs)
-            text = re.sub(r'\s+', ' ', text).strip()
-            text = re.sub(r'\bGame8\b.*?(?:\n|$)', '', text)
-            return text
-    html = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    html = re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
-    paragraphs = re.findall(r'<p.*?>(.*?)</p>', html, re.DOTALL | re.IGNORECASE)
-    if paragraphs:
-        full_text = ' '.join(strip_html(p) for p in paragraphs)
-        full_text = re.sub(r'\s+', ' ', full_text).strip()
-        return full_text
-    return strip_html(html)
-
-# ----------------------------------------------------------------------
-# Generate RSS
-# ----------------------------------------------------------------------
 def generate_rss():
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
@@ -225,6 +183,7 @@ def generate_rss():
         safe_title = escape(item['title'])
         safe_link = escape(item['link'])
         safe_description = escape(item['description'])
+
         rss += f"""
 <item>
     <title>{safe_title}</title>
@@ -234,53 +193,67 @@ def generate_rss():
     rss += '\n</channel>\n</rss>'
     return rss
 
-# ----------------------------------------------------------------------
-# Main
-# ----------------------------------------------------------------------
 def main():
     global items_data
 
-    print("🔍 Fetching Game8 Genshin Impact archives...")
-    
-    html = fetch_page_playwright(ARCHIVE_URL) or fetch_page_static(ARCHIVE_URL)
-    if not html:
-        print("❌ All fetch attempts failed. Exiting.")
+    print("🔍 Fetching Game8 Genshin Impact archives (via proxy)...")
+
+    html_content = fetch_page_with_js(ARCHIVE_URL)
+
+    if not html_content:
+        print("❌ Failed to fetch page content.")
         sys.exit(1)
 
-    print(f"📄 Fetched {len(html)} bytes. Snippet:\n{html[:300]}\n")
+    print("📋 Extracting articles from page...")
+    articles = extract_articles_from_html(html_content)
 
-    articles_json = extract_from_json(html)
-    if articles_json:
-        print(f"✅ Found {len(articles_json)} articles from JSON.")
-        articles = [{'title': title, 'link': url, 'description': title} for url, title in articles_json]
-    else:
-        print("⚠️ No JSON articles found. Trying HTML parsing...")
-        articles = extract_from_html(html)
-        if articles:
-            print(f"✅ Found {len(articles)} articles from HTML.")
-        else:
-            print("❌ No articles found. Saving debug.html for inspection.")
-            with open('debug.html', 'w', encoding='utf-8') as f:
-                f.write(html)
-            sys.exit(1)
+    if not articles:
+        print("⚠️ No articles found. Trying alternative extraction method...")
+        all_links = re.findall(
+            r'<a\s+href="(/games/Genshin-Impact/archives/[^"]+)"[^>]*>([^<]+)</a>',
+            html_content
+        )
+        for url, title in all_links:
+            if title.strip() and len(title.strip()) > 3:
+                full_url = "https://game8.co" + url
+                articles.append({
+                    'title': title.strip(),
+                    'link': full_url,
+                    'description': title.strip()
+                })
 
-    print(f"📊 Processing up to {MAX_ITEMS} articles...")
+    if not articles:
+        print("❌ Still no articles found. The proxy may be blocking or the page changed.")
+        sys.exit(1)
+
+    print(f"📊 Found {len(articles)} articles")
+
     processed = 0
     for article in articles:
         if processed >= MAX_ITEMS:
             break
+
         title = article['title']
         link = article['link']
+        desc = article.get('description', title)
+
         print(f"🔄 Processing: {title[:50]}...")
-        full_content = fetch_full_article_content(link)
-        if len(full_content.split()) < 20:
-            full_content = article.get('description', title)
+        print(f"📡 Fetching full content from: {link[:50]}...")
+
+        full_content = fetch_full_page_content(link)
+
+        if len(full_content.split()) > 20:
+            content_to_use = full_content
+        else:
+            content_to_use = desc
+
         items_data.append({
             'title': title,
             'link': link,
-            'description': full_content
+            'description': content_to_use
         })
         processed += 1
+
         if processed < min(len(articles), MAX_ITEMS):
             time.sleep(1)
 
@@ -296,7 +269,7 @@ def main():
         print('✅ Game8 RSS generated successfully.')
         print(f'📁 Output file: {filename}')
     except Exception as e:
-        print(f'❌ Failed to write file: {e}')
+        print(f'❌ Failed: {e}')
 
 if __name__ == "__main__":
     main()
