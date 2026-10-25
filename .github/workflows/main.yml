@@ -1,80 +1,448 @@
-name: Generate rss feeds
+name: Generate RSS, JSON, TTS and Translations
 
 on:
   push:
   schedule:
-    - cron: "*/15 * * * *"
-  workflow_dispatch: 
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: fetch-rss-convert
+  cancel-in-progress: false
+
 jobs:
   build:
-    name: Run
-
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.13]
-
-
+    permissions:
+      contents: write
     steps:
-    - uses: actions/checkout@v7
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v7
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install -r requirements.txt
-    
-    - name: Generate rss (safebooru)
-      run: |
-        python ./safebooru/generate.py
-        
-    - name: Generate rss (safebooruY)
-      env:
-        KEY: ${{ secrets.BA }}
-        ID: ${{ secrets.BI }}
-      run: |
-        python ./safebooru/generateY.py
-    
-    - name: Generate rss (Genshin)
-      run: |
-        python ./Gen/genshin.py
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
-    - name: Generate rss (NTE)
-      run: |
-        python ./never/NTE.py
-#- name: Generate rss (Safebooru test)
-#run: |
-#python ./safebooru_test/test.py
-    
-    - name: Generate rss (air)
-      run: |
-        python ./notif/generate.py
-        
-    - name: Generate rss (I)
-      run: |
-        python ./notif/new1.py
-    
-    - name: Generate rss (gacha)
-      run: |
-        python ./notif/gacharss.py
-    
-    - name: Generate rss (E)
-      run: |
-        python ./notif/new2.py
-    
-    - uses: stefanzweifel/git-auto-commit-action@v7
-      with:
-        # Optional but recommended
-        # Defaults to "Apply automatic changes"
-        commit_message: Apply automatic changes
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-        file_pattern: './*.xml ./*.jpg ./*.png'
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install edge-tts requests googletrans==4.0.0-rc1
 
-        # Optional local file path to the repository
-        # Defaults to the root of the repository
-        repository: .
+      - name: Generate rss (safebooru)
+        run: python ./safebooru/generate.py
 
-        # Optional: Skip internal call to `git fetch`
-        skip_fetch: true
+      - name: Generate rss (safebooruY)
+        env:
+          KEY: ${{ secrets.BA }}
+          ID: ${{ secrets.BI }}
+        run: python ./safebooru/generateY.py
+
+      - name: Generate rss (Genshin)
+        run: python ./Gen/genshin.py
+
+      - name: Generate rss (NTE)
+        run: python ./never/NTE.py
+
+      - name: Generate rss (air)
+        run: python ./notif/generate.py
+
+      - name: Generate rss (I)
+        run: python ./notif/new1.py
+
+      - name: Generate rss (gacha)
+        run: python ./notif/gacharss.py
+
+      - name: Generate rss (E)
+        run: python ./notif/new2.py
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+
+      - name: Convert RSS feeds to JSON
+        run: |
+          mkdir -p json
+          npm init -y
+          npm install xml2js
+          cat > convert.js << 'EOF'
+          const xml2js = require('xml2js');
+          const fs = require('fs');
+          const parser = new xml2js.Parser({ explicitArray: false });
+          const feeds = [
+            { path: 'safebooru/safebooru-yuri-rss.xml', filename: 'safebooru-yuri-rss.json' },
+            { path: 'notif/new1.xml', filename: 'new1.json' },
+            { path: 'notif/new2.xml', filename: 'new2.json' }
+          ];
+
+          // Escape bare '&' to '&amp;' so strict XML parsers don't choke on
+          // URLs like "...?a=1&b=2". CDATA sections are left untouched.
+          function escapeBareAmpersands(xml) {
+            const parts = xml.split(/(<!\[CDATA\[[\s\S]*?\]\]>)/);
+            return parts.map((part, i) => {
+              if (i % 2 === 1) return part;   // CDATA section – leave as-is
+              return part.replace(
+                /&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);)/g,
+                '&amp;'
+              );
+            }).join('');
+          }
+
+          // Move <img src="..."> out of description into a dedicated `image` field
+          function extractImageFromDescription(item) {
+            if (!item || typeof item.description !== 'string') return item;
+
+            const imgRegex = /<img\b[^>]*\bsrc="([^"]+)"[^>]*\/?>/i;
+            const match = item.description.match(imgRegex);
+            if (!match) return item;
+
+            const imageUrl = match[1];
+            let newDesc = item.description.replace(imgRegex, '');
+            newDesc = newDesc.replace(/^(?:\s|<br\s*\/?>)+/i, '').trim();
+
+            const newItem = {};
+            if (item.title !== undefined) newItem.title = item.title;
+            if (item.link  !== undefined) newItem.link  = item.link;
+            newItem.image = imageUrl;
+            for (const key of Object.keys(item)) {
+              if (['title', 'link', 'description'].includes(key)) continue;
+              newItem[key] = item[key];
+            }
+            newItem.description = newDesc;
+            return newItem;
+          }
+
+          function normalizeAndProcess(result) {
+            const channel = result?.rss?.channel;
+            if (!channel || !channel.item) return result;
+            if (!Array.isArray(channel.item)) {
+              channel.item = [channel.item];
+            }
+            channel.item = channel.item.map(extractImageFromDescription);
+            return result;
+          }
+
+          async function convertFeed(feed) {
+            const jsonPath = `json/${feed.filename}`;
+            try {
+              console.log(`Reading: ${feed.path}`);
+              const xmlContent = fs.readFileSync(feed.path, 'utf8');
+              const cleanedXml = escapeBareAmpersands(xmlContent);
+              let result = await parser.parseStringPromise(cleanedXml);
+              result = normalizeAndProcess(result);
+              fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
+              console.log(`✅ Saved: ${jsonPath}`);
+            } catch (error) {
+              console.error(`❌ Error processing ${feed.path}:`, error.message);
+              const fallback = { error: `Failed to read: ${error.message}`, timestamp: new Date().toISOString() };
+              fs.writeFileSync(jsonPath, JSON.stringify(fallback, null, 2));
+              console.log(`⚠️  Fallback written: ${jsonPath}`);
+            }
+          }
+          async function processAllFeeds() {
+            await Promise.all(feeds.map(feed => convertFeed(feed)));
+            console.log('All feeds processed!');
+          }
+          processAllFeeds();
+          EOF
+          node convert.js
+
+      - name: Clean old TTS files (to force regeneration)
+        run: rm -rf json/tts/
+
+      - name: Generate TTS + write tts URL into each JSON item
+        run: |
+          python - <<'EOF'
+          import os, json, re, subprocess, glob
+          from urllib.parse import quote
+
+          out_dir = "json/tts"
+          os.makedirs(out_dir, exist_ok=True)
+          json_files = sorted(glob.glob("json/*.json"))
+          base_url = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/tts/"
+
+          if not json_files:
+              print("No JSON files found in json/")
+              exit(0)
+
+          def clean_text(text):
+              return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
+
+          def sanitize_filename(title):
+              title = re.sub(r'[\\/*?:"<>|]', '', title)
+              title = re.sub(r'[-\s]+', '_', title)
+              title = title.strip('_.')
+              if len(title) > 50:
+                  title = title[:50]
+              return title or "untitled"
+
+          used_names = set()
+          mappings = {}   # (json_path, idx) -> mp3 filename
+
+          # ── Pass 1: generate audio, record filename per item ──────────────
+          for json_path in json_files:
+              print(f"\nProcessing {json_path}")
+              with open(json_path, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+
+              items = data.get('rss', {}).get('channel', {}).get('item', [])
+              if isinstance(items, dict):
+                  items = [items]
+              if not items:
+                  print(f"  No items in {json_path}, skipping.")
+                  continue
+
+              for idx, item in enumerate(items):
+                  desc = item.get('description', '')
+                  if not desc:
+                      print(f"  Item {idx}: no description, skipping")
+                      continue
+
+                  title = item.get('title', f'item_{idx:03d}')
+                  base_name = sanitize_filename(title)
+
+                  if base_name in used_names:
+                      counter = 1
+                      while f"{base_name}_{counter}" in used_names:
+                          counter += 1
+                      final_name = f"{base_name}_{counter}"
+                  else:
+                      final_name = base_name
+                  used_names.add(final_name)
+
+                  mp3_filename = f"{final_name}.mp3"
+                  filepath = os.path.join(out_dir, mp3_filename)
+                  print(f"  Generating: {filepath} (description length: {len(desc)})")
+                  clean_desc = clean_text(desc)[:5000] + ("..." if len(desc) > 5000 else "")
+
+                  try:
+                      subprocess.run([
+                          "edge-tts", "--text", clean_desc,
+                          "--write-media", filepath,
+                          "--voice", "en-US-JennyNeural"
+                      ], check=True, capture_output=True, text=True)
+                      print(f"  ✅ Generated: {filepath}")
+                      mappings[(json_path, idx)] = mp3_filename
+                  except subprocess.CalledProcessError as e:
+                      print(f"  ❌ Error for item {idx}: {e.stderr}")
+                      continue
+
+          # ── Pass 2: stamp `tts` URL back into every JSON item ─────────────
+          print("\n--- Writing tts URLs into JSON ---")
+          for json_path in json_files:
+              with open(json_path, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+
+              items = data.get('rss', {}).get('channel', {}).get('item', [])
+              if isinstance(items, dict):
+                  items = [items]
+              if not items:
+                  continue
+
+              for idx, item in enumerate(items):
+                  mp3 = mappings.get((json_path, idx))
+                  if mp3:
+                      item['tts'] = base_url + quote(mp3, safe='')
+
+              with open(json_path, 'w', encoding='utf-8') as f:
+                  json.dump(data, f, indent=2, ensure_ascii=False)
+              print(f"  ✅ Updated: {json_path}")
+          EOF
+
+      - name: Create translation script with timestamp
+        run: |
+          cat > translate_feeds.py << 'EOF'
+          import json, os, glob, time, re
+          from googletrans import Translator
+
+          SOURCE_DIR = 'json'
+          OUTPUT_DIR = 'json/translated'
+          TARGET_LANG = os.getenv('TARGET_LANG', 'es')
+          os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+          # googletrans (free API) has a ~5000-char request limit; 4000 is safe
+          MAX_CHUNK = 4000
+
+
+          def translate_text(text, translator, retries=3):
+              if not text or not isinstance(text, str):
+                  return text
+              stripped = text.strip()
+              if not stripped:
+                  return text
+
+              # If input has very little Latin text, it's probably already in
+              # the target language (or pure markup/symbols) — don't retry on
+              # "no change".
+              total_alpha = sum(1 for c in stripped if c.isalpha())
+              latin_alpha = sum(1 for c in stripped if c.isascii() and c.isalpha())
+              is_likely_translated = (
+                  total_alpha == 0
+                  or len(stripped) < 20
+                  or (latin_alpha / total_alpha) < 0.3
+              )
+
+              for attempt in range(retries):
+                  try:
+                      result = translator.translate(text, dest=TARGET_LANG)
+                      translated = result.text
+                      # Silent-failure detection (googletrans returns original
+                      # text when the request silently fails — e.g. rate limit
+                      # edge cases, or oversized payloads it can't handle)
+                      if (not is_likely_translated
+                              and translated.strip() == stripped
+                              and attempt < retries - 1):
+                          print(f"    ⚠️  Silent failure (unchanged), retry {attempt+1}/{retries}")
+                          time.sleep(2 ** attempt)
+                          continue
+                      return translated
+                  except Exception as e:
+                      print(f"    ❌ Translation error (attempt {attempt+1}/{retries}): {e}")
+                      time.sleep(2 ** attempt)
+              return text
+
+
+          def split_with_seps(text, max_len=MAX_CHUNK):
+              """Split text into (chunk, sep_after) tuples.
+
+              sep_after is the whitespace that followed the chunk — needed
+              because Google Translate strips leading/trailing whitespace from
+              its output.
+              Preference order: sentence boundaries → spaces → hard cut."""
+              if len(text) <= max_len:
+                  return [(text, '')]
+
+              result = []
+              remaining = text
+
+              while len(remaining) > max_len:
+                  window = remaining[:max_len]
+
+                  # 1. Sentence boundary: punctuation followed by whitespace
+                  matches = list(re.finditer(r'([.!?])(\s)', window))
+                  if matches and matches[-1].end() > max_len // 2:
+                      m = matches[-1]
+                      result.append((remaining[:m.end() - 1], m.group(2)))
+                      remaining = remaining[m.end():]
+                      continue
+
+                  # 2. Word boundary (space)
+                  space_pos = window.rfind(' ')
+                  if space_pos > max_len // 4:
+                      result.append((remaining[:space_pos], ' '))
+                      remaining = remaining[space_pos + 1:]
+                      continue
+
+                  # 3. Hard cut (last resort)
+                  result.append((remaining[:max_len], ''))
+                  remaining = remaining[max_len:]
+
+              if remaining:
+                  result.append((remaining, ''))
+              return result
+
+
+          def translate_long(text, translator):
+              """Translate text, chunking it if it exceeds MAX_CHUNK."""
+              if not text or not isinstance(text, str):
+                  return text
+              if len(text) <= MAX_CHUNK:
+                  return translate_text(text, translator)
+
+              # Split on <br> / <br/> / <br /> first — these are preserved in
+              # the output, and are a natural boundary in these feeds.
+              parts = re.split(r'(<br\s*/?>)', text, flags=re.IGNORECASE)
+
+              result = []
+              buffer = ''
+
+              for i, part in enumerate(parts):
+                  if i % 2 == 1:  # <br> separator
+                      for chunk, sep in split_with_seps(buffer, MAX_CHUNK):
+                          result.append(translate_text(chunk, translator) + sep)
+                      buffer = ''
+                      result.append(part)  # keep <br> verbatim
+                  else:  # text content
+                      buffer += part
+
+              if buffer:
+                  for chunk, sep in split_with_seps(buffer, MAX_CHUNK):
+                      result.append(translate_text(chunk, translator) + sep)
+
+              return ''.join(result)
+
+
+          def translate_feed(data, translator):
+              channel = data.get('rss', {}).get('channel', {})
+              if channel:
+                  if 'title' in channel:
+                      channel['title'] = translate_text(channel['title'], translator)
+                  if 'description' in channel:
+                      channel['description'] = translate_long(channel['description'], translator)
+
+                  items = channel.get('item', [])
+                  if isinstance(items, dict):
+                      items = [items]
+                      channel['item'] = items
+
+                  for idx, item in enumerate(items):
+                      if 'title' in item:
+                          item['title'] = translate_text(item['title'], translator)
+                      if 'description' in item:
+                          desc = item['description']
+                          if len(desc) > MAX_CHUNK:
+                              print(f"  Item {idx}: long description ({len(desc)} chars) → chunking")
+                          item['description'] = translate_long(desc, translator)
+                      time.sleep(0.3)
+              return data
+
+
+          def main():
+              if not os.path.isdir(SOURCE_DIR):
+                  print(f"Source folder '{SOURCE_DIR}' does not exist.")
+                  return
+              json_files = sorted(glob.glob(os.path.join(SOURCE_DIR, '*.json')))
+              if not json_files:
+                  print(f"No JSON files found in '{SOURCE_DIR}'.")
+                  return
+
+              translator = Translator()
+              for file_path in json_files:
+                  filename = os.path.basename(file_path)
+                  print(f"\n--- Processing: {filename} ---")
+                  with open(file_path, 'r', encoding='utf-8') as f:
+                      data = json.load(f)
+                  translated_data = translate_feed(data, translator)
+                  translated_data['_translated_at'] = time.strftime(
+                      '%Y-%m-%dT%H:%M:%SZ', time.gmtime()
+                  )
+                  output_path = os.path.join(OUTPUT_DIR, filename)
+                  with open(output_path, 'w', encoding='utf-8') as f:
+                      json.dump(translated_data, f, indent=2, ensure_ascii=False)
+                  print(f"  ✅ Saved to: {output_path}")
+              print("\nAll feeds translated successfully.")
+
+
+          if __name__ == "__main__":
+              main()
+          EOF
+
+      - name: Run translation
+        env:
+          TARGET_LANG: 'fa'
+        run: python translate_feeds.py
+
+      - name: Show git status (debug)
+        run: git status --porcelain
+
+      - name: Commit and push all changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "Update RSS, translations and TTS [skip ci]"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          push_options: '--force'
