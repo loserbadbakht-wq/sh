@@ -3,19 +3,20 @@ import sys
 import re
 import time
 import urllib.request
-import urllib.parse
 import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 from html.parser import HTMLParser
 
 # ----------------------------------------------------------------------
 # Proxy configuration
+#   Worker accepts direct-path targets, e.g.
+#   https://prox.loserbadbakht.workers.dev/https://game8.co/...
 # ----------------------------------------------------------------------
 PROXY_BASE = "https://prox.loserbadbakht.workers.dev"
 
 def proxify(url: str) -> str:
-    """Wrap a URL through the proxy worker (?url= query style)."""
-    return f"{PROXY_BASE}/{urllib.parse.quote(url, safe='')}"
+    """Prepend the proxy base to a raw target URL (direct-path style)."""
+    return f"{PROXY_BASE}/{url}"
 
 # ----------------------------------------------------------------------
 # Try to import requests-html (optional, used only for parsing HTML)
@@ -61,15 +62,11 @@ def strip_html(html):
 def fetch_page_with_js(url):
     """
     Fetch the archives page through the proxy.
-
-    Note: JS rendering via Chromium is intentionally skipped. A URL-forwarding
-    proxy cannot relay Chromium's requests for sub-resources (JS/CSS/images),
-    so render() would produce an empty / broken page. We fetch the static HTML
-    through the proxy instead, which is what the page's server-side markup
-    already provides.
+    JS rendering is intentionally skipped (a path-prefix proxy can't relay
+    Chromium's sub-resource requests), so we just fetch static HTML.
     """
     proxied_url = proxify(url)
-    print(f"🌐 Fetching via proxy: {proxied_url[:90]}...")
+    print(f"🌐 Fetching via proxy: {proxied_url[:110]}...")
 
     if HAS_REQUESTS_HTML:
         try:
