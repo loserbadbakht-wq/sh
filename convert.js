@@ -4,7 +4,9 @@ const parser = new xml2js.Parser({ explicitArray: false });
 const feeds = [
   { path: 'safebooru/safebooru-yuri-rss.xml', filename: 'safebooru-yuri-rss.json' },
   { path: 'notif/new1.xml', filename: 'new1.json' },
-  { path: 'notif/new2.xml', filename: 'new2.json' }
+  { path: 'notif/new2.xml', filename: 'new2.json' },
+  { path: 'notif/game8_feed.xml', filename: 'new3.json' }
+  
 ];
 
 // Escape bare '&' to '&amp;' so strict XML parsers don't choke on
