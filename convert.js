@@ -4,9 +4,9 @@ const parser = new xml2js.Parser({ explicitArray: false });
 const feeds = [
   { path: 'safebooru/safebooru-yuri-rss.xml', filename: 'safebooru-yuri-rss.json' },
   { path: 'notif/new1.xml', filename: 'new1.json' },
-  { path: 'notif/new2.xml', filename: 'new2.json' },
-  { path: 'notif/game8_feed.xml', filename: 'new3.json' }
-  
+  { path: 'notif/new2.xml', filename: 'new2.json' }
+  // Add more feeds here if needed, e.g.:
+  // { path: 'game8_feed.xml', filename: 'game8_feed.json' }
 ];
 
 // Escape bare '&' to '&amp;' so strict XML parsers don't choke on
@@ -22,15 +22,26 @@ function escapeBareAmpersands(xml) {
   }).join('');
 }
 
-// Move <img src="..."> out of description into a dedicated `image` field
+// Move ONLY the FIRST <img src="..."> out of description into a
+// dedicated `image` field. Any additional <img> tags remain in the
+// description untouched.
+//
+// The regex is intentionally NON-GLOBAL so `.match()` captures the
+// first image and `.replace()` strips only that first occurrence.
 function extractImageFromDescription(item) {
   if (!item || typeof item.description !== 'string') return item;
 
-  const imgRegex = /<img\b[^>]*\bsrc="([^"]+)"[^>]*\/?>/i;
+  // Handles src="..." and src='...', self-closing or not.
+  // Group 2 = double-quoted URL, Group 3 = single-quoted URL.
+  const imgRegex = /<img\b[^>]*?\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)')[^>]*\/?>/i;
   const match = item.description.match(imgRegex);
   if (!match) return item;
 
-  const imageUrl = match[1];
+  const imageUrl = match[1] !== undefined ? match[1] : match[2];
+  if (!imageUrl) return item;
+
+  // Remove ONLY the first matched <img> tag.
+  // Later <img> tags are preserved in the description.
   let newDesc = item.description.replace(imgRegex, '');
   newDesc = newDesc.replace(/^(?:\s|<br\s*\/?>)+/i, '').trim();
 

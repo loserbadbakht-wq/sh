@@ -10,9 +10,15 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 MAX_CHUNK = 4000
 
 
+def _safe_str(value, fallback):
+    """Return `value` if it's a non-empty str, else `fallback`."""
+    return value if isinstance(value, str) and value else fallback
+
+
 def translate_text(text, translator, retries=3):
     if not text or not isinstance(text, str):
-        return text
+        return _safe_str(text, "")
+
     stripped = text.strip()
     if not stripped:
         return text
@@ -31,7 +37,11 @@ def translate_text(text, translator, retries=3):
     for attempt in range(retries):
         try:
             result = translator.translate(text, dest=TARGET_LANG)
-            translated = result.text
+            # Guard against None results from failed API calls
+            translated = getattr(result, 'text', None)
+            if not isinstance(translated, str):
+                translated = text
+
             # Silent-failure detection (googletrans returns original
             # text when the request silently fails — e.g. rate limit
             # edge cases, or oversized payloads it can't handle)
@@ -45,7 +55,9 @@ def translate_text(text, translator, retries=3):
         except Exception as e:
             print(f"    ❌ Translation error (attempt {attempt+1}/{retries}): {e}")
             time.sleep(2 ** attempt)
-    return text
+
+    # Never return None — downstream ''.join() requires strings
+    return _safe_str(text, "")
 
 
 def split_with_seps(text, max_len=MAX_CHUNK):
@@ -91,7 +103,7 @@ def split_with_seps(text, max_len=MAX_CHUNK):
 def translate_long(text, translator):
     """Translate text, chunking it if it exceeds MAX_CHUNK."""
     if not text or not isinstance(text, str):
-        return text
+        return _safe_str(text, "")
     if len(text) <= MAX_CHUNK:
         return translate_text(text, translator)
 
@@ -103,8 +115,11 @@ def translate_long(text, translator):
     buffer = ''
 
     for i, part in enumerate(parts):
+        if part is None:
+            continue
         if i % 2 == 1:  # <br> separator
             for chunk, sep in split_with_seps(buffer, MAX_CHUNK):
+                # translate_text is guaranteed to return a str
                 result.append(translate_text(chunk, translator) + sep)
             buffer = ''
             result.append(part)  # keep <br> verbatim
@@ -136,7 +151,7 @@ def translate_feed(data, translator):
                 item['title'] = translate_text(item['title'], translator)
             if 'description' in item:
                 desc = item['description']
-                if len(desc) > MAX_CHUNK:
+                if isinstance(desc, str) and len(desc) > MAX_CHUNK:
                     print(f"  Item {idx}: long description ({len(desc)} chars) → chunking")
                 item['description'] = translate_long(desc, translator)
             time.sleep(0.3)
