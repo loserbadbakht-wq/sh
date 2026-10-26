@@ -4,7 +4,6 @@ import re
 import time
 import urllib.request
 import urllib.parse
-import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 from html.parser import HTMLParser
 from html import unescape as html_unescape
@@ -12,7 +11,7 @@ from email.utils import formatdate
 import datetime
 
 # ----------------------------------------------------------------------
-# Proxy configuration (direct-path style)
+# Proxy (direct-path style)
 # ----------------------------------------------------------------------
 PROXY_BASE = "https://prox.loserbadbakht.workers.dev"
 
@@ -22,7 +21,6 @@ def proxify(url):
 
 
 def deproxify(url):
-    """Strip our proxy prefix from a URL if present."""
     if url.startswith(PROXY_BASE + '/'):
         return url[len(PROXY_BASE) + 1:]
     return url
@@ -32,7 +30,7 @@ def deproxify(url):
 # Configuration
 # ----------------------------------------------------------------------
 LISTING_URL = "https://game8.co/articles/latest"
-MAX_ITEMS = 15
+MAX_ITEMS = 20
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
@@ -47,7 +45,6 @@ class MLStripper(HTMLParser):
     def __init__(self):
         super().__init__()
         self.reset()
-        self.strict = False
         self.convert_charrefs = True
         self.text = []
 
@@ -67,21 +64,18 @@ def strip_html(html):
 
 
 def fetch(url):
-    """Fetch URL via the proxy and return decoded HTML."""
-    proxied = proxify(url)
-    req = urllib.request.Request(proxied, headers=HEADERS)
+    req = urllib.request.Request(proxify(url), headers=HEADERS)
     with urllib.request.urlopen(req, timeout=30) as response:
         return response.read().decode('utf-8', errors='ignore')
 
 
 def extract_meta(html, name):
-    patterns = [
+    for p in (
         rf'<meta[^>]*name="{re.escape(name)}"[^>]*content="([^"]*)"',
         rf'<meta[^>]*content="([^"]*)"[^>]*name="{re.escape(name)}"',
         rf'<meta[^>]*property="{re.escape(name)}"[^>]*content="([^"]*)"',
         rf'<meta[^>]*content="([^"]*)"[^>]*property="{re.escape(name)}"',
-    ]
-    for p in patterns:
+    ):
         m = re.search(p, html, re.IGNORECASE)
         if m:
             return html_unescape(m.group(1))
@@ -109,7 +103,6 @@ def extract_title(html):
 
 
 def extract_published_date(html):
-    """Return RFC-2822 date string or None."""
     m = re.search(r'"datePublished"\s*:\s*"([^"]+)"', html)
     if not m:
         return None
@@ -126,8 +119,48 @@ def extract_published_date(html):
     return None
 
 
-def extract_article_body(html):
-    """Extract the main article text from a Game8 article page."""
+# ----------------------------------------------------------------------
+# Table helpers (NEW)
+# ----------------------------------------------------------------------
+def clean_cell_content(cell_html):
+    """Strip images / anchors / formatting tags from a cell, keep text."""
+    cell_html = re.sub(r'<img[^>]*>', '', cell_html, flags=re.IGNORECASE)
+    cell_html = re.sub(r'</?a[^>]*>', '', cell_html, flags=re.IGNORECASE)
+    cell_html = re.sub(r'<br\s*/?>', '<br>', cell_html, flags=re.IGNORECASE)
+    cell_html = re.sub(r'<(?!br>)[^>]+>', '', cell_html, flags=re.IGNORECASE)
+    cell_html = html_unescape(cell_html)
+    cell_html = re.sub(r'[ \t\r\n]+', ' ', cell_html)
+    return cell_html.strip()
+
+
+def emit_table(table_html):
+    """Convert <table>...</table> to a clean HTML table preserving structure."""
+    rows_out = []
+    for tr_match in re.finditer(
+        r'<tr[^>]*>(.*?)</tr>',
+        table_html, re.DOTALL | re.IGNORECASE
+    ):
+        cells = []
+        for cell_match in re.finditer(
+            r'<(td|th)(?:\s[^>]*)?>(.*?)</\1>',
+            tr_match.group(1), re.DOTALL | re.IGNORECASE
+        ):
+            cell_type = cell_match.group(1).lower()
+            content = clean_cell_content(cell_match.group(2))
+            if not content:
+                content = '&nbsp;'
+            cells.append(f'<{cell_type}>{content}</{cell_type}>')
+        if cells:
+            rows_out.append('<tr>' + ''.join(cells) + '</tr>')
+    if not rows_out:
+        return ''
+    return '<table>' + ''.join(rows_out) + '</table><br><br>'
+
+
+# ----------------------------------------------------------------------
+# Article body -> HTML (tables preserved)
+# ----------------------------------------------------------------------
+def extract_article_body_html(html):
     m = re.search(
         r'<div[^>]*class="[^"]*p-articleBody[^"]*article-style-wrapper[^"]*"[^>]*>(.*)',
         html, re.DOTALL | re.IGNORECASE
@@ -136,121 +169,175 @@ def extract_article_body(html):
         return ""
     body = m.group(1)
 
-    # Cut off trailing boilerplate sections
-    for cutoff in (
-        r'<h2[^>]*>\s*You may also like\s*</h2>',
-        r'<div[^>]*class="[^"]*p-articleComment[^"]*"',
-        r'<div[^>]*class="[^"]*p-articleBottom_share[^"]*"',
-        r'<div[^>]*class="[^"]*p-article__author[^"]*"',
+    # Hard cutoff: "You may also like…" and trailing boilerplate
+    cm = re.search(r'<h2[^>]*>[^<]*You may also like', body, re.IGNORECASE)
+    if cm:
+        body = body[:cm.start()]
+
+    for pattern in (
+        r'<div[^>]*class="[^"]*p-articleComment',
+        r'<div[^>]*class="[^"]*p-articleBottom_share',
+        r'<div[^>]*class="[^"]*p-article__author',
+        r'<table[^>]*>\s*<tbody>\s*<tr>\s*<td[^>]*width="30%"',
         r'</article>',
     ):
-        cm = re.search(cutoff, body, re.IGNORECASE | re.DOTALL)
+        cm = re.search(pattern, body, re.IGNORECASE)
         if cm:
             body = body[:cm.start()]
 
-    parts = []
-    for elem in re.finditer(
+    # Find all tables and record their spans (defensive: skip blocks inside)
+    table_matches = list(re.finditer(
+        r'<table[^>]*>.*?</table>', body, re.DOTALL | re.IGNORECASE
+    ))
+    table_spans = [(tm.start(), tm.end()) for tm in table_matches]
+
+    def in_table(pos):
+        return any(s <= pos < e for s, e in table_spans)
+
+    # Collect tables + blocks as ordered events
+    events = [(tm.start(), 'table', tm) for tm in table_matches]
+    for em in re.finditer(
         r'<(h2|h3|p|li)(?:\s[^>]*)?>(.*?)</\1>',
         body, re.DOTALL | re.IGNORECASE
     ):
-        tag = elem.group(1).lower()
-        text = strip_html(elem.group(2)).strip()
-        text = re.sub(r'\s+', ' ', text)
-        if not text:
+        if in_table(em.start()):
             continue
+        events.append((em.start(), 'block', em))
+    events.sort(key=lambda x: x[0])
+
+    out = []
+    in_list = False
+
+    for _, kind, match in events:
+        # --- table ---
+        if kind == 'table':
+            table_html = emit_table(match.group(0))
+            if table_html:
+                if in_list:
+                    out.append('</ul><br><br>')
+                    in_list = False
+                out.append(table_html)
+            continue
+
+        # --- block ---
+        tag = match.group(1).lower()
+        inner = match.group(2)
+
+        inner = re.sub(r'<img[^>]*>', '', inner, flags=re.IGNORECASE)
+        inner = re.sub(r'</?a[^>]*>', '', inner, flags=re.IGNORECASE)
+        inner = re.sub(r'<br\s*/?>', '<br>', inner, flags=re.IGNORECASE)
+        inner = re.sub(r'<(?!br>)[^>]+>', '', inner, flags=re.IGNORECASE)
+        inner = html_unescape(inner)
+
+        inner = re.sub(r'[ \t]+', ' ', inner)
+        inner = re.sub(r'(?:<br>\s*){3,}', '<br><br>', inner)
+        inner = inner.strip()
+        inner = re.sub(r'^(?:<br>)+', '', inner)
+        inner = re.sub(r'(?:<br>)+$', '', inner)
+
+        if not inner:
+            continue
+
+        if tag == 'li':
+            if not in_list:
+                out.append('<ul>')
+                in_list = True
+            out.append(f'<li>{inner}</li>')
+            continue
+
+        if in_list:
+            out.append('</ul><br><br>')
+            in_list = False
+
         if tag == 'h2':
-            parts.append(f"\n\n## {text}\n")
+            out.append(f'<h2>{inner}</h2><br><br>')
         elif tag == 'h3':
-            parts.append(f"\n\n### {text}\n")
-        elif tag == 'li':
-            parts.append(f"\n- {text}")
+            out.append(f'<h3>{inner}</h3><br><br>')
         else:
-            parts.append(f"\n{text}")
+            out.append(f'{inner}<br><br>')
 
-    return '\n'.join(parts).strip()
+    if in_list:
+        out.append('</ul>')
+
+    return ''.join(out).strip()
 
 
 # ----------------------------------------------------------------------
-# Listing extraction
+# Listing extraction (unchanged)
 # ----------------------------------------------------------------------
-# The main body of the article body starts before this heading.
-# Anything after should be dropped.
-LISTING_PAGES = {
-    '/articles/latest', '/articles/featured', '/articles/reviews',
-    '/articles/release-dates', '/articles/game-sales', '/articles/games',
-}
-ARTICLE_PATH_RE = re.compile(
-    r'^/articles/(latest|featured|reviews|release-dates|game-sales|games)/[^/]+'
-)
+def truncate_at(html, pattern):
+    m = re.search(pattern, html, re.IGNORECASE)
+    return html[:m.start()] if m else html
 
 
-def extract_articles_from_listing(html):
+def extract_main_column(html):
+    m = re.search(
+        r'<div[^>]*class="[^"]*\bl-2col__main__article\b[^"]*"[^>]*>',
+        html, re.IGNORECASE
+    )
+    if not m:
+        return ""
+    main = html[m.end():]
+
+    right = re.search(
+        r'<div[^>]*class="[^"]*\bl-2col__right\b[^"]*"[^>]*>',
+        main, re.IGNORECASE
+    )
+    if right:
+        main = main[:right.start()]
+
+    main = truncate_at(main, r'<div[^>]*class="[^"]*\bp-articleFooter\b')
+    main = truncate_at(main, r'<footer[^>]*class="[^"]*l-footer')
+    return main
+
+
+def extract_latest_articles(html):
+    main = extract_main_column(html)
+    if not main:
+        return []
+
     articles = []
     seen = set()
 
-    def maybe_add(url, title_html):
-        original_url = deproxify(url)
-        path = urllib.parse.urlparse(original_url).path
+    for m in re.finditer(
+        r'<li[^>]*class="[^"]*\bp-articleListItem\b[^"]*"[^>]*>(.*?)</li>',
+        main, re.DOTALL | re.IGNORECASE
+    ):
+        item = m.group(1)
 
-        if not ARTICLE_PATH_RE.match(path):
-            return
-        if path.rstrip('/') in LISTING_PAGES:
-            return
-        if '/articles/author/' in path:
-            return
+        title_match = re.search(
+            r'<h3[^>]*class="[^"]*\bp-articleListItem__title\b[^"]*"[^>]*>\s*'
+            r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
+            item, re.DOTALL | re.IGNORECASE
+        )
+        if not title_match:
+            continue
 
-        title = strip_html(title_html).strip()
+        url = deproxify(title_match.group(1).strip())
+        title = strip_html(title_match.group(2)).strip()
         title = re.sub(r'\s+', ' ', title)
-        title = re.sub(r'[＞>»]+\s*$', '', title).strip()
 
-        if len(title) < 10:
-            return
-        if original_url in seen:
-            return
-        seen.add(original_url)
-        articles.append({'url': original_url, 'title': title})
-
-    # Pattern A: <div class="p-articleListFootline__title"><a href="URL">TITLE</a>
-    for m in re.finditer(
-        r'<div[^>]*class="[^"]*p-articleListFootline__title[^"]*"[^>]*>\s*'
-        r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
-        html, re.DOTALL | re.IGNORECASE
-    ):
-        maybe_add(m.group(1), m.group(2))
-
-    # Pattern B: <a href="URL" ...> ... <p class="c-sideArticleList__item_title">TITLE</p>
-    for m in re.finditer(
-        r'<a[^>]*href="([^"]+)"[^>]*>(?:(?!</a>).)*?'
-        r'<p[^>]*class="[^"]*c-sideArticleList__item_title[^"]*"[^>]*>(.*?)</p>',
-        html, re.DOTALL | re.IGNORECASE
-    ):
-        maybe_add(m.group(1), m.group(2))
-
-    # Pattern C: any anchor pointing to an article detail URL
-    for m in re.finditer(
-        r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
-        html, re.DOTALL | re.IGNORECASE
-    ):
-        url = m.group(1)
-        inner = m.group(2)
-
-        # Skip image-only anchors
-        if '<img' in inner.lower() and not re.search(r'>[^<]{10,}<', inner):
+        if not url.startswith('https://game8.co/'):
             continue
-        # Skip giant container anchors
-        if len(inner) > 500:
+        if url in seen or len(title) < 10:
             continue
 
-        maybe_add(url, inner)
+        lead_match = re.search(
+            r'<p[^>]*class="[^"]*\bp-articleListItem__lead\b[^"]*"[^>]*>(.*?)</p>',
+            item, re.DOTALL | re.IGNORECASE
+        )
+        lead = strip_html(lead_match.group(1)).strip() if lead_match else ""
+
+        seen.add(url)
+        articles.append({'url': url, 'title': title, 'lead': lead})
 
     return articles
 
 
 # ----------------------------------------------------------------------
-# RSS generation
+# RSS
 # ----------------------------------------------------------------------
 def cdata(text):
-    """Wrap in CDATA, escaping any nested CDATA terminators."""
     return "<![CDATA[" + text.replace("]]>", "]]]]><![CDATA[>") + "]]>"
 
 
@@ -267,11 +354,10 @@ def generate_rss(items):
         rss += f"\n    <title>{escape(item['title'])}</title>"
         rss += f"\n    <link>{escape(item['link'])}</link>"
         rss += f"\n    <guid isPermaLink=\"true\">{escape(item['link'])}</guid>"
-        if item.get('description'):
-            rss += f"\n    <description>{escape(item['description'])}</description>"
         if item.get('pubDate'):
             rss += f"\n    <pubDate>{item['pubDate']}</pubDate>"
         if item.get('content'):
+            rss += f"\n    <description>{cdata(item['content'])}</description>"
             rss += f"\n    <content:encoded>{cdata(item['content'])}</content:encoded>"
         rss += "\n</item>"
     rss += '\n</channel>\n</rss>'
@@ -282,25 +368,26 @@ def generate_rss(items):
 # Main
 # ----------------------------------------------------------------------
 def main():
-    print(f"🔍 Fetching listing page: {LISTING_URL}")
+    print(f"🔍 Fetching listing: {LISTING_URL}")
     try:
         listing_html = fetch(LISTING_URL)
     except Exception as e:
-        print(f"❌ Failed to fetch listing page: {e}")
+        print(f"❌ Failed to fetch listing: {e}")
         sys.exit(1)
 
-    print("📋 Extracting article links...")
-    articles = extract_articles_from_listing(listing_html)
+    print("📋 Extracting latest list (main content only)...")
+    articles = extract_latest_articles(listing_html)
 
     if not articles:
-        print("❌ No articles found. The listing markup may have changed.")
+        print("❌ No articles found in the main list.")
         sys.exit(1)
 
     print(f"📊 Found {len(articles)} articles, fetching up to {MAX_ITEMS}")
 
     items = []
+    limit = min(len(articles), MAX_ITEMS)
     for i, art in enumerate(articles[:MAX_ITEMS], 1):
-        print(f"🔄 [{i}/{min(len(articles), MAX_ITEMS)}] {art['title'][:70]}...")
+        print(f"🔄 [{i}/{limit}] {art['title'][:70]}...")
         try:
             article_html = fetch(art['url'])
         except Exception as e:
@@ -308,19 +395,24 @@ def main():
             continue
 
         title = extract_title(article_html) or art['title']
-        description = extract_meta(article_html, 'description') or ""
         pub_date = extract_published_date(article_html)
-        body = extract_article_body(article_html)
+
+        body_html = extract_article_body_html(article_html)
+        if not body_html:
+            meta_desc = extract_meta(article_html, 'description')
+            if meta_desc:
+                body_html = escape(meta_desc)
+            elif art.get('lead'):
+                body_html = escape(art['lead'])
 
         items.append({
             'title': title,
             'link': art['url'],
-            'description': description,
-            'content': body,
+            'content': body_html,
             'pubDate': pub_date,
         })
 
-        if i < min(len(articles), MAX_ITEMS):
+        if i < limit:
             time.sleep(1)
 
     print(f"✅ Processed {len(items)} items")
@@ -332,10 +424,10 @@ def main():
             os.remove(filename)
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(generate_rss(items))
-        print('✅ Game8 RSS generated successfully.')
-        print(f'📁 Output file: {filename}')
+        print('✅ RSS generated.')
+        print(f'📁 {filename}')
     except Exception as e:
-        print(f'❌ Failed: {e}')
+        print(f'❌ Failed to write: {e}')
         sys.exit(1)
 
 
