@@ -3,42 +3,47 @@ import sys
 import re
 import time
 import urllib.request
+import urllib.parse
 import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 from html.parser import HTMLParser
+from html import unescape as html_unescape
+from email.utils import formatdate
+import datetime
 
 # ----------------------------------------------------------------------
-# Proxy configuration
-#   Worker accepts direct-path targets, e.g.
-#   https://prox.loserbadbakht.workers.dev/https://game8.co/...
+# Proxy configuration (direct-path style)
 # ----------------------------------------------------------------------
 PROXY_BASE = "https://prox.loserbadbakht.workers.dev"
 
-def proxify(url: str) -> str:
-    """Prepend the proxy base to a raw target URL (direct-path style)."""
+
+def proxify(url):
     return f"{PROXY_BASE}/{url}"
 
-# ----------------------------------------------------------------------
-# Try to import requests-html (optional, used only for parsing HTML)
-# ----------------------------------------------------------------------
-try:
-    from requests_html import HTMLSession
-    HAS_REQUESTS_HTML = True
-except ImportError:
-    HAS_REQUESTS_HTML = False
-    print("⚠️ requests-html not installed. Install with: pip install requests-html")
-    print("⚠️ Falling back to static HTML parsing (may not get all articles).")
+
+def deproxify(url):
+    """Strip our proxy prefix from a URL if present."""
+    if url.startswith(PROXY_BASE + '/'):
+        return url[len(PROXY_BASE) + 1:]
+    return url
+
 
 # ----------------------------------------------------------------------
 # Configuration
 # ----------------------------------------------------------------------
-ARCHIVE_URL = "https://game8.co/games/Genshin-Impact/archives"
-MAX_ITEMS = 15  # Number of articles to include
+LISTING_URL = "https://game8.co/articles/latest"
+MAX_ITEMS = 15
 
-items_data = []
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                  '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+}
 
+
+# ----------------------------------------------------------------------
+# HTML helpers
+# ----------------------------------------------------------------------
 class MLStripper(HTMLParser):
-    """Simple HTML stripper to get plain text from HTML content."""
     def __init__(self):
         super().__init__()
         self.reset()
@@ -52,209 +57,273 @@ class MLStripper(HTMLParser):
     def get_data(self):
         return ''.join(self.text)
 
+
 def strip_html(html):
     if not html:
         return ""
     s = MLStripper()
     s.feed(html)
-    return s.get_data().strip()
+    return html_unescape(s.get_data()).strip()
 
-def fetch_page_with_js(url):
-    """
-    Fetch the archives page through the proxy.
-    JS rendering is intentionally skipped (a path-prefix proxy can't relay
-    Chromium's sub-resource requests), so we just fetch static HTML.
-    """
-    proxied_url = proxify(url)
-    print(f"🌐 Fetching via proxy: {proxied_url[:110]}...")
 
-    if HAS_REQUESTS_HTML:
-        try:
-            session = HTMLSession()
-            response = session.get(proxied_url, timeout=30)
-            return response.html.html
-        except Exception as e:
-            print(f"⚠️ requests-html fetch failed: {e}")
-            print("⚠️ Falling back to urllib through proxy...")
-
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-                      '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-    }
-    req = urllib.request.Request(proxied_url, headers=headers)
+def fetch(url):
+    """Fetch URL via the proxy and return decoded HTML."""
+    proxied = proxify(url)
+    req = urllib.request.Request(proxied, headers=HEADERS)
     with urllib.request.urlopen(req, timeout=30) as response:
         return response.read().decode('utf-8', errors='ignore')
 
-def fetch_full_page_content(url):
-    """Fetch article page through the proxy and extract full plain text."""
-    try:
-        proxied_url = proxify(url)
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-                          '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        }
-        req = urllib.request.Request(proxied_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=30) as response:
-            content = response.read().decode('utf-8', errors='ignore')
 
-            content = re.sub(r'<script.*?>.*?</script>', '', content, flags=re.DOTALL | re.IGNORECASE)
-            content = re.sub(r'<style.*?>.*?</style>', '', content, flags=re.DOTALL | re.IGNORECASE)
+def extract_meta(html, name):
+    patterns = [
+        rf'<meta[^>]*name="{re.escape(name)}"[^>]*content="([^"]*)"',
+        rf'<meta[^>]*content="([^"]*)"[^>]*name="{re.escape(name)}"',
+        rf'<meta[^>]*property="{re.escape(name)}"[^>]*content="([^"]*)"',
+        rf'<meta[^>]*content="([^"]*)"[^>]*property="{re.escape(name)}"',
+    ]
+    for p in patterns:
+        m = re.search(p, html, re.IGNORECASE)
+        if m:
+            return html_unescape(m.group(1))
+    return ""
 
-            paragraphs = re.findall(r'<p.*?>(.*?)</p>', content, re.DOTALL | re.IGNORECASE)
 
-            if paragraphs:
-                full_text = ' '.join(strip_html(p) for p in paragraphs)
-                full_text = re.sub(r'\s+', ' ', full_text).strip()
-                full_text = re.sub(r'\bGame8\b.*?(?:\n|$)', '', full_text)
-                return full_text
-            else:
-                full_text = strip_html(content)
-                full_text = re.sub(r'\s+', ' ', full_text).strip()
-                return full_text
+def extract_title(html):
+    m = re.search(
+        r'<h1[^>]*class="[^"]*p-articleCover__title[^"]*"[^>]*>(.*?)</h1>',
+        html, re.DOTALL | re.IGNORECASE
+    )
+    if m:
+        t = strip_html(m.group(1)).strip()
+        if t:
+            return t
 
-    except Exception as e:
-        print(f"⚠️ Could not fetch {url}: {e}")
-        return "Content unavailable"
+    t = extract_meta(html, 'og:title')
+    if t:
+        return t.split('｜')[0].strip()
 
-def extract_articles_from_html(html):
-    """Extract article titles, links, and descriptions from the archives page."""
-    article_pattern = r'<a\s+(?:[^>]*?\s+)?href="(/games/Genshin-Impact/archives/[^"]+)"[^>]*>(.*?)</a>'
-    title_pattern = r'<h[2-3][^>]*>(.*?)</h[2-3]>'
+    m = re.search(r'<title>(.*?)</title>', html, re.DOTALL | re.IGNORECASE)
+    if m:
+        return strip_html(m.group(1)).split('｜')[0].strip()
+    return ""
 
-    links = re.findall(article_pattern, html, re.DOTALL | re.IGNORECASE)
-    headings = re.findall(title_pattern, html, re.DOTALL | re.IGNORECASE)
 
-    if not links:
-        all_links = re.findall(
-            r'<a\s+(?:[^>]*?\s+)?href="([^"]+)"[^>]*>(.*?)</a>',
-            html, re.DOTALL | re.IGNORECASE
-        )
-        links = [(u, t) for u, t in all_links if '/archives/' in u and 'games/Genshin-Impact' in u]
+def extract_published_date(html):
+    """Return RFC-2822 date string or None."""
+    m = re.search(r'"datePublished"\s*:\s*"([^"]+)"', html)
+    if not m:
+        return None
+    raw = m.group(1)
+    for fmt in ("%Y-%m-%d %H:%M:%S %z", "%Y-%m-%dT%H:%M:%S%z",
+                "%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m-%d"):
+        try:
+            dt = datetime.datetime.strptime(raw, fmt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=datetime.timezone.utc)
+            return formatdate(dt.timestamp(), usegmt=True)
+        except ValueError:
+            continue
+    return None
 
-    card_pattern = r'<div[^>]*class="[^"]*article[^"]*"[^>]*>.*?<a\s+href="([^"]+)"[^>]*>(.*?)</a>.*?</div>'
-    card_matches = re.findall(card_pattern, html, re.DOTALL | re.IGNORECASE)
-    if card_matches:
-        links = card_matches
 
-    seen = set()
-    unique_links = []
-    for url, text in links:
-        if url not in seen:
-            seen.add(url)
-            unique_links.append((url, text))
-    links = unique_links
+def extract_article_body(html):
+    """Extract the main article text from a Game8 article page."""
+    m = re.search(
+        r'<div[^>]*class="[^"]*p-articleBody[^"]*article-style-wrapper[^"]*"[^>]*>(.*)',
+        html, re.DOTALL | re.IGNORECASE
+    )
+    if not m:
+        return ""
+    body = m.group(1)
 
-    base_url = "https://game8.co"
+    # Cut off trailing boilerplate sections
+    for cutoff in (
+        r'<h2[^>]*>\s*You may also like\s*</h2>',
+        r'<div[^>]*class="[^"]*p-articleComment[^"]*"',
+        r'<div[^>]*class="[^"]*p-articleBottom_share[^"]*"',
+        r'<div[^>]*class="[^"]*p-article__author[^"]*"',
+        r'</article>',
+    ):
+        cm = re.search(cutoff, body, re.IGNORECASE | re.DOTALL)
+        if cm:
+            body = body[:cm.start()]
+
+    parts = []
+    for elem in re.finditer(
+        r'<(h2|h3|p|li)(?:\s[^>]*)?>(.*?)</\1>',
+        body, re.DOTALL | re.IGNORECASE
+    ):
+        tag = elem.group(1).lower()
+        text = strip_html(elem.group(2)).strip()
+        text = re.sub(r'\s+', ' ', text)
+        if not text:
+            continue
+        if tag == 'h2':
+            parts.append(f"\n\n## {text}\n")
+        elif tag == 'h3':
+            parts.append(f"\n\n### {text}\n")
+        elif tag == 'li':
+            parts.append(f"\n- {text}")
+        else:
+            parts.append(f"\n{text}")
+
+    return '\n'.join(parts).strip()
+
+
+# ----------------------------------------------------------------------
+# Listing extraction
+# ----------------------------------------------------------------------
+# The main body of the article body starts before this heading.
+# Anything after should be dropped.
+LISTING_PAGES = {
+    '/articles/latest', '/articles/featured', '/articles/reviews',
+    '/articles/release-dates', '/articles/game-sales', '/articles/games',
+}
+ARTICLE_PATH_RE = re.compile(
+    r'^/articles/(latest|featured|reviews|release-dates|game-sales|games)/[^/]+'
+)
+
+
+def extract_articles_from_listing(html):
     articles = []
+    seen = set()
 
-    for url, title_text in links:
-        title = strip_html(title_text).strip()
+    def maybe_add(url, title_html):
+        original_url = deproxify(url)
+        path = urllib.parse.urlparse(original_url).path
+
+        if not ARTICLE_PATH_RE.match(path):
+            return
+        if path.rstrip('/') in LISTING_PAGES:
+            return
+        if '/articles/author/' in path:
+            return
+
+        title = strip_html(title_html).strip()
         title = re.sub(r'\s+', ' ', title)
+        title = re.sub(r'[＞>»]+\s*$', '', title).strip()
 
-        if len(title) < 3 or title.lower() in ['home', 'games', 'search', 'login', 'sign up']:
+        if len(title) < 10:
+            return
+        if original_url in seen:
+            return
+        seen.add(original_url)
+        articles.append({'url': original_url, 'title': title})
+
+    # Pattern A: <div class="p-articleListFootline__title"><a href="URL">TITLE</a>
+    for m in re.finditer(
+        r'<div[^>]*class="[^"]*p-articleListFootline__title[^"]*"[^>]*>\s*'
+        r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
+        html, re.DOTALL | re.IGNORECASE
+    ):
+        maybe_add(m.group(1), m.group(2))
+
+    # Pattern B: <a href="URL" ...> ... <p class="c-sideArticleList__item_title">TITLE</p>
+    for m in re.finditer(
+        r'<a[^>]*href="([^"]+)"[^>]*>(?:(?!</a>).)*?'
+        r'<p[^>]*class="[^"]*c-sideArticleList__item_title[^"]*"[^>]*>(.*?)</p>',
+        html, re.DOTALL | re.IGNORECASE
+    ):
+        maybe_add(m.group(1), m.group(2))
+
+    # Pattern C: any anchor pointing to an article detail URL
+    for m in re.finditer(
+        r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
+        html, re.DOTALL | re.IGNORECASE
+    ):
+        url = m.group(1)
+        inner = m.group(2)
+
+        # Skip image-only anchors
+        if '<img' in inner.lower() and not re.search(r'>[^<]{10,}<', inner):
+            continue
+        # Skip giant container anchors
+        if len(inner) > 500:
             continue
 
-        full_url = url if url.startswith('http') else base_url + url
-
-        desc_pattern = f'<a[^>]*href="{re.escape(url)}"[^>]*>.*?</a>\\s*(?:<[^>]+>)*\\s*([^<]+)'
-        desc_matches = re.findall(desc_pattern, html, re.DOTALL | re.IGNORECASE)
-        description = desc_matches[0].strip() if desc_matches else title
-
-        articles.append({
-            'title': title,
-            'link': full_url,
-            'description': strip_html(description)
-        })
+        maybe_add(url, inner)
 
     return articles
 
-def generate_rss():
-    rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
-<channel>
-<title>Game8 Genshin Impact Guides</title>
-<link>{ARCHIVE_URL}</link>
-<description>Latest Genshin Impact guides and walkthroughs from Game8</description>
-"""
-    for item in items_data:
-        safe_title = escape(item['title'])
-        safe_link = escape(item['link'])
-        safe_description = escape(item['description'])
 
-        rss += f"""
-<item>
-    <title>{safe_title}</title>
-    <link>{safe_link}</link>
-    <description>{safe_description}</description>
-</item>"""
+# ----------------------------------------------------------------------
+# RSS generation
+# ----------------------------------------------------------------------
+def cdata(text):
+    """Wrap in CDATA, escaping any nested CDATA terminators."""
+    return "<![CDATA[" + text.replace("]]>", "]]]]><![CDATA[>") + "]]>"
+
+
+def generate_rss(items):
+    rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+<title>Game8 Latest Articles</title>
+<link>{LISTING_URL}</link>
+<description>Latest gaming news and articles from Game8</description>
+"""
+    for item in items:
+        rss += "\n<item>"
+        rss += f"\n    <title>{escape(item['title'])}</title>"
+        rss += f"\n    <link>{escape(item['link'])}</link>"
+        rss += f"\n    <guid isPermaLink=\"true\">{escape(item['link'])}</guid>"
+        if item.get('description'):
+            rss += f"\n    <description>{escape(item['description'])}</description>"
+        if item.get('pubDate'):
+            rss += f"\n    <pubDate>{item['pubDate']}</pubDate>"
+        if item.get('content'):
+            rss += f"\n    <content:encoded>{cdata(item['content'])}</content:encoded>"
+        rss += "\n</item>"
     rss += '\n</channel>\n</rss>'
     return rss
 
+
+# ----------------------------------------------------------------------
+# Main
+# ----------------------------------------------------------------------
 def main():
-    global items_data
-
-    print("🔍 Fetching Game8 Genshin Impact archives (via proxy)...")
-
-    html_content = fetch_page_with_js(ARCHIVE_URL)
-
-    if not html_content:
-        print("❌ Failed to fetch page content.")
+    print(f"🔍 Fetching listing page: {LISTING_URL}")
+    try:
+        listing_html = fetch(LISTING_URL)
+    except Exception as e:
+        print(f"❌ Failed to fetch listing page: {e}")
         sys.exit(1)
 
-    print("📋 Extracting articles from page...")
-    articles = extract_articles_from_html(html_content)
+    print("📋 Extracting article links...")
+    articles = extract_articles_from_listing(listing_html)
 
     if not articles:
-        print("⚠️ No articles found. Trying alternative extraction method...")
-        all_links = re.findall(
-            r'<a\s+href="(/games/Genshin-Impact/archives/[^"]+)"[^>]*>([^<]+)</a>',
-            html_content
-        )
-        for url, title in all_links:
-            if title.strip() and len(title.strip()) > 3:
-                full_url = "https://game8.co" + url
-                articles.append({
-                    'title': title.strip(),
-                    'link': full_url,
-                    'description': title.strip()
-                })
-
-    if not articles:
-        print("❌ Still no articles found. The proxy may be blocking or the page changed.")
+        print("❌ No articles found. The listing markup may have changed.")
         sys.exit(1)
 
-    print(f"📊 Found {len(articles)} articles")
+    print(f"📊 Found {len(articles)} articles, fetching up to {MAX_ITEMS}")
 
-    processed = 0
-    for article in articles:
-        if processed >= MAX_ITEMS:
-            break
+    items = []
+    for i, art in enumerate(articles[:MAX_ITEMS], 1):
+        print(f"🔄 [{i}/{min(len(articles), MAX_ITEMS)}] {art['title'][:70]}...")
+        try:
+            article_html = fetch(art['url'])
+        except Exception as e:
+            print(f"  ⚠️ Fetch failed: {e}")
+            continue
 
-        title = article['title']
-        link = article['link']
-        desc = article.get('description', title)
+        title = extract_title(article_html) or art['title']
+        description = extract_meta(article_html, 'description') or ""
+        pub_date = extract_published_date(article_html)
+        body = extract_article_body(article_html)
 
-        print(f"🔄 Processing: {title[:50]}...")
-        print(f"📡 Fetching full content from: {link[:50]}...")
-
-        full_content = fetch_full_page_content(link)
-
-        if len(full_content.split()) > 20:
-            content_to_use = full_content
-        else:
-            content_to_use = desc
-
-        items_data.append({
+        items.append({
             'title': title,
-            'link': link,
-            'description': content_to_use
+            'link': art['url'],
+            'description': description,
+            'content': body,
+            'pubDate': pub_date,
         })
-        processed += 1
 
-        if processed < min(len(articles), MAX_ITEMS):
+        if i < min(len(articles), MAX_ITEMS):
             time.sleep(1)
 
-    print(f"✅ Processed {processed} items")
+    print(f"✅ Processed {len(items)} items")
 
     try:
         os.makedirs('./notif', exist_ok=True)
@@ -262,11 +331,13 @@ def main():
         if os.path.exists(filename):
             os.remove(filename)
         with open(filename, 'w', encoding='utf-8') as f:
-            f.write(generate_rss().strip())
+            f.write(generate_rss(items))
         print('✅ Game8 RSS generated successfully.')
         print(f'📁 Output file: {filename}')
     except Exception as e:
         print(f'❌ Failed: {e}')
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
