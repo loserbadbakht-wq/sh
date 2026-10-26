@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import time
+import hashlib
 import urllib.request
 import urllib.parse
 from xml.sax.saxutils import escape
@@ -15,6 +16,11 @@ import datetime
 # ----------------------------------------------------------------------
 PROXY_BASE = "https://prox.loserbadbakht.workers.dev"
 
+# ----------------------------------------------------------------------
+# GitHub raw base for downloaded thumbnails
+# ----------------------------------------------------------------------
+RAW_BASE = "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/game8_tumb/"
+
 
 def proxify(url):
     return f"{PROXY_BASE}/{url}"
@@ -24,6 +30,21 @@ def deproxify(url):
     if url.startswith(PROXY_BASE + '/'):
         return url[len(PROXY_BASE) + 1:]
     return url
+
+
+# ----------------------------------------------------------------------
+# Stable filename derived from article URL slug
+# ----------------------------------------------------------------------
+def get_stable_filename(article_url):
+    """Stable filename from URL slug (title may change; slug doesn't)."""
+    parsed = urllib.parse.urlparse(article_url)
+    slug = parsed.path.rstrip('/').split('/')[-1]
+    if not slug:
+        slug = hashlib.md5(article_url.encode()).hexdigest()[:16]
+    slug = re.sub(r'[\\/*?:"<>|%]', '', slug)
+    slug = re.sub(r'[-\s]+', '_', slug)
+    slug = slug.strip('_.')
+    return slug[:255] or "untitled"
 
 
 # ----------------------------------------------------------------------
@@ -120,10 +141,132 @@ def extract_published_date(html):
 
 
 # ----------------------------------------------------------------------
-# Table helpers (NEW)
+# Image download (Game8)
+# ----------------------------------------------------------------------
+def extract_image_url(html):
+    """Return the thumbnail URL from og:image / twitter:image meta tags."""
+    url = extract_meta(html, 'og:image')
+    if not url:
+        url = extract_meta(html, 'twitter:image')
+    if not url:
+        return None
+    # Reject data URIs
+    if url.startswith('data:'):
+        return None
+    if url.startswith('//'):
+        url = 'https:' + url
+    return url
+
+
+def download_thumbnail(article_html, article_url, stable_name):
+    """
+    Download the article's og:image into ./notif/game8_tumb/<stable_name>.<ext>
+    and return the raw.githubusercontent.com URL.
+    Returns None if no image can be downloaded.
+    """
+    tumb_dir = os.path.join('notif', 'game8_tumb')
+    os.makedirs(tumb_dir, exist_ok=True)
+
+    image_url = extract_image_url(article_html)
+    if not image_url:
+        print("  ⚠️ No thumbnail found in article.")
+        return None
+
+    # Determine extension from URL (handles Game8's /show and /thumb suffixes)
+    m = re.search(r'\.(jpe?g|png|gif|webp)(?:[/?&#]|$)', image_url, re.IGNORECASE)
+    ext = '.' + m.group(1).lower() if m else '.jpg'
+
+    local_filename = stable_name + ext
+    local_path = os.path.join(tumb_dir, local_filename)
+
+    try:
+        print(f"  📥 Downloading thumbnail: {image_url[:80]}...")
+        req = urllib.request.Request(image_url, headers=HEADERS)
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = resp.read()
+            if not data:
+                raise ValueError("empty response body")
+            with open(local_path, 'wb') as f:
+                f.write(data)
+        print(f"  ✅ Saved thumbnail: {local_path}")
+    except Exception as e:
+        print(f"  ⚠️ Failed to download thumbnail: {e}")
+        return None
+
+    return RAW_BASE + urllib.parse.quote(local_filename)
+
+
+# ----------------------------------------------------------------------
+# Emoji-bullet conversion
+# ----------------------------------------------------------------------
+BULLET_CHARS = (
+    r'[\u26AB\u26AA\u25CF\u25CB\u25A0\u25A1\u25B2\u25B3\u25BC\u25BD'
+    r'\u25C6\u25C7\u2605\u2606\u2022\u25AA\u25AB\u25E6]'
+)
+BULLET_RE = re.compile(rf'^\s*{BULLET_CHARS}[\uFE0E\uFE0F]?\s*')
+
+
+def is_bullet_line(text):
+    return BULLET_RE.match(text) is not None
+
+
+def strip_bullet(text):
+    return BULLET_RE.sub('', text, count=1).strip()
+
+
+def convert_emoji_bullets_in_p(inner):
+    lines = inner.split('<br>')
+
+    segments = []
+    current_type = None
+    current_items = []
+
+    def flush():
+        nonlocal current_type, current_items
+        if current_type is not None and current_items:
+            segments.append((current_type, current_items))
+        current_type = None
+        current_items = []
+
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+
+        if is_bullet_line(stripped):
+            item = strip_bullet(stripped)
+            if not item:
+                continue
+            if current_type == 'list':
+                current_items.append(item)
+            else:
+                flush()
+                current_type = 'list'
+                current_items = [item]
+        else:
+            if current_type == 'text':
+                current_items.append(stripped)
+            else:
+                flush()
+                current_type = 'text'
+                current_items = [stripped]
+
+    flush()
+
+    out = []
+    for seg_type, items in segments:
+        if seg_type == 'list':
+            out.append('<ul>' + ''.join(f'<li>{i}</li>' for i in items) + '</ul>')
+        else:
+            out.append('<br>'.join(items))
+
+    return '<br>'.join(out)
+
+
+# ----------------------------------------------------------------------
+# Table helpers
 # ----------------------------------------------------------------------
 def clean_cell_content(cell_html):
-    """Strip images / anchors / formatting tags from a cell, keep text."""
     cell_html = re.sub(r'<img[^>]*>', '', cell_html, flags=re.IGNORECASE)
     cell_html = re.sub(r'</?a[^>]*>', '', cell_html, flags=re.IGNORECASE)
     cell_html = re.sub(r'<br\s*/?>', '<br>', cell_html, flags=re.IGNORECASE)
@@ -134,7 +277,6 @@ def clean_cell_content(cell_html):
 
 
 def emit_table(table_html):
-    """Convert <table>...</table> to a clean HTML table preserving structure."""
     rows_out = []
     for tr_match in re.finditer(
         r'<tr[^>]*>(.*?)</tr>',
@@ -154,11 +296,11 @@ def emit_table(table_html):
             rows_out.append('<tr>' + ''.join(cells) + '</tr>')
     if not rows_out:
         return ''
-    return '<table>' + ''.join(rows_out) + '</table><br><br>'
+    return '<table>' + ''.join(rows_out) + '</table><br>'
 
 
 # ----------------------------------------------------------------------
-# Article body -> HTML (tables preserved)
+# Article body -> HTML
 # ----------------------------------------------------------------------
 def extract_article_body_html(html):
     m = re.search(
@@ -169,7 +311,6 @@ def extract_article_body_html(html):
         return ""
     body = m.group(1)
 
-    # Hard cutoff: "You may also like…" and trailing boilerplate
     cm = re.search(r'<h2[^>]*>[^<]*You may also like', body, re.IGNORECASE)
     if cm:
         body = body[:cm.start()]
@@ -185,7 +326,6 @@ def extract_article_body_html(html):
         if cm:
             body = body[:cm.start()]
 
-    # Find all tables and record their spans (defensive: skip blocks inside)
     table_matches = list(re.finditer(
         r'<table[^>]*>.*?</table>', body, re.DOTALL | re.IGNORECASE
     ))
@@ -194,7 +334,6 @@ def extract_article_body_html(html):
     def in_table(pos):
         return any(s <= pos < e for s, e in table_spans)
 
-    # Collect tables + blocks as ordered events
     events = [(tm.start(), 'table', tm) for tm in table_matches]
     for em in re.finditer(
         r'<(h2|h3|p|li)(?:\s[^>]*)?>(.*?)</\1>',
@@ -209,17 +348,15 @@ def extract_article_body_html(html):
     in_list = False
 
     for _, kind, match in events:
-        # --- table ---
         if kind == 'table':
             table_html = emit_table(match.group(0))
             if table_html:
                 if in_list:
-                    out.append('</ul><br><br>')
+                    out.append('</ul><br>')
                     in_list = False
                 out.append(table_html)
             continue
 
-        # --- block ---
         tag = match.group(1).lower()
         inner = match.group(2)
 
@@ -230,7 +367,7 @@ def extract_article_body_html(html):
         inner = html_unescape(inner)
 
         inner = re.sub(r'[ \t]+', ' ', inner)
-        inner = re.sub(r'(?:<br>\s*){3,}', '<br><br>', inner)
+        inner = re.sub(r'(?:<br>\s*){2,}', '<br>', inner)
         inner = inner.strip()
         inner = re.sub(r'^(?:<br>)+', '', inner)
         inner = re.sub(r'(?:<br>)+$', '', inner)
@@ -246,15 +383,17 @@ def extract_article_body_html(html):
             continue
 
         if in_list:
-            out.append('</ul><br><br>')
+            out.append('</ul><br>')
             in_list = False
 
         if tag == 'h2':
-            out.append(f'<h2>{inner}</h2><br><br>')
+            out.append(f'<h2>{inner}</h2><br>')
         elif tag == 'h3':
-            out.append(f'<h3>{inner}</h3><br><br>')
-        else:
-            out.append(f'{inner}<br><br>')
+            out.append(f'<h3>{inner}</h3><br>')
+        else:  # p
+            converted = convert_emoji_bullets_in_p(inner)
+            if converted:
+                out.append(f'{converted}<br>')
 
     if in_list:
         out.append('</ul>')
@@ -263,7 +402,7 @@ def extract_article_body_html(html):
 
 
 # ----------------------------------------------------------------------
-# Listing extraction (unchanged)
+# Listing extraction
 # ----------------------------------------------------------------------
 def truncate_at(html, pattern):
     m = re.search(pattern, html, re.IGNORECASE)
@@ -405,6 +544,12 @@ def main():
             elif art.get('lead'):
                 body_html = escape(art['lead'])
 
+        # Download thumbnail and prepend <img>
+        stable_name = get_stable_filename(art['url'])
+        remote_image_url = download_thumbnail(article_html, art['url'], stable_name)
+        if remote_image_url:
+            body_html = f'<img src="{remote_image_url}" /><br>{body_html}'
+
         items.append({
             'title': title,
             'link': art['url'],
@@ -426,6 +571,8 @@ def main():
             f.write(generate_rss(items))
         print('✅ RSS generated.')
         print(f'📁 {filename}')
+        print('⚠️  REMINDER: commit & push new files under ./notif/game8_tumb/ to GitHub,')
+        print('    otherwise the <img src> URLs will 404 on fresh items.')
     except Exception as e:
         print(f'❌ Failed to write: {e}')
         sys.exit(1)
