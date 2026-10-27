@@ -6,6 +6,11 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Jujutsu Kaisen</title>
+    <link>https://myanimelist.net/anime.php?q=Jujutsu%20Kaisen</link>
+    <description>اومد! Jujutsu Kaisen</description>
+</item>
+<item>
     <title>Bleach - Sennen Kessen Hen - 50</title>
     <link>https://myanimelist.net/anime.php?q=Bleach</link>
     <description>اومد! Bleach - Sennen Kessen Hen - 50</description>
@@ -249,11 +254,6 @@
     <title>Paw and Palaces - 06</title>
     <link>https://myanimelist.net/anime.php?q=Paw%20and%20Palaces</link>
     <description>اومد! Paw and Palaces - 06</description>
-</item>
-<item>
-    <title>Tantei wa Mou, Shindeiru. S2 - 03</title>
-    <link>https://myanimelist.net/anime.php?q=Tantei%20wa%20Mou%2C%20Shindeiru.</link>
-    <description>اومد! Tantei wa Mou, Shindeiru. S2 - 03</description>
 </item>
 </channel>
 </rss>

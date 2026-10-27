@@ -1,13 +1,19 @@
 const xml2js = require('xml2js');
 const fs = require('fs');
 const parser = new xml2js.Parser({ explicitArray: false });
-const feeds = [
-  { path: 'safebooru/safebooru-yuri-rss.xml', filename: 'safebooru-yuri-rss.json' },
-  { path: 'notif/new1.xml', filename: 'new1.json' },
-  { path: 'notif/new2.xml', filename: 'new2.json' }
-  // Add more feeds here if needed, e.g.:
-  // { path: 'game8_feed.xml', filename: 'game8_feed.json' }
-];
+
+// Feeds are defined in feeds.json — each entry must have:
+//   { "path": "<repo-relative xml path>", "filename": "<output>.json" }
+// feeds.json is required; there is no built-in default.
+if (!fs.existsSync('feeds.json')) {
+  console.error('❌ feeds.json not found in repository root. Aborting.');
+  process.exit(1);
+}
+const feeds = JSON.parse(fs.readFileSync('feeds.json', 'utf8'));
+if (!Array.isArray(feeds) || feeds.length === 0) {
+  console.error('❌ feeds.json must contain a non-empty array of { path, filename } objects.');
+  process.exit(1);
+}
 
 // Escape bare '&' to '&amp;' so strict XML parsers don't choke on
 // URLs like "...?a=1&b=2". CDATA sections are left untouched.
@@ -32,7 +38,7 @@ function extractImageFromDescription(item) {
   if (!item || typeof item.description !== 'string') return item;
 
   // Handles src="..." and src='...', self-closing or not.
-  // Group 2 = double-quoted URL, Group 3 = single-quoted URL.
+  // Group 1 = double-quoted URL, Group 2 = single-quoted URL.
   const imgRegex = /<img\b[^>]*?\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)')[^>]*\/?>/i;
   const match = item.description.match(imgRegex);
   if (!match) return item;
