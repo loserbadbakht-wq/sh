@@ -1,6 +1,6 @@
 {
   "@ritsuphobic": {
-    "file": "item_009.mp3",
+    "file": "item_026.mp3",
     "hash": "5f2374a24c594a90643bc5470924fcf658538462bc342f07e95c3c3b5ab7d081"
   },
   "https://ayilings.tumblr.com/post/761703577587712000": {
@@ -87,6 +87,10 @@
     "file": "This_Week's_Gaming_News_Roundup_Oct_18th_to_Oct_24.mp3",
     "hash": "cc71013d278219b9f0377d94fb0e83d0e51338dede2a56488ccf896f9bc831ef"
   },
+  "https://i.pximg.net/img-original/img/2020/05/06/22/03/45/81359003_p35.jpg": {
+    "file": "item_012.mp3",
+    "hash": "1a5076f54f57a4616f4f9b32de0302c304be2f0d72cf7e785316684bce4198eb"
+  },
   "https://i.pximg.net/img-original/img/2021/01/20/22/53/40/87186503_p0.jpg": {
     "file": "item_046.mp3",
     "hash": "b54a7cba90d6f481bdd0998bae209a235623dac1405f3650e6a1548128fef978"
@@ -98,6 +102,14 @@
   "https://i.pximg.net/img-original/img/2026/10/26/23/06/18/151319673_p0.jpg": {
     "file": "item_040.mp3",
     "hash": "7eda2251c541f37223522bece3022e34b3483d1e54dabb9ebdbff4e7bfc677ee"
+  },
+  "https://i.pximg.net/img-original/img/2026/10/27/13/21/20/151337883_p0.jpg": {
+    "file": "item_013.mp3",
+    "hash": "77aa8c1309c18dca55eb14ae6f0dd7c25d120ac4df6ff7401031fc0126e6d889"
+  },
+  "https://i.pximg.net/img-original/img/2026/10/27/23/24/23/151357005_p0.jpg": {
+    "file": "item_011.mp3",
+    "hash": "c68a254dd205270401ed9566ce01d25a7d48d8a99285099d8e4fa7e7099c2637"
   },
   "https://www.eurogamer.net/13-scariest-spookiest-video-games-this-halloween": {
     "file": "The_nights_are_drawing_in,_which_can_only_mean_one.mp3",
@@ -154,6 +166,10 @@
   "https://www.eurogamer.net/ea-cuts-massive-ripple-effect-motive-full-circle-respawn": {
     "file": "EA_announced_overnight_it's_closing_Mass_Effect_an.mp3",
     "hash": "89a8547e1b61091cdeab33add8d3fd4d4485da9a2ed5b8d996076acdc0e93179"
+  },
+  "https://www.eurogamer.net/ecstatica-now-playing": {
+    "file": "There's_a_well_known_phenomena_in_video_games_deve.mp3",
+    "hash": "2d6f17233e9df1bbf55314294e5910b91df86444b298e3509f90c1c8d38204c8"
   },
   "https://www.eurogamer.net/elden-ring-movie-a24-budget-200-million": {
     "file": "A24's_live_action_Elden_Ring_movie_is_reportedly_s.mp3",
@@ -243,6 +259,10 @@
     "file": "That's_it_for_Pok\u00e9mon_Unite._Tencent's_once_popula.mp3",
     "hash": "b5f13dcff0126aa14c27e4f9563aef874166a21ebfb35a99160bf428f1aea6ea"
   },
+  "https://www.eurogamer.net/roblox-counter-strike-playstation-homepage-super-hot-simpsons-hit-and-run": {
+    "file": "Multiple_remakes_of_beloved_games_including_Counte.mp3",
+    "hash": "ef3b81b15fb9aed40b147559c22fdcff172b7f2fa0c42aa184f0285809dea40d"
+  },
   "https://www.eurogamer.net/save-mass-effect-petition": {
     "file": "A_petition_created_to_save_BioWare's_well_loved_sc.mp3",
     "hash": "cc022ae720ce4159188cfa8ab76ea010898b219aefe7644c725e756a514d6623"
@@ -313,7 +333,7 @@
   },
   "https://www.ign.com/articles/canned-paranormal-activity-game-back-from-the-dead-as-playable-archive-free-on-steam": {
     "file": "The_canceled_movie_spinoff_is_getting_a_new_lease_.mp3",
-    "hash": "ceb9af12089d3f5b9156f5e77612567260b500b7c9ed0457c87ed6c61fb76ced"
+    "hash": "88639f82b47845cc1a3af9bf9c06768b2f6427e7e3eb8d70b1e5315352f4e2ac"
   },
   "https://www.ign.com/articles/composer-austin-wintory-shares-22-minutes-of-music-created-for-biowares-canceled-mass-effect-5": {
     "file": "Composer_Austin_Wintory_was_once_in_talks_to_make_.mp3",
@@ -321,7 +341,7 @@
   },
   "https://www.ign.com/articles/dc-studios-boss-confirms-discussions-with-alan-ritchson-but-havent-found-a-role-for-him-yet": {
     "file": "DC_Studios_boss_Peter_Safran_confirms_they've_had_.mp3",
-    "hash": "640f6a25e2bb398d745835d321e6409960d9a9fb5a019038278f76561b6baf73"
+    "hash": "8e89a5bf2b0cedc95cf09672fd79ef684898c40ccc707247fd69dac0b12983ef"
   },
   "https://www.ign.com/articles/dead-by-daylight-devs-explain-chuckys-exit-from-stores-and-says-horror-icons-removed-due-to-licenses-have-open-invitation-to-rejoin": {
     "file": "Dead_by_Daylight_developer_Behaviour_Interactive_h.mp3",
@@ -345,15 +365,19 @@
   },
   "https://www.ign.com/articles/palworld-official-toy-collection-mystery-eggs": {
     "file": "Collectibles_creator_The_Loyal_Subjects_has_releas.mp3",
-    "hash": "5863cdbc4b87cc3c885ace9600c16a96b6b40e51772c4e3b82d7e9c42e76937c"
+    "hash": "c5862c4b90afd7a7e40a91d69e4f37ec767727efa0ffcf55696a66fc63a9114f"
   },
   "https://www.ign.com/articles/pokemon-unite-offline-2027-in-game-sales-suspended": {
     "file": "Pokemon_Unite_will_end_service_on_March_23,_2027,_.mp3",
-    "hash": "3a3609eee76b7430128c947ac8b84a071b348c0b078235fa3257a250231792bd"
+    "hash": "07c5c285259bf001d85c1b650e6205d3894ea215a8be5b57d99171f7be673443"
+  },
+  "https://www.ign.com/articles/ratata-a-4-player-physics-chaos-co-op-game-where-you-play-as-anthropomorphic-animals-announced": {
+    "file": "Introducing_Ratata,_a_chaotic_four_player_co_op_ph.mp3",
+    "hash": "ce23a334883678dd17085ec2d6095a9f3aeb4313c860da815e05f1d3c8c3f847"
   },
   "https://www.ign.com/articles/red-rising-director-francis-lawrence-says-ya-series-movie-adaptation-is-a-priority-at-paramount-following-shelved-netflix-show": {
     "file": "We_got_the_chance_to_chat_with_Francis_Lawrence,_d.mp3",
-    "hash": "1dbb03a89702da9f7b46caab9717ceb73654b682c23386aaefcfd3b07465737a"
+    "hash": "b8adc346bed95db9af3addf1b0de3815863b0475eed7ab512ebbffb9e6c2ed3f"
   },
   "https://www.ign.com/articles/robert-pattinson-says-steven-soderbergh-is-completely-selfless-for-taking-over-on-the-batman-part-2": {
     "file": "The_Batman_Part_2_star_Robert_Pattinson_has_called.mp3",
@@ -361,19 +385,19 @@
   },
   "https://www.ign.com/articles/silent-hill-remake-coming-2027-cast-details-leaked": {
     "file": "The_1999_PS1_horror_game_is_getting_the_Bloober_tr.mp3",
-    "hash": "8b6f9f585b5c5f928d6b4cdc07bb20b76a4ac154561733aa3d4e92daa7395fed"
+    "hash": "db9841f721b4137d8acfc4a907159debacc8c64865418d1a411d99407ef54d29"
   },
   "https://www.ign.com/articles/studio-ghibli-calcifers-yule-log-is-coming-back-to-hbo-max-for-the-holiday-season": {
     "file": "item_014.mp3",
     "hash": "44007f11b11a7697d0edeec8ef2d28108ec1e908a4c1c06fd862353d4d209c15"
   },
   "https://www.ign.com/articles/toastie-might-be-the-weirdest-iphone-duo-game-so-far": {
-    "file": "item_008.mp3",
-    "hash": "43b871597cc8e992671257ed364fafa5e24d083cca8e2463b98d9e0a48d86c97"
+    "file": "item_009.mp3",
+    "hash": "10e079adf81b19b5092d9abdf228fda01bac018dfc4381a781f8dbabf55a7e0d"
   },
   "https://www.ign.com/articles/want-to-smell-like-a-werfwulf-this-perfume-has-you-covered": {
-    "file": "item_007.mp3",
-    "hash": "01ad4ccb9f33138a76537efe353a12c1c2c1e6dc1c9a9dd503fad426b9c911c5"
+    "file": "item_008.mp3",
+    "hash": "fc2c82c541d8813b65f360709879adc4353ec58fd3aaab0efa895702ccebdf0d"
   },
   "https://www.ign.com/articles/you-can-play-buckshot-roulette-in-real-life-at-this-tokyo-cafe-and-even-drink-an-arctic-eggs-cocktail": {
     "file": "The_Ukiyo_Game_Bar_&_Cafe_in_Tokyo_is_going_viral_.mp3",
@@ -407,8 +431,12 @@
     "file": "item_043.mp3",
     "hash": "3a5142b4039378ca66b8eedc202c66e010e237592bb3be729c0a0b3aa8a29c01"
   },
+  "https://x.com/92pagn/status/2115060528557260870": {
+    "file": "item_001.mp3",
+    "hash": "3ce91a366067c67380c749c28591727291132744a27ea164f647d14b4bc1a84c"
+  },
   "https://x.com/AT_09098/status/2114764536725250375": {
-    "file": "item_029.mp3",
+    "file": "item_046.mp3",
     "hash": "facc2ab976c7c71392cecdb8dc506e105efbae9f53123bd55b1e05f5302c7b22"
   },
   "https://x.com/EurybiaHiro92/status/2114884786200170974": {
@@ -427,9 +455,17 @@
     "file": "item_000.mp3",
     "hash": "e22aa079816d86bba3042825bc074688aed35a8286edbccc9a92282f6b668571"
   },
+  "https://x.com/LanterCat/status/2115088459446763561": {
+    "file": "item_000.mp3",
+    "hash": "901ba94008ba0fc0353dca3fb316dcf9ea4e1365c70c70062888131814606c32"
+  },
   "https://x.com/MRcrab_PU/status/2115013133978763287": {
     "file": "item_003.mp3",
     "hash": "43cd66b221b61bbc98dd0c83bd40b1ae0ee40f7008120dd4d86c3ea15f86eb3b"
+  },
+  "https://x.com/MoGu_Zaemon/status/2115066056834429018": {
+    "file": "item_016.mp3",
+    "hash": "8e7bb73ad9e343bb959853c9c10e069837220308d1d27290060fefa8f976431b"
   },
   "https://x.com/Mofumofu_0512/status/2114384370928959595": {
     "file": "item_014_1.mp3",
@@ -438,6 +474,10 @@
   "https://x.com/ShanChi__/status/2078080104157319658": {
     "file": "item_041.mp3",
     "hash": "322fc8b48efdbf2fa0c0038f446a9358e3f1b70a73b62bb7c17d4171be8d1ec4"
+  },
+  "https://x.com/SoKat_026/status/2115082264174612899": {
+    "file": "item_014.mp3",
+    "hash": "780e203f06a2c104fe5501513b5072625ef64bdc89af6e31f9561b8fe862319a"
   },
   "https://x.com/Tavynel/status/2076711682974306486": {
     "file": "item_005.mp3",
@@ -463,6 +503,10 @@
     "file": "item_027.mp3",
     "hash": "1ea96f46c8dccabc3738bba3b6641fe4e03dfbe8ca3695b1e6adccf8b4e8834e"
   },
+  "https://x.com/bs_leeon/status/2114962110786703694": {
+    "file": "item_009_1.mp3",
+    "hash": "a9f9a063eeb79d8f0f376b3e082206aeb83200a5265460bd9d670eb04eaf70cb"
+  },
   "https://x.com/da1_sae/status/2024135311740280998": {
     "file": "item_048.mp3",
     "hash": "721b1e5a51e6d3dd4f6acc4d3186282fc76ee1f34df547a63e74d0cacc8c6436"
@@ -482,6 +526,10 @@
   "https://x.com/gumichuu615486/status/2100930220413030606": {
     "file": "item_038.mp3",
     "hash": "7f41c63f4804f68fcedfa93421e4703af276150b49ffca86c0f123fbf8960050"
+  },
+  "https://x.com/haojbleng/status/2115076364340728251": {
+    "file": "item_003.mp3",
+    "hash": "fc051e9de1e973dbca969ea09c992e59a0420f44634f52030c2883de9581ff0d"
   },
   "https://x.com/hisaka033/status/2114733639900831778": {
     "file": "item_011.mp3",
@@ -503,13 +551,29 @@
     "file": "item_020.mp3",
     "hash": "3c614aaa39008398b97118a64b5edea09aa74f5e0d31052ca6969c83ff224950"
   },
+  "https://x.com/jilanzhijing/status/2115021208580403498": {
+    "file": "item_005.mp3",
+    "hash": "f9e7bd4e8410510d78134c262270f022b6929e7bc2f95a9b3fa567fdccddc863"
+  },
   "https://x.com/kase_194/status/2114727812674486679": {
     "file": "item_030.mp3",
     "hash": "53fbf0c06bc01fde4223285a9dfa2bc77d4be09792466927ce8dca481f6ed171"
   },
+  "https://x.com/krabiccus_/status/2115055512374903039": {
+    "file": "item_004.mp3",
+    "hash": "090f4256fe8233061f4b3c32914fb979bf8c899aad206645aac8036d1991e389"
+  },
   "https://x.com/mihasu_ll/status/2114553312100188318": {
     "file": "item_013.mp3",
     "hash": "44243016c12adc4947cbab0467657fbc27a2ec908bacedf519603841730ee117"
+  },
+  "https://x.com/nuooooodoomo/status/2115026023331069964": {
+    "file": "item_010.mp3",
+    "hash": "869eac70d9413e49e943409d3fcebde75edb3d3ed93a08c32fdc493213c44df1"
+  },
+  "https://x.com/r_bishh/status/2115060795549843933": {
+    "file": "item_015.mp3",
+    "hash": "3d991ff49a0e3af474f56b3a34991361f1f9dbd066e8ba8d56255383997fd73d"
   },
   "https://x.com/repunit_for_LL/status/2114356914553545175": {
     "file": "item_012.mp3",
