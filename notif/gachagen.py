@@ -1,4 +1,4 @@
-import os
+ import os
 import sys
 import re
 import time
@@ -36,7 +36,6 @@ def deproxify(url):
 # Stable filename derived from article URL slug
 # ----------------------------------------------------------------------
 def get_stable_filename(article_url):
-    """Stable filename from URL slug (title may change; slug doesn't)."""
     parsed = urllib.parse.urlparse(article_url)
     slug = parsed.path.rstrip('/').split('/')[-1]
     if not slug:
@@ -141,16 +140,14 @@ def extract_published_date(html):
 
 
 # ----------------------------------------------------------------------
-# Image download (Game8)
+# Image download
 # ----------------------------------------------------------------------
 def extract_image_url(html):
-    """Return the thumbnail URL from og:image / twitter:image meta tags."""
     url = extract_meta(html, 'og:image')
     if not url:
         url = extract_meta(html, 'twitter:image')
     if not url:
         return None
-    # Reject data URIs
     if url.startswith('data:'):
         return None
     if url.startswith('//'):
@@ -159,11 +156,6 @@ def extract_image_url(html):
 
 
 def download_thumbnail(article_html, article_url, stable_name):
-    """
-    Download the article's og:image into ./notif/game8_tumb/<stable_name>.<ext>
-    and return the raw.githubusercontent.com URL.
-    Returns None if no image can be downloaded.
-    """
     tumb_dir = os.path.join('notif', 'game8_tumb')
     os.makedirs(tumb_dir, exist_ok=True)
 
@@ -172,7 +164,6 @@ def download_thumbnail(article_html, article_url, stable_name):
         print("  ⚠️ No thumbnail found in article.")
         return None
 
-    # Determine extension from URL (handles Game8's /show and /thumb suffixes)
     m = re.search(r'\.(jpe?g|png|gif|webp)(?:[/?&#]|$)', image_url, re.IGNORECASE)
     ext = '.' + m.group(1).lower() if m else '.jpg'
 
@@ -474,7 +465,7 @@ def extract_latest_articles(html):
 
 
 # ----------------------------------------------------------------------
-# RSS
+# RSS (no content:encoded)
 # ----------------------------------------------------------------------
 def cdata(text):
     return "<![CDATA[" + text.replace("]]>", "]]]]><![CDATA[>") + "]]>"
@@ -482,7 +473,7 @@ def cdata(text):
 
 def generate_rss(items):
     rss = f"""<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0">
 <channel>
 <title>Game8 Latest Articles</title>
 <link>{LISTING_URL}</link>
@@ -497,7 +488,6 @@ def generate_rss(items):
             rss += f"\n    <pubDate>{item['pubDate']}</pubDate>"
         if item.get('content'):
             rss += f"\n    <description>{cdata(item['content'])}</description>"
-            rss += f"\n    <content:encoded>{cdata(item['content'])}</content:encoded>"
         rss += "\n</item>"
     rss += '\n</channel>\n</rss>'
     return rss
