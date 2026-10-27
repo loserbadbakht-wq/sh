@@ -1,0 +1,10 @@
+[
+  { "script": "safebooru/generate.py" },
+  { "script": "safebooru/generateY.py", "env": { "KEY": "BA", "ID": "BI" } },
+  { "script": "Gen/genshin.py" },
+  { "script": "never/NTE.py" },
+  { "script": "notif/gachagen.py" },
+  { "script": "notif/new1.py" },
+  { "script": "notif/gacharss.py" },
+  { "script": "notif/new2.py" }
+]
