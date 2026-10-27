@@ -1,0 +1,190 @@
+name: Download Worker File
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'URLs to download (one per line)'
+        required: false
+        type: string
+        default: |
+          https://raw.githubusercontent.com/yonggekkk/Cloudflare-vless-trojan/refs/heads/main/Trojan_workers_pages/_worker.js
+
+      folder_name:
+        description: 'Target folder (optional; leave empty to put files at repo root)'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  download-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download files
+        id: dl
+        env:
+          URLS_TEXTAREA: ${{ inputs.urls }}
+          USER_FOLDER: ${{ inputs.folder_name }}
+        run: |
+          set -euo pipefail
+          UA='Mozilla/5.0'
+
+          # --- sanitize folder_name ---
+          if [ -n "${USER_FOLDER:-}" ]; then
+            USER_FOLDER="${USER_FOLDER#/}"
+            USER_FOLDER="${USER_FOLDER%/}"
+            if [ -z "$USER_FOLDER" ] || printf '%s' "$USER_FOLDER" | grep -qE '(^|/)\.\.(/|$)'; then
+              echo "::error::Invalid folder_name: '${{ inputs.folder_name }}'"
+              exit 1
+            fi
+          fi
+
+          TARGETS=()
+
+          while IFS= read -r url; do
+            url="$(printf '%s' "$url" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+            [ -z "$url" ] && continue
+
+            echo ">> $url"
+
+            # --- resolve filename (Content-Disposition → final URL → original URL) ---
+            HEADERS=$(mktemp)
+            FINAL_URL=$(curl -sIL -g -A "$UA" -D "$HEADERS" -o /dev/null -w '%{url_effective}' "$url" || true)
+            CD=$(tr -d '\r' < "$HEADERS" | grep -i '^content-disposition:' | tail -n1 || true)
+            FILE_NAME=""
+
+            if [ -n "$CD" ]; then
+              FILE_NAME=$(printf '%s\n' "$CD" | sed -n "s/.*filename\*=\([^']*\)''\([^;]*\).*/\2/p" | head -n1)
+              [ -n "$FILE_NAME" ] && FILE_NAME=$(printf '%b' "${FILE_NAME//%/\\x}")
+              [ -z "$FILE_NAME" ] && FILE_NAME=$(printf '%s\n' "$CD" | sed -n 's/.*filename="\([^"]*\)".*/\1/p' | head -n1)
+              [ -z "$FILE_NAME" ] && FILE_NAME=$(printf '%s\n' "$CD" | sed -n 's/.*filename=\([^;]*\).*/\1/p' | head -n1 | tr -d '"')
+            fi
+            [ -z "$FILE_NAME" ] && FILE_NAME=$(printf '%s\n' "$FINAL_URL" | sed 's/[?#].*$//' | awk -F'/' '{print $NF}')
+            [ -z "$FILE_NAME" ] && FILE_NAME=$(printf '%s\n' "$url"       | sed 's/[?#].*$//' | awk -F'/' '{print $NF}')
+
+            if [ -z "$FILE_NAME" ]; then
+              echo "::error::Could not determine filename for $url"
+              exit 1
+            fi
+            FILE_NAME=$(basename "$FILE_NAME")
+            echo "   filename: $FILE_NAME"
+
+            curl -L --fail --retry 3 --retry-delay 5 -g -A "$UA" -o "$FILE_NAME" "$url"
+
+            if [ ! -s "$FILE_NAME" ]; then
+              echo "::error::Downloaded file is empty: $FILE_NAME"
+              exit 1
+            fi
+
+            MIME=$(file --mime-type -b "$FILE_NAME")
+            echo "   mime: $MIME"
+
+            # --- archive detection ---
+            IS_ARCHIVE=false
+            case "$MIME" in
+              application/zip|application/x-zip-compressed|application/x-tar|\
+              application/gzip|application/x-gzip|application/x-bzip2|\
+              application/x-xz|application/x-7z-compressed|application/x-rar|\
+              application/x-compressed-tar|application/x-gtar) IS_ARCHIVE=true ;;
+            esac
+            if [ "$IS_ARCHIVE" = "false" ]; then
+              case "${FILE_NAME,,}" in
+                *.zip|*.tar|*.tar.gz|*.tgz|*.tar.bz2|*.tbz2|*.tar.xz|*.txz|*.gz|*.bz2|*.xz|*.7z|*.rar)
+                  IS_ARCHIVE=true ;;
+              esac
+            fi
+
+            if [ "$IS_ARCHIVE" = "true" ]; then
+              DEST="${USER_FOLDER:-${FILE_NAME%.*}}"
+              if [ -z "${USER_FOLDER:-}" ]; then
+                case "${FILE_NAME,,}" in
+                  *.tar.gz)  DEST="${FILE_NAME%.tar.gz}"  ;;
+                  *.tar.bz2) DEST="${FILE_NAME%.tar.bz2}" ;;
+                  *.tar.xz)  DEST="${FILE_NAME%.tar.xz}"  ;;
+                esac
+              fi
+              mkdir -p "$DEST"
+              case "${FILE_NAME,,}" in
+                *.zip)            unzip -o "$FILE_NAME" -d "$DEST" ;;
+                *.tar.gz|*.tgz)   tar -xzf "$FILE_NAME" -C "$DEST" ;;
+                *.tar.bz2|*.tbz2) tar -xjf "$FILE_NAME" -C "$DEST" ;;
+                *.tar.xz|*.txz)   tar -xJf "$FILE_NAME" -C "$DEST" ;;
+                *.tar)            tar -xf  "$FILE_NAME" -C "$DEST" ;;
+                *.gz)             gunzip  -c "$FILE_NAME" > "$DEST/$(basename "${FILE_NAME%.gz}")" ;;
+                *.bz2)            bunzip2 -c "$FILE_NAME" > "$DEST/$(basename "${FILE_NAME%.bz2}")" ;;
+                *.xz)             unxz    -c "$FILE_NAME" > "$DEST/$(basename "${FILE_NAME%.xz}")" ;;
+                *.7z)
+                  if command -v 7z >/dev/null 2>&1; then 7z x -o"$DEST" "$FILE_NAME"
+                  else echo "::warning::7z not available, keeping archive."; TARGETS+=("$FILE_NAME"); continue; fi ;;
+                *)                unzip -o "$FILE_NAME" -d "$DEST" ;;
+              esac
+              rm -f "$FILE_NAME"
+              TARGETS+=("$DEST")
+            else
+              if [ -n "${USER_FOLDER:-}" ]; then
+                mkdir -p "$USER_FOLDER"
+                mv "$FILE_NAME" "$USER_FOLDER/"
+                TARGETS+=("$USER_FOLDER")
+              else
+                TARGETS+=("$FILE_NAME")
+              fi
+            fi
+          done <<< "${URLS_TEXTAREA:-}"
+
+          # --- dedupe targets ---
+          UNIQUE_TARGETS=()
+          for t in ${TARGETS[@]+"${TARGETS[@]}"}; do
+            skip=false
+            for u in ${UNIQUE_TARGETS[@]+"${UNIQUE_TARGETS[@]}"}; do
+              [ "$u" = "$t" ] && skip=true && break
+            done
+            [ "$skip" = "false" ] && UNIQUE_TARGETS+=("$t")
+          done
+
+          if [ ${#UNIQUE_TARGETS[@]} -eq 0 ]; then
+            echo "::error::No URLs provided."
+            exit 1
+          fi
+
+          {
+            echo "targets<<__EOF__"
+            printf '%s\n' "${UNIQUE_TARGETS[@]}"
+            echo "__EOF__"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "=== Targets to commit ==="
+          printf '%s\n' "${UNIQUE_TARGETS[@]}"
+
+      - name: Commit and push
+        env:
+          TARGETS_RAW: ${{ steps.dl.outputs.targets }}
+        run: |
+          set -euo pipefail
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # preserve empty dirs (only matters if folder_name is set and extraction was empty)
+          while IFS= read -r t; do
+            [ -d "$t" ] || continue
+            find "$t" -type d -empty -exec touch {}/.gitkeep \;
+          done <<< "$TARGETS_RAW"
+
+          while IFS= read -r t; do
+            [ -z "$t" ] && continue
+            git add -f "$t"
+          done <<< "$TARGETS_RAW"
+
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+
+          git commit -m "Add downloaded files"
+          git push
