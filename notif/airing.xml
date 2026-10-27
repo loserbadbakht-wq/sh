@@ -6,6 +6,16 @@
 <description>Airing notification for feed</description>
 
 <item>
+    <title>Mushoku Tensei S3</title>
+    <link>https://myanimelist.net/anime.php?q=Mushoku%20Tensei</link>
+    <description>اومد! Mushoku Tensei S3</description>
+</item>
+<item>
+    <title>Mushoku Tensei S2</title>
+    <link>https://myanimelist.net/anime.php?q=Mushoku%20Tensei</link>
+    <description>اومد! Mushoku Tensei S2</description>
+</item>
+<item>
     <title>Jujutsu Kaisen</title>
     <link>https://myanimelist.net/anime.php?q=Jujutsu%20Kaisen</link>
     <description>اومد! Jujutsu Kaisen</description>
@@ -244,16 +254,6 @@
     <title>Tensei Shitara Ken Deshita S2 - 04</title>
     <link>https://myanimelist.net/anime.php?q=Tensei%20Shitara%20Ken%20Deshita</link>
     <description>اومد! Tensei Shitara Ken Deshita S2 - 04</description>
-</item>
-<item>
-    <title>Magic Knight Rayearth</title>
-    <link>https://myanimelist.net/anime.php?q=Magic%20Knight%20Rayearth</link>
-    <description>اومد! Magic Knight Rayearth</description>
-</item>
-<item>
-    <title>Paw and Palaces - 06</title>
-    <link>https://myanimelist.net/anime.php?q=Paw%20and%20Palaces</link>
-    <description>اومد! Paw and Palaces - 06</description>
 </item>
 </channel>
 </rss>
