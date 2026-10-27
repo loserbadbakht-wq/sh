@@ -35,32 +35,62 @@ jobs:
           # the old 4.0.0-rc1 pre-release hits on failure paths.
           python -m pip install edge-tts requests googletrans==4.0.2
 
-      - name: Generate rss (safebooru)
-        run: python ./safebooru/generate.py
-
-      - name: Generate rss (safebooruY)
+      - name: Generate rss (Python scripts from pythons.json)
         env:
-          KEY: ${{ secrets.BA }}
-          ID: ${{ secrets.BI }}
-        run: python ./safebooru/generateY.py
+          # Expose every secret that pythons.json may reference.
+          # Keys here must match the secret *names* used in pythons.json's
+          # "env" map (values), not the env-var names the scripts expect.
+          BA: ${{ secrets.BA }}
+          BI: ${{ secrets.BI }}
+        run: |
+          python - <<'PYEOF'
+          import json, os, subprocess, sys
 
-      - name: Generate rss (Genshin)
-        run: python ./Gen/genshin.py
+          if not os.path.exists('pythons.json'):
+              print("❌ pythons.json not found in repository root. Aborting.")
+              sys.exit(1)
 
-      - name: Generate rss (NTE)
-        run: python ./never/NTE.py
+          with open('pythons.json', 'r', encoding='utf-8') as f:
+              entries = json.load(f)
 
-      - name: Generate rss (air)
-        run: python ./notif/generate.py
+          if not isinstance(entries, list) or not entries:
+              print("❌ pythons.json must contain a non-empty array of "
+                    "{ script, env? } objects.")
+              sys.exit(1)
 
-      - name: Generate rss (I)
-        run: python ./notif/new1.py
+          # Track whether any script failed so we can fail the step cleanly
+          # while still showing every script's output.
+          failed = []
 
-      - name: Generate rss (gacha)
-        run: python ./notif/gacharss.py
+          for i, entry in enumerate(entries):
+              if not isinstance(entry, dict) or 'script' not in entry:
+                  print(f"❌ pythons.json entry #{i} missing 'script' key.")
+                  sys.exit(1)
 
-      - name: Generate rss (E)
-        run: python ./notif/new2.py
+              script = entry['script']
+              env_map = entry.get('env', {}) or {}
+
+              env = os.environ.copy()
+              for env_var, secret_name in env_map.items():
+                  secret_val = os.environ.get(secret_name)
+                  if secret_val is None:
+                      print(f"❌ Missing secret env '{secret_name}' "
+                            f"(required as '{env_var}' for {script}).")
+                      sys.exit(1)
+                  env[env_var] = secret_val
+
+              print(f"\n▶ Running {script}")
+              result = subprocess.run([sys.executable, script], env=env)
+              if result.returncode != 0:
+                  print(f"❌ Failed: {script} (exit {result.returncode})")
+                  failed.append(script)
+
+          if failed:
+              print(f"\n❌ {len(failed)} script(s) failed: {', '.join(failed)}")
+              sys.exit(1)
+
+          print(f"\n✅ All {len(entries)} Python script(s) ran successfully.")
+          PYEOF
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
