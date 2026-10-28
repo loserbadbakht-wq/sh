@@ -1,7 +1,11 @@
 {
   "@ritsuphobic": {
-    "file": "item_043.mp3",
+    "file": "item_048.mp3",
     "hash": "5f2374a24c594a90643bc5470924fcf658538462bc342f07e95c3c3b5ab7d081"
+  },
+  "file://IMG_1465.png": {
+    "file": "item_003.mp3",
+    "hash": "72a963546cb336f6ab4f4822ccaba32a22e0c9a8212d9cc7c419aedcb7812a5d"
   },
   "https://ayilings.tumblr.com/post/761703577587712000": {
     "file": "item_026.mp3",
@@ -337,7 +341,7 @@
   },
   "https://www.ign.com/articles/a-lot-of-players-dont-want-to-play-a-monster-wow-forever-principal-designer-sheds-more-light-on-why-the-skyborne-were-added": {
     "file": "World_of_Warcraft_Forever_has_its_full_launch_a_we.mp3",
-    "hash": "7afc85fde9d6980da653b73805d4085ba55f77ff2417a62abccfb9d835801e54"
+    "hash": "02cedb881479e6be1b272d3c4b94e2d45e0526a8da24bfd9fd93fa31a4658301"
   },
   "https://www.ign.com/articles/assassins-creed-black-flag-resynced-final-major-content-update-coming-this-week": {
     "file": "Ubisoft_has_detailed_Assassin's_Creed_Black_Flag_R.mp3",
@@ -353,11 +357,15 @@
   },
   "https://www.ign.com/articles/blizzard-reveals-plan-for-world-of-warcraft-forever-update-frequency": {
     "file": "World_of_Warcraft_Forever_launches_a_week_from_tod.mp3",
-    "hash": "2446826b3b0f03a1da09a3b1afb3b2d78fd45265600a7380ca1b92283f1f209d"
+    "hash": "f32921064a43369fa63a6eb07588d3aaef5a89e56f369b7dd86e0ab1620cf58b"
   },
   "https://www.ign.com/articles/blizzard-teases-familiar-locations-for-post-launch-world-of-warcraft-forever-updates": {
     "file": "World_of_Warcraft_Forever_gets_its_full_release_on.mp3",
     "hash": "3643fd1ca4b1d49efd4783f408468022bf59a102addd6b28bd84b1fc46099b6d"
+  },
+  "https://www.ign.com/articles/call-of-duty-modern-warfare-4-adds-series-favorite-map-shipment-to-multiplayer": {
+    "file": "Shipment,_one_of_Call_of_Duty's_most_iconic_maps,_.mp3",
+    "hash": "89fcc4b30e20a013223b01bcdb8423a5b30f8adc2d2d7a5a78a89d9affb7a273"
   },
   "https://www.ign.com/articles/canceled-transformers-game-footage-leaks-online-showing-never-before-seen-final-trailer": {
     "file": "A_final_trailer_for_the_canceled_game_Transformers.mp3",
@@ -367,9 +375,21 @@
     "file": "The_canceled_movie_spinoff_is_getting_a_new_lease_.mp3",
     "hash": "88639f82b47845cc1a3af9bf9c06768b2f6427e7e3eb8d70b1e5315352f4e2ac"
   },
+  "https://www.ign.com/articles/capcom-celebrates-record-sales-in-first-half-of-2027-fiscal-year-with-overwhelming-majority-being-digital-purchases": {
+    "file": "Capcom_is_celebrating_its_highest_software_unit_sa.mp3",
+    "hash": "7839592a57ef8ea40c69ca24b669859666b560d02064701c2e60db2395793db1"
+  },
   "https://www.ign.com/articles/composer-austin-wintory-shares-22-minutes-of-music-created-for-biowares-canceled-mass-effect-5": {
     "file": "Composer_Austin_Wintory_was_once_in_talks_to_make_.mp3",
     "hash": "9d87227ef450fbc400210af44104ce317de99e811621207227d7e3a07f8a35f5"
+  },
+  "https://www.ign.com/articles/creator-of-viral-needle-in-a-haystack-game-roasts-copycats-with-find-the-original-game-mode": {
+    "file": "The_creator_of_a_viral_indie_game_where_players_mu.mp3",
+    "hash": "26cf101414b18f57b3ece64cb773839d5da4a97db281903e682d1a27e036a735"
+  },
+  "https://www.ign.com/articles/david-hayter-opens-up-about-his-huge-lost-planet-movie-that-never-got-made": {
+    "file": "Acclaimed_voice_actor_and_screenwriter_David_Hayte.mp3",
+    "hash": "66b1ecb2d4ed8f5c9206dd9948a5782e5dd582c9b50ebed771cac4bfbf96ce66"
   },
   "https://www.ign.com/articles/dc-studios-boss-confirms-discussions-with-alan-ritchson-but-havent-found-a-role-for-him-yet": {
     "file": "DC_Studios_boss_Peter_Safran_confirms_they've_had_.mp3",
@@ -383,6 +403,14 @@
     "file": "British_singer_Cliff_Richard_is_enjoying_an_unlike.mp3",
     "hash": "31c7887ea5573f1244077999f4bda9b97f5a173da803645e9ccbdc44305e1cbc"
   },
+  "https://www.ign.com/articles/discord-messages-in-discoverable-servers-will-soon-be-searchable-on-google": {
+    "file": "Over_the_last_decade,_Discord_has_become_the_de_fa.mp3",
+    "hash": "16dc9fd421f4e8fb82fedb0659f8fae11a53fd00605ce60798651a726c7237f1"
+  },
+  "https://www.ign.com/articles/elden-ring-movie-runtime-could-reach-nearly-3-hours": {
+    "file": "A_few_new_details_on_the_story_for_A24\u2019s_Elden_Rin.mp3",
+    "hash": "04304f8c1f04e83b5103d446d892e2a598a7ccc46eee50cc0e6a212572930cfa"
+  },
   "https://www.ign.com/articles/emberville-delays-early-access-launch-at-the-last-minute": {
     "file": "Cygnus_Cross,_the_development_team_behind_the_prom.mp3",
     "hash": "2fe7bc673ea3a38973f88057aa02023abaedcc7ae132123bab4cca59f975bb20"
@@ -391,17 +419,33 @@
     "file": "GTA_6's_release_has_led_to_as_much_as_a_17%_increa.mp3",
     "hash": "65a872afdab7cf8031f4b56b9d49cda6c8631c7b4bc15a08499b75d783ed8675"
   },
+  "https://www.ign.com/articles/heated-rivalry-star-connor-storrie-in-talks-to-play-villain-in-mcus-ghost-rider-movie": {
+    "file": "Heated_Rivalry_actor_Connor_Storrie_is_in_talks_to.mp3",
+    "hash": "bc6ad0ae9c71045177373d257a16537edd2e622eb93cb98e372259ab1089742a"
+  },
   "https://www.ign.com/articles/hunger-games-director-hopes-you-arent-too-distracted-with-gta-6-to-see-sunrise-on-the-reaping": {
     "file": "Francis_Lawrence,_director_of_Netflix\u2019s_BioShock_m.mp3",
     "hash": "f393ab03cb144eb42203d7820f82be7a0ed24890ed0ba3fa2b36351898231501"
+  },
+  "https://www.ign.com/articles/kane-parsons-says-he-is-working-on-three-dream-projects-leading-to-speculation-over-valve-collaboration": {
+    "file": "Backrooms_director_Kane_Parsons_says_he_is_working.mp3",
+    "hash": "d0aa35c83044634655cb0c3f36ec619ccc13a2e7498d31837e87689ef3299076"
   },
   "https://www.ign.com/articles/kingdom-come-deliverance-developer-serious-cybersecurity-incident": {
     "file": "Warhorse_Studios_\u2014_the_developer_behind_Kingdom_Co.mp3",
     "hash": "c884d35fd951a506de1c74873432f65d7f7c9a1f7c38bb75daf9439d2dc92c20"
   },
+  "https://www.ign.com/articles/life-is-strange-developer-dont-nod-blasted-by-union-employees-over-illegal-management-practices-as-possible-layoffs-loom": {
+    "file": "An_October_27_statement_from_employees_of_Don't_No.mp3",
+    "hash": "b1541b30e5f95af619072bc1eed438a011a0f0f0837d9a985be2fe77141a7729"
+  },
   "https://www.ign.com/articles/matthew-lillard-superman-2-character-james-gunn-moment": {
     "file": "Superman_2_Man_of_Tomorrow_brings_Daredevil_Born_A.mp3",
     "hash": "3e51f232fc518d15c36d427812ae0856ce86f4881dd9555605f93bf73d9d1ecf"
+  },
+  "https://www.ign.com/articles/obsession-director-releasing-new-short-film-on-youtube-in-time-for-halloween": {
+    "file": "Curry_Barker,_writer_and_director_of_the_brilliant.mp3",
+    "hash": "b65eb73a5df0a730e1d483381a3bdadb6f34922f29643560a90794c5202854ac"
   },
   "https://www.ign.com/articles/palworld-official-toy-collection-mystery-eggs": {
     "file": "Collectibles_creator_The_Loyal_Subjects_has_releas.mp3",
@@ -409,7 +453,7 @@
   },
   "https://www.ign.com/articles/physical-books-but-not-physical-games-playstation-book-announcement-prompts-confusion-over-sonys-physical-media-stance": {
     "file": "Preorders_have_opened_for_PlayStation_The_First_30.mp3",
-    "hash": "a594309b2ccc7027121ae99c87d393d6cacdd675707e32ef55f9d9fb80887357"
+    "hash": "cd2d7fa8bde7b24832fc99445f132b649a65d67a7a94f4ea7ea6b72642dfb66a"
   },
   "https://www.ign.com/articles/pokemon-unite-offline-2027-in-game-sales-suspended": {
     "file": "Pokemon_Unite_will_end_service_on_March_23,_2027,_.mp3",
@@ -422,6 +466,10 @@
   "https://www.ign.com/articles/red-rising-director-francis-lawrence-says-ya-series-movie-adaptation-is-a-priority-at-paramount-following-shelved-netflix-show": {
     "file": "We_got_the_chance_to_chat_with_Francis_Lawrence,_d.mp3",
     "hash": "b8adc346bed95db9af3addf1b0de3815863b0475eed7ab512ebbffb9e6c2ed3f"
+  },
+  "https://www.ign.com/articles/resident-evil-executive-producer-says-the-series-story-could-end-in-the-next-10-years": {
+    "file": "In_an_interview_with_Yahoo_Japan,_executive_produc.mp3",
+    "hash": "ac394dc614615f1e79039d71ad030ef7abe29633cf005575c43c3a87a3cdcead"
   },
   "https://www.ign.com/articles/robert-pattinson-says-steven-soderbergh-is-completely-selfless-for-taking-over-on-the-batman-part-2": {
     "file": "The_Batman_Part_2_star_Robert_Pattinson_has_called.mp3",
@@ -443,6 +491,10 @@
     "file": "item_018.mp3",
     "hash": "43b871597cc8e992671257ed364fafa5e24d083cca8e2463b98d9e0a48d86c97"
   },
+  "https://www.ign.com/articles/two-creators-of-the-original-doom-are-arguing-about-its-history-on-social-media": {
+    "file": "The_1993_first_person_shooter_Doom_is_legendary._I.mp3",
+    "hash": "3bef7182d3956bbed5149b8607c0fb97a9dcce6c3ba85c4e5d672e57186ab5a8"
+  },
   "https://www.ign.com/articles/want-to-smell-like-a-werfwulf-this-perfume-has-you-covered": {
     "file": "item_008.mp3",
     "hash": "fc2c82c541d8813b65f360709879adc4353ec58fd3aaab0efa895702ccebdf0d"
@@ -453,7 +505,7 @@
   },
   "https://www.ign.com/articles/world-of-warcraft-forever-name-reservation-is-broken-ahead-of-launch": {
     "file": "The_World_of_Warcraft_Forever_beta_ended_last_week.mp3",
-    "hash": "f40684ce9660c35462e20b0ad8e27b1e668c3bb7ed53f0da486cc11e90d4aa10"
+    "hash": "2873930bdd37e860f52e9f86f3b2ce49df74032eb4a59eebe24c73b855f5387e"
   },
   "https://www.ign.com/articles/you-can-play-buckshot-roulette-in-real-life-at-this-tokyo-cafe-and-even-drink-an-arctic-eggs-cocktail": {
     "file": "The_Ukiyo_Game_Bar_&_Cafe_in_Tokyo_is_going_viral_.mp3",
@@ -592,7 +644,7 @@
     "hash": "1ea96f46c8dccabc3738bba3b6641fe4e03dfbe8ca3695b1e6adccf8b4e8834e"
   },
   "https://x.com/bs_leeon/status/2114962110786703694": {
-    "file": "item_026.mp3",
+    "file": "item_031.mp3",
     "hash": "a9f9a063eeb79d8f0f376b3e082206aeb83200a5265460bd9d670eb04eaf70cb"
   },
   "https://x.com/da1_sae/status/2024135311740280998": {
@@ -607,13 +659,25 @@
     "file": "item_015.mp3",
     "hash": "95423852912f5616b5e668184cac894ad14a763190046733f263f8b9d543a27c"
   },
+  "https://x.com/eddybird55555/status/2114410434094870662": {
+    "file": "item_001.mp3",
+    "hash": "e5cdf6c40fe97197e654c7bc0867def84bc3f74418a2f65d56685ffae05e391d"
+  },
   "https://x.com/ekcl93/status/2115028755186160108": {
     "file": "item_001.mp3",
     "hash": "2063d5e6cb3dde2dd4ec28350d18713f594b19a690f86e66cfe5ac6a582765f0"
   },
+  "https://x.com/eusuntrio/status/2114856875569385576": {
+    "file": "item_000.mp3",
+    "hash": "bb46edeeff1eec794a83e00ef966a352591db261935c659870a8cb4fad0d7cdb"
+  },
   "https://x.com/feelikeodd/status/2114784038598922714": {
     "file": "item_032.mp3",
     "hash": "24035d36db434f2f84c3aed69e6f28d4997fa8ff5f2b5d2ed0ce4a022a49635f"
+  },
+  "https://x.com/fudfudddd/status/2114454379013284085": {
+    "file": "item_002.mp3",
+    "hash": "7938ef3653b79d84e7770628f663e99bb8142a0fbe769a438ac0de0ece0aa033"
   },
   "https://x.com/ghost_finches/status/2114733352385478936": {
     "file": "item_023.mp3",
@@ -624,7 +688,7 @@
     "hash": "7f41c63f4804f68fcedfa93421e4703af276150b49ffca86c0f123fbf8960050"
   },
   "https://x.com/haojbleng/status/2115076364340728251": {
-    "file": "item_020.mp3",
+    "file": "item_025.mp3",
     "hash": "fc051e9de1e973dbca969ea09c992e59a0420f44634f52030c2883de9581ff0d"
   },
   "https://x.com/hisaka033/status/2114733639900831778": {
@@ -694,6 +758,10 @@
   "https://x.com/the_iizumi/status/2023820762113864168": {
     "file": "item_014.mp3",
     "hash": "748282ff3a6425555bd454fad0e3d86b558dac9db7b413748ee9d1114fe5a4ca"
+  },
+  "https://x.com/the_iizumi/status/2108191011071750642": {
+    "file": "item_004.mp3",
+    "hash": "6a1b228a4b2d7d5d80574f08c34216b58887731758d9d2d369b7f0d745af7e3e"
   },
   "https://x.com/vegs435091/status/2114842004890780098": {
     "file": "item_021.mp3",
