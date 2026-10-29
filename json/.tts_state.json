@@ -11,6 +11,10 @@
     "file": "item_001.mp3",
     "hash": "c9fb59a432e880f3b9e80bb2ccec8c5ed8bc3156a88d1aff3f3b79e77c2df1c6"
   },
+  "https://anxiang60756.lofter.com/post/3178d7bf_34dd69d8e": {
+    "file": "item_004.mp3",
+    "hash": "43058b8f41a31b9663eabf477e281bae9fc137b2b9c507188ea71cd8abac87de"
+  },
   "https://anxiang60756.lofter.com/post/3178d7bf_34e0d75e9": {
     "file": "item_002.mp3",
     "hash": "7eeeb721154fe1d0a9a13c6164432e933432c7e7fa005be8e0a385e827cbc8dc"
@@ -138,6 +142,10 @@
   "https://i.pximg.net/img-original/img/2024/06/16/00/00/20/119671777_p0.png": {
     "file": "item_040.mp3",
     "hash": "05f3ec368ac96ba0f59b79150c86a70549e673863726c5a0e78ad833ad28e844"
+  },
+  "https://i.pximg.net/img-original/img/2024/10/06/13/26/09/123083518_p0.jpg": {
+    "file": "item_003.mp3",
+    "hash": "fa703245271996291547dac7322907693ff6040456ef3e53c9b97580b5d96e7b"
   },
   "https://i.pximg.net/img-original/img/2025/02/26/21/03/11/127657736_p0.png": {
     "file": "item_025.mp3",
@@ -517,11 +525,15 @@
   },
   "https://www.ign.com/articles/alien-isolation-2-team-confirms-physical-edition-photo-mode-and-new-gameplay-details": {
     "file": "The_team_behind_Alien_Isolation_2_released_a_Q&A_t.mp3",
-    "hash": "c9b007203e98cd2a418a5396677398e024340a653e057b8cbce4eb0947812c01"
+    "hash": "b63dbcc5fbde3a1156a4dca60a7f9ce6ac7540b8ba6521a17fd5a7605d979543"
   },
   "https://www.ign.com/articles/apple-announces-its-first-touchscreen-macbook": {
     "file": "The_MacBook_Pro_has_had_pretty_much_the_same_desig.mp3",
     "hash": "fa000f5e82afbc4a12a8dd81eb4b0920221b1dcf8f6b83a23020c3e9910cd4e8"
+  },
+  "https://www.ign.com/articles/appreciate-the-fans-gta-5-cast-tell-jason-and-lucias-actors-the-most-important-things-they-should-know-before-gta-6-launches-them-to-fame": {
+    "file": "The_stars_behind_GTA_5\u2019s_Franklin,_Michael,_and_Tr.mp3",
+    "hash": "76f4df4ad8ece286c567d58f8520919ffd41936af34c58519bdfdf2743a169f3"
   },
   "https://www.ign.com/articles/assassins-creed-black-flag-resynced-final-major-content-update-coming-this-week": {
     "file": "Ubisoft_has_detailed_Assassin's_Creed_Black_Flag_R.mp3",
@@ -534,6 +546,10 @@
   "https://www.ign.com/articles/bioshock-movie-director-francis-lawrence-explains-why-its-taken-hollywood-so-long-to-adapt-the-game": {
     "file": "We_got_the_chance_to_sit_down_with_Francis_Lawrenc.mp3",
     "hash": "f98859597e721b6076900130d390fe9dd60b4a61c46a9441b0ef4bc8e9ecedc1"
+  },
+  "https://www.ign.com/articles/bioware-co-founder-speaks-out-on-studio-closure-mass-effect-cancellation": {
+    "file": "BioWare_co_founder_Greg_Zeschuk_has_spoken_out_abo.mp3",
+    "hash": "2f7128417140c44435f14a7c030ee8e9ca0baf555b0e0c8a00eee775036d0020"
   },
   "https://www.ign.com/articles/blade-runner-2099-the-board-game-will-feature-a-different-story-than-the-tv-series": {
     "file": "item_019.mp3",
@@ -557,7 +573,7 @@
   },
   "https://www.ign.com/articles/call-of-duty-modern-warfare-4-season-1-adds-6-new-maps-new-weapons-and-a-new-dmz-area": {
     "file": "Call_of_Duty_Modern_Warfare_4's_Season_1_details_h.mp3",
-    "hash": "d2c93fa92905835650bf12f76dfdf959052280944006b28dea713184720b1511"
+    "hash": "9b9bd613a737f3432ef301f91289b43f3a1a356bd15aacfbfb651c990bc1d2cc"
   },
   "https://www.ign.com/articles/canceled-transformers-game-footage-leaks-online-showing-never-before-seen-final-trailer": {
     "file": "A_final_trailer_for_the_canceled_game_Transformers.mp3",
@@ -577,7 +593,7 @@
   },
   "https://www.ign.com/articles/controversial-modern-warfare-4-free-for-all-change-nukes": {
     "file": "A_new_patch_for_Modern_Warfare_4_has_players_up_in.mp3",
-    "hash": "da7cf8a6b41a2312010665bf76de1dacaba40e6cf1aef28d38d98e46336ba2cc"
+    "hash": "aa3e36245bdcfde47204af11874d254246713869fc6ed3d5299020579faec797"
   },
   "https://www.ign.com/articles/creator-of-viral-needle-in-a-haystack-game-roasts-copycats-with-find-the-original-game-mode": {
     "file": "The_creator_of_a_viral_indie_game_where_players_mu.mp3",
@@ -627,6 +643,14 @@
     "file": "Jack_in_the_Box_is_getting_in_on_the_Avengers_hype.mp3",
     "hash": "5b1d268cdfccc2e75d7bb234edbf603b6a735a4fcc598ce052f76f3c8c5270c2"
   },
+  "https://www.ign.com/articles/james-gunn-confirms-batman-and-wonder-woman-are-diamond-characters-in-the-dcu-despite-their-continued-absence": {
+    "file": "James_Gunn_has_clarified_DC_Studios\u2019_8_10_year_roa.mp3",
+    "hash": "263893a8d2bb27e5bbfbeed5d5723f5846ed70a136afa365cd3ed89ce81f6e24"
+  },
+  "https://www.ign.com/articles/kane-parsons-confirms-meetings-with-valve-but-wont-adapt-their-games-if-it-cant-be-done-right": {
+    "file": "Backrooms_director_Kane_Parsons_has_confirmed_he_h.mp3",
+    "hash": "a335fc30253b2aa0c866943d3b13720952a5fcda6face2c3023b48530aa264e5"
+  },
   "https://www.ign.com/articles/kane-parsons-says-he-is-working-on-three-dream-projects-leading-to-speculation-over-valve-collaboration": {
     "file": "Backrooms_director_Kane_Parsons_says_he_is_working.mp3",
     "hash": "d0aa35c83044634655cb0c3f36ec619ccc13a2e7498d31837e87689ef3299076"
@@ -653,7 +677,7 @@
   },
   "https://www.ign.com/articles/nintendo-indie-world-showcase-october-2026-switch-2": {
     "file": "Nintendo\u2019s_Indie_World_Showcase_is_over,_and_we\u2019ve.mp3",
-    "hash": "ae5eaa28742b67cc9447a5fc67d86659d8835eaeaa9a3984f8b4caec3e3ac4a4"
+    "hash": "288c50b2e90053e14f0181d1ad1f03001c1ee8e6f3ce7224d5266bcded971045"
   },
   "https://www.ign.com/articles/no-mans-sky-forsaken-update": {
     "file": "Just_as_No_Man\u2019s_Sky_lands_for_iOS,_the_ever_expan.mp3",
@@ -662,6 +686,14 @@
   "https://www.ign.com/articles/obsession-director-releasing-new-short-film-on-youtube-in-time-for-halloween": {
     "file": "Curry_Barker,_writer_and_director_of_the_brilliant.mp3",
     "hash": "b65eb73a5df0a730e1d483381a3bdadb6f34922f29643560a90794c5202854ac"
+  },
+  "https://www.ign.com/articles/original-donkey-kong-poster-that-was-nearly-thrown-away-sold-at-auction-for-record-breaking-329400": {
+    "file": "A_1981_promotional_poster_for_the_original_Donkey_.mp3",
+    "hash": "4461035f1108db8eb038d506d6aa506adc98bccebc7cf5ebde93eb070944a168"
+  },
+  "https://www.ign.com/articles/outlanders-sam-heughan-hints-at-role-in-lord-of-the-rings-the-hunt-for-gollum": {
+    "file": "During_a_recent_appearance_at_a_book_festival,_Out.mp3",
+    "hash": "607703ef07ed6ecb1a2e00cd3e5ec642a5ebcb2624cecbe9bcd17b0c77caa49b"
   },
   "https://www.ign.com/articles/palworld-official-toy-collection-mystery-eggs": {
     "file": "Collectibles_creator_The_Loyal_Subjects_has_releas.mp3",
@@ -787,6 +819,10 @@
     "file": "item_003.mp3",
     "hash": "551793239d2914afc92d10f4792922e88f3d1cd22fa4b03540c547d160dc1475"
   },
+  "https://www.rednote.com/discovery/item/6a3b5b90000000000f01787b?xsec_token=ABebb3rcAFfRCFQ189mcO-p-XFWdgG9ABmH8DFf0LLLso=": {
+    "file": "item_001.mp3",
+    "hash": "3f17387d90e1382f43b255234da9523289f105c9f9f749dab85f8dea59a7a985"
+  },
   "https://www.rednote.com/discovery/item/6a3d0db6000000001102c3a8?xsec_token=ABuTUIl1wZO0tQR8NCrOIQcKTOAf5opuGYh8soL7_iPFk=": {
     "file": "item_045.mp3",
     "hash": "4feb73e50c690083d4562ae6843b121f483a92d95e2a5cfae3bb5c265011fd22"
@@ -866,6 +902,10 @@
   "https://x.com/Dandelion100/status/2115100846589673615": {
     "file": "item_036.mp3",
     "hash": "da69547b8b2bd6b94a8b1433ca113ff37c7b02e95bb1e63f513e387e3dae6875"
+  },
+  "https://x.com/Demidevilqueen/status/2115517916422775021": {
+    "file": "item_000.mp3",
+    "hash": "7a1f2023e710106e3dc71b44149ad303ce53878d1568cc258cb8df0b15e31f9e"
   },
   "https://x.com/EurybiaHiro92/status/2114884786200170974": {
     "file": "item_004.mp3",
@@ -1150,6 +1190,10 @@
   "https://x.com/sxz3a_/status/2114968829193515062": {
     "file": "item_042.mp3",
     "hash": "3db4efd62faedb68405e63070d7a50c70858554e2bc9fab296d52262f2643580"
+  },
+  "https://x.com/tesuwawa/status/2091035699453837690": {
+    "file": "item_002.mp3",
+    "hash": "88ebf7cd3dea5849b7bca0d089fff4d0e316d4d164913bcfc9b0fd7b874201b8"
   },
   "https://x.com/the_iizumi/status/2023820762113864168": {
     "file": "item_014.mp3",
