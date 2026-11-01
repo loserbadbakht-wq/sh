@@ -539,6 +539,10 @@
     "file": "item_005.mp3",
     "hash": "1c1141f6d7e9905dbb3de209bd298a4606a06d2df6e9d5ca47c4bf60ed498ccf"
   },
+  "https://i.pximg.net/img-original/img/2026/11/01/03/47/04/151536118_p0.png": {
+    "file": "item_000.mp3",
+    "hash": "9d9d7b686f9a2b336c6146c5f70d01d0b601f626f76fde47012e9468d2673c2a"
+  },
   "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/8dbcd78f-516a-4a76-9d30-6fd087aa72ef/dmmwkcs-90c996b0-56d0-4b63-8897-90cf72518f32.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi84ZGJjZDc4Zi01MTZhLTRhNzYtOWQzMC02ZmQwODdhYTcyZWYvZG1td2tjcy05MGM5OTZiMC01NmQwLTRiNjMtODg5Ny05MGNmNzI1MThmMzIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.67vYgHTnW9oFGU5SMUHeUGfjGeY2K6ze7qVd-9XN4Os&filename=madohomu_2026_by_lovelettelane_dmmwkcs.png": {
     "file": "item_014.mp3",
     "hash": "2db3bd3cf43cb9ec2cdbf3c8c1adc163885e5094bd59bb3470bc1ba1511af5f2"
@@ -1017,7 +1021,7 @@
   },
   "https://www.ign.com/articles/anthropic-blocks-ai-game-clones-in-claude-opus-update": {
     "file": "Anthropic_has_issued_an_update_for_Claude_Opus_tha.mp3",
-    "hash": "6c6692c91e4b0aabfed34387de645fdaf7ffa7feee71135cc30b85bb6694d2f7"
+    "hash": "b0cd918936f40a59157140a1f422aeb86d926fa7231fb430d5b1924ac139909d"
   },
   "https://www.ign.com/articles/apex-legends-new-update-dual-wield-wingman-lifeline-revive-shield": {
     "file": "Some_people_are_absolutely_cracked_with_the_Wingma.mp3",
@@ -1089,7 +1093,7 @@
   },
   "https://www.ign.com/articles/bungie-says-dont-buy-marathon-as-a-donation-as-destiny-players-look-to-support-studios-future": {
     "file": "As_Bungie_plots_a_future_for_more_Destiny,_head_of.mp3",
-    "hash": "83c5899d3c61d4ffa9fcf98e17f53c88c3eeb63d3cc1a14d234760565fc102d7"
+    "hash": "a21393f15e392cca83ca2fa7c23d45d0321eb3468c327dabd8dec350dad28408"
   },
   "https://www.ign.com/articles/by-skipping-last-gen-systems-stranger-than-heaven-is-allowing-rgg-studio-to-fully-leverage-the-power-of-current-gen-consoles-at-long-last": {
     "file": "By_Skipping_Last_Gen_Systems,_Stranger_Than_Heaven.mp3",
@@ -1144,8 +1148,8 @@
     "hash": "da7cf8a6b41a2312010665bf76de1dacaba40e6cf1aef28d38d98e46336ba2cc"
   },
   "https://www.ign.com/articles/costco-reveals-its-full-black-friday-ad-and-sale-dates-for-2026": {
-    "file": "item_005.mp3",
-    "hash": "617f7ad1633f70c33b04a7561b350d7da65909afb4c2f6ea14581c2a47d1b448"
+    "file": "item_008.mp3",
+    "hash": "9c60fe34c4ad6890e91f4052786591af09fd4e019ec9fe666687f99161b0868c"
   },
   "https://www.ign.com/articles/creator-of-viral-needle-in-a-haystack-game-roasts-copycats-with-find-the-original-game-mode": {
     "file": "The_creator_of_a_viral_indie_game_where_players_mu.mp3",
@@ -1255,6 +1259,10 @@
     "file": "Francis_Lawrence,_director_of_Netflix\u2019s_BioShock_m.mp3",
     "hash": "f393ab03cb144eb42203d7820f82be7a0ed24890ed0ba3fa2b36351898231501"
   },
+  "https://www.ign.com/articles/input-lag-is-so-bad-in-call-of-duty-modern-warfare-4-on-nintendo-switch-2-that-players-suffer-from-a-competitive-disadvantage": {
+    "file": "If_you\u2019re_playing_Call_of_Duty_Modern_Warfare_4_on.mp3",
+    "hash": "9bb11a2c6e44adf8082ee484577498a63bf6eebd5c2698a0896cdbb6d1c846e9"
+  },
   "https://www.ign.com/articles/it-welcome-to-derry-drops-surprise-halloween-episode": {
     "file": "HBO_has_jump_scared_subscribers_with_a_surprise_ep.mp3",
     "hash": "02812190df6610de2dd0a3f69e27323b6809c6baa9764a70ecf7cc8dcda835c2"
@@ -1341,7 +1349,7 @@
   },
   "https://www.ign.com/articles/nintendo-reveals-surprise-pikmin-day-direct": {
     "file": "Nintendo_has_revealed_a_surprise_Nintendo_Direct_f.mp3",
-    "hash": "4a3b46263559131c66f7bb50626476cf792a9fbf42c763dcea17f753307a731f"
+    "hash": "a113655b1ec2ae8cb6b98221fe148c451fe0dc0ed540d49260d2e8209c1584da"
   },
   "https://www.ign.com/articles/no-mans-sky-forsaken-update": {
     "file": "Just_as_No_Man\u2019s_Sky_lands_for_iOS,_the_ever_expan.mp3",
@@ -1455,6 +1463,10 @@
     "file": "As_the_RAM_crisis_has_played_out_in_2026,_graphics.mp3",
     "hash": "cd4be534b16412a48c17a05ca37bbd12647908e6b7b524baf6ad0f6936671845"
   },
+  "https://www.ign.com/articles/save-mass-effect-graffiti-reportedly-spray-painted-outside-ea-building": {
+    "file": "An_EA_office_building_in_Madrid_was_vandalized_wit.mp3",
+    "hash": "23145d4e157d58c8bc829b31e611a205a0d9bc0e69332938725c6c5314bedb27"
+  },
   "https://www.ign.com/articles/scammers-are-taking-advantage-of-hype-for-ps5-emulators-by-tricking-gamers-into-downloading-malware": {
     "file": "Security_experts_have_issued_a_warning_over_fake_P.mp3",
     "hash": "9f35597bdc339f252e28fd88e42877d4c1157256ee1dba2814d23013180c9f7b"
@@ -1478,6 +1490,10 @@
   "https://www.ign.com/articles/star-trek-online-players-form-galaxy-class-honor-guard-to-pay-tribute-to-captain-picard-actor-sir-patrick-stewart": {
     "file": "Star_Trek_Online_players_have_gathered_in_game_to_.mp3",
     "hash": "1da231129dc596f66e9baed2221872b81dace6d3c3f26d55e6b9fcec6f10d9b5"
+  },
+  "https://www.ign.com/articles/star-wars-actor-hayden-christensen-says-a-man-who-burgled-his-house-recognized-him-then-gave-his-stuff-back-mid-robbery": {
+    "file": "Anakin_Skywalker_actor_Hayden_Christensen_has_reve.mp3",
+    "hash": "939c4f98888c6deb046c3da06c868bf3088ec89dc412a0103be34856da0ff148"
   },
   "https://www.ign.com/articles/stranger-than-heaven-features-optional-cheats-to-make-its-combat-easier": {
     "file": "Stranger_Than_Heaven_Features_Optional_\u201cCheats\u201d_to.mp3",
@@ -1707,6 +1723,10 @@
     "file": "item_024.mp3",
     "hash": "276832f41e6463e68bf689161e0c161e8c423360698811d654140728112bb0b2"
   },
+  "https://x.com/Akasukiane04/status/2113840920403861836": {
+    "file": "item_005.mp3",
+    "hash": "afcde809e0a8bca6d5e39ced109fe553e125d66929e96bb2a6951a97fcc23c5d"
+  },
   "https://x.com/Aolaite_/status/2115109671057191246": {
     "file": "item_032.mp3",
     "hash": "957066f4a8f6208d89542998360b01f9935fe52e54408441026cb7976d64d98c"
@@ -1756,7 +1776,7 @@
     "hash": "da69547b8b2bd6b94a8b1433ca113ff37c7b02e95bb1e63f513e387e3dae6875"
   },
   "https://x.com/Dektalk/status/2116429967420690704": {
-    "file": "item_016.mp3",
+    "file": "item_030.mp3",
     "hash": "bc11188b38f9369b10fd49a4a83bc45f52fd34c263e6182d19837c359fafa84b"
   },
   "https://x.com/Demidevilqueen/status/2115517916422775021": {
@@ -1810,6 +1830,10 @@
   "https://x.com/Kiroshi_007/status/2115927657971941591": {
     "file": "item_019.mp3",
     "hash": "5692d0394a50efd8f0d11024b52d3af6491286823cee3585698e8ee889ec372f"
+  },
+  "https://x.com/KotCate/status/2116467117830910443": {
+    "file": "item_003.mp3",
+    "hash": "04bc2e52ec0fae64a7530c6932a5bf46b605c1e762279c2f486c5b8e9f1d1732"
   },
   "https://x.com/Kousaka_0v0/status/2115376170908909743": {
     "file": "item_012.mp3",
@@ -1874,6 +1898,10 @@
   "https://x.com/O_LEM2/status/2115433372822679591": {
     "file": "item_004.mp3",
     "hash": "0e021a96ec9208a1346e17df9036db4868450723fec241f578ff4f83bed5ff6d"
+  },
+  "https://x.com/Onecolo133/status/2116714164190409071": {
+    "file": "item_002.mp3",
+    "hash": "a546fa413cbad61863828e939ffef4c6e93a31201f76686066e563187410c354"
   },
   "https://x.com/Oo_Oo903/status/2116492907867931041": {
     "file": "item_044.mp3",
@@ -1942,6 +1970,10 @@
   "https://x.com/Terretern/status/2116017993339801841": {
     "file": "item_018.mp3",
     "hash": "a5d4e250741f2758c84855d7d4b5e7d972fcb9c19cec208a9909267442717a68"
+  },
+  "https://x.com/Tetsu_ed/status/2116700164497035728": {
+    "file": "item_007.mp3",
+    "hash": "9d4291496e3c229e48309b2b74d0bb5d5159677ecc29053b20afcf4e824aab01"
   },
   "https://x.com/User2265774/status/2113649904472240253": {
     "file": "item_006.mp3",
@@ -2030,6 +2062,10 @@
   "https://x.com/amadare0803/status/2115804589543055517": {
     "file": "item_009.mp3",
     "hash": "10f44bbf4e46782521cb3507d669441c664bd3ff9a1893db6b31c878fa64a2e9"
+  },
+  "https://x.com/an_xinin/status/2103808139481297192": {
+    "file": "item_004.mp3",
+    "hash": "0b46b6829e8af3424f341c43f23e391de10408a3793837a00b98025c77b1fcdd"
   },
   "https://x.com/aooont/status/2116428169784017386": {
     "file": "item_034.mp3",
@@ -2211,6 +2247,10 @@
     "file": "item_023.mp3",
     "hash": "ab6deadc8739a39d3a3702d6630d6b2bbc4c7e25c2b7b27e51312c227702fb2b"
   },
+  "https://x.com/harunagi1234/status/2116502156396441739": {
+    "file": "item_009.mp3",
+    "hash": "b7e914ad22e8f610a2ab945a04a36af0eeb3a49b27ffb865939917a98427cbd8"
+  },
   "https://x.com/hbd_bday/status/2116153949472624761": {
     "file": "item_005.mp3",
     "hash": "9b4b08c31a868afe4defb511afeeee7229479808059b5d464977d7b6a15d6a62"
@@ -2355,6 +2395,10 @@
     "file": "item_009.mp3",
     "hash": "f88b8359f3093dbb433aff8cbf6ce4f0416fcc80384a5770dde323c6b52a5da0"
   },
+  "https://x.com/lucidkana/status/2116548597949026605": {
+    "file": "item_001.mp3",
+    "hash": "806b63e7989429bf344b7d7ca04d4d8253d9803615c8bf5dbdc6be562fc36473"
+  },
   "https://x.com/mafuenareal/status/2116334564964786178": {
     "file": "item_029.mp3",
     "hash": "8ccb45c5920ae666d445f0d9482afb1468c5e322f293576844adc3a0314da031"
@@ -2390,6 +2434,10 @@
   "https://x.com/misumi_suki/status/2115813160154526150": {
     "file": "item_016.mp3",
     "hash": "38263304126f624788e8062966f1e1ecaa5120938098b4b68966c106217f1eda"
+  },
+  "https://x.com/mkm_mochi/status/2115426024519594038": {
+    "file": "item_006.mp3",
+    "hash": "c3ab11f0f0ea20b2d9c5ad24f3d0fadcc6f8e295155f10cb07aee731339baa49"
   },
   "https://x.com/moratoram_461/status/2115806997736251797/photo/1": {
     "file": "item_004.mp3",
@@ -2706,6 +2754,26 @@
   "https://x.com/yayayoshi_/status/2115134165264032253": {
     "file": "item_003.mp3",
     "hash": "903c9c5c0f9aced371db7936ac5330945e847e74e5bc314fd38ae61d0414e266"
+  },
+  "https://x.com/yimudesu/status/1939373905589997867": {
+    "file": "item_010.mp3",
+    "hash": "8ee255e0eaec6c531e85ecb2faece751296634cf571221afd4df9e9d3d58c7b0"
+  },
+  "https://x.com/yimudesu/status/1968712269522485316": {
+    "file": "item_008_1.mp3",
+    "hash": "6950c7a59595875e498f2e129db29d198a63016c5eaa52bc5fbb488029b949e7"
+  },
+  "https://x.com/yimudesu/status/1974004719225090099": {
+    "file": "item_013.mp3",
+    "hash": "3f1ff67d12630834e0c84cfeac3dbcf9f0792a1093c98359ab977c099939425e"
+  },
+  "https://x.com/yimudesu/status/2068396572447216123": {
+    "file": "item_012.mp3",
+    "hash": "aa1f391c3a68ac0e22803b5b15a8d51dcaec8c05de9508f6f718ea0eb854ec20"
+  },
+  "https://x.com/yimudesu/status/2077281972695789645": {
+    "file": "item_011.mp3",
+    "hash": "9f451d4940f6a25a607efc06cc5d1539af6a5178cd570cf188f1297d2b0287ac"
   },
   "https://x.com/yugeme168/status/2055245797168689623": {
     "file": "item_038.mp3",
