@@ -64,8 +64,8 @@
     "hash": "a79320c6f0b91ced0338f3daec0eb62380d8f03b9acf7c42140f5b068c8422bf"
   },
   "https://emilylovescookies.tumblr.com/post/726177129050652672": {
-    "file": "item_001.mp3",
-    "hash": "b8624c03be58aafcb373aaf07a117930638808907048b0301c9f7baf9af831b6"
+    "file": "item_043.mp3",
+    "hash": "2cd325b4272762e91144e322cfa20627fa0a70a2a5475352d899f9bb806e0996"
   },
   "https://emilylovescookies.tumblr.com/post/749576185847136256": {
     "file": "item_002.mp3",
@@ -126,6 +126,10 @@
   "https://game8.co/articles/latest/dragons-dogma-2-x-delicious-in-dungeon-collab-adds-laios-and-marcille-as-pawns": {
     "file": "Dragon\u2019s_Dogma_2_x_Delicious_in_Dungeon_Collab_Add.mp3",
     "hash": "cf7f5d3830b12c974a14727f6faeb0f70633a757ed45c7c6531eff4e1d24cf86"
+  },
+  "https://game8.co/articles/latest/god-of-war-laufey-delayed-to-may-20-2027-to-reach-its-fullest-potential": {
+    "file": "God_of_War_Laufey_Delayed_to_May_20,_2027_to_Reach.mp3",
+    "hash": "4e80b12da330ab5691d1a1892ef737d05b2e30fa4b7d98f47e7eda203c9ba99c"
   },
   "https://game8.co/articles/latest/goddess-of-victory-nikke-4th-anniversary-welcomes-stellar-blade-collab-new-marian-and-free-ssr": {
     "file": "Goddess_of_Victory_NIKKE_4th_Anniversary_Welcomes_.mp3",
@@ -995,6 +999,10 @@
     "file": "Arkane_Studios,_which_spent_the_last_several_month.mp3",
     "hash": "90d69ac7c463d98e7259e42c27df532a3a69281318d9f812d1e57fb2bb3295fb"
   },
+  "https://www.eurogamer.net/arkane-union-xbox-more-expensive-marvels-blade": {
+    "file": "Xbox_would_probably_spend_more_money_shutting_down.mp3",
+    "hash": "63d6d1911c0fb5627f5cc89c7b59cae595c0895916a5fb6f1fc75295e40a6862"
+  },
   "https://www.eurogamer.net/assassins-creed-black-flag-resynced-new-game-plus-final-update": {
     "file": "After_a_period_of_quiet_and_a_few_small_updates,_U.mp3",
     "hash": "c9b8b2d68e4855b8724deda411f667b381690dda5ce483024ba1fa45bf8f2f94"
@@ -1139,6 +1147,10 @@
     "file": "Bethesda's_hugely_anticipated_and_long_awaited_fan.mp3",
     "hash": "30c362c430b341c6dc8fe715d2019b4db12a6956989419dc81f3b77ecec9735e"
   },
+  "https://www.eurogamer.net/elder-scrolls-6-sentinel-bethesda-recapture-the-magic": {
+    "file": "Eight_years_ago,_I_sat_at_my_desk_enthralled._Beth.mp3",
+    "hash": "287d9810ca31911e3bf0bd855552e1a509e029c1602b9e05a9c3f68b715eaa8f"
+  },
   "https://www.eurogamer.net/epic-genai-fortnite-unreal-engine-6-no-longer-writing-code": {
     "file": "To_no_one's_surprise,_Epic_Games_has_now_confirmed.mp3",
     "hash": "f8da510b08f80c6fab6d78d989818146bf36a7c1e3c662291ca0c1275013d43b"
@@ -1170,6 +1182,10 @@
   "https://www.eurogamer.net/ghost-of-yotei-sucker-punch-lays-off-developers": {
     "file": "Layoffs_have_reportedly_hit_Sucker_Punch,_the_Play.mp3",
     "hash": "2fa15fd66c0ae2a01dfce4ea0d534781bd3d4e8e247f0d8b60820beb2e651efd"
+  },
+  "https://www.eurogamer.net/god-of-war-laufey-delayed-may-three-months": {
+    "file": "God_of_War_Laufey_has_been_delayed._Sony_Santa_Mon.mp3",
+    "hash": "95e0fb688ecb9130603dbd2ff5221e454579a4fca05e09eac417a5c971cec7c9"
   },
   "https://www.eurogamer.net/grand-theft-auto-6-pre-load-date": {
     "file": "Rockstar_Games_have_revealed_the_pre_load_date_and.mp3",
@@ -1274,6 +1290,10 @@
   "https://www.eurogamer.net/nexus-mods-gen-ai-disclosure-rules": {
     "file": "Nexus_Mods,_the_largest_website_for_finding_and_do.mp3",
     "hash": "034c285f5b3558dd7db91c8900ab6d27b91ade0b4bd15d1af5e0644afe0f4146"
+  },
+  "https://www.eurogamer.net/nintendo-cast-navi-actor-zelda-ocarina-of-time": {
+    "file": "For_The_Legend_of_Zelda_Ocarina_of_Time's_shiny_ne.mp3",
+    "hash": "913b56564c1dc20cd2072e5599995cedc9f3dce29587a3bf59b3b1a14f0dad84"
   },
   "https://www.eurogamer.net/nintendo-fast-travel-legend-of-zelda-ocarina-of-time-remake": {
     "file": "The_Legend_of_Zelda_Ocarina_of_Time_is_being_wrapp.mp3",
@@ -1431,6 +1451,10 @@
     "file": "Today,_Xbox_and_Bethesda_have_finally_revealed_the.mp3",
     "hash": "d5adf8d4a40753b56d746595cd248f67fbe25f0a96cac661bb87d3ce74bf0a83"
   },
+  "https://www.eurogamer.net/the-elder-scrolls-6-sentinel-story-speculation": {
+    "file": "Following_the_release_of_yesterday's_brief_new_The.mp3",
+    "hash": "4a35a964a980dacd217b2cd551556a693832af2a47d2460793a3419a4cb0444e"
+  },
   "https://www.eurogamer.net/the-legend-of-zelda-ocarina-of-time-remake-review": {
     "file": "I_have_a_friend_who_first_played_The_Legend_of_Zel.mp3",
     "hash": "9b4830d588dfa8df9181634874afdc577e48888efc6d3d3fa40053d80757163b"
@@ -1511,6 +1535,10 @@
     "file": "World_of_Warcraft_Forever_has_its_full_launch_a_we.mp3",
     "hash": "02cedb881479e6be1b272d3c4b94e2d45e0526a8da24bfd9fd93fa31a4658301"
   },
+  "https://www.ign.com/articles/ai-slop-fuelled-steam-backlog-preventing-games-from-hitting-launch-targets": {
+    "file": "Valve\u2019s_approval_process_has_always_taken_a_bit_of.mp3",
+    "hash": "1c6ad42add1f26477c4a7cf6bb4d669ba23eb6fda24ab5f21c93509a1beda9bb"
+  },
   "https://www.ign.com/articles/alien-isolation-2-sticking-with-pure-survival-horror-roots-says-creative-director": {
     "file": "Alien_Isolation_2_will_be_released_in_2027,_ready_.mp3",
     "hash": "fcb47e09de2d922c483b9a3e4c92236e023b43cf7bd1f875fb9175af47bcedba"
@@ -1550,6 +1578,10 @@
   "https://www.ign.com/articles/assassins-creed-valhalla-is-getting-new-game-six-years-after-release": {
     "file": "Assassin's_Creed_Valhalla_launched_all_the_way_bac.mp3",
     "hash": "65bc5697834609ce67f421b5e4a99dd1158ffbca8e5ef738417266e5ad4685ec"
+  },
+  "https://www.ign.com/articles/batman-knightfall-part-2-knightquest-release-date-box-art-fight-scene": {
+    "file": "IGN_can_exclusively_reveal_that_Batman_Knightfall_.mp3",
+    "hash": "178a2377ae4727b231454996cfd3d7cd06a061f2913d86bf457777785ac021ef"
   },
   "https://www.ign.com/articles/ben-wang-reportedly-in-talks-to-play-iceman-in-mcu-x-men-reboot": {
     "file": "The_Long_Walk_actor_Ben_Wang_is_reportedly_in_talk.mp3",
@@ -1599,9 +1631,13 @@
     "file": "World_of_Warcraft_Forever_gets_its_full_release_on.mp3",
     "hash": "3643fd1ca4b1d49efd4783f408468022bf59a102addd6b28bd84b1fc46099b6d"
   },
+  "https://www.ign.com/articles/bloodborne-sold-250000-copies-2026": {
+    "file": "All_FromSoftware_games_rule,_but_Bloodborne_has_th.mp3",
+    "hash": "4afaf76cb8d43a6de8c6566ffe6ab895632b83d43068ab7c26c906c2b8540bf0"
+  },
   "https://www.ign.com/articles/bride-goes-viral-after-challenging-groom-to-beat-her-at-valorant-before-marrying-her": {
     "file": "A_bride_in_China_is_going_viral_for_giving_her_hus.mp3",
-    "hash": "ba247960bb10f5900764e5931c3aad7378b142d5e1707f46d6f99e9d5c1841dd"
+    "hash": "88bb2af459986ae7245cbb9ff79a171427866679c69778d7851b852d62686d14"
   },
   "https://www.ign.com/articles/buckingham-palace-honors-patrick-stewart-by-playing-the-wrong-star-trek-theme-music": {
     "file": "The_Band_of_the_Grenadier_Guards_performed_a_medle.mp3",
@@ -1715,6 +1751,10 @@
     "file": "Kojima_Productions_revealed_the_first_trailer_for_.mp3",
     "hash": "d6b4aee54fc80ec670ff24ca35a00ff280f0c1be9d6eb830c7209dc7e159ef4d"
   },
+  "https://www.ign.com/articles/democrat-mocks-former-bungie-composer-marty-odonnell-with-halo-monk-chant-tweet-after-us-midterm-elections-victory": {
+    "file": "Republican_Marty_O'Donnell_has_lost_his_bid_for_Ne.mp3",
+    "hash": "88c2763ff74ece093e9ccecf720aeaf66c4ee2e43540ebad320cd871239cc1b9"
+  },
   "https://www.ign.com/articles/devil-woman-singer-cliff-richard-didnt-know-gta-6": {
     "file": "British_singer_Cliff_Richard_is_enjoying_an_unlike.mp3",
     "hash": "31c7887ea5573f1244077999f4bda9b97f5a173da803645e9ccbdc44305e1cbc"
@@ -1743,6 +1783,14 @@
     "file": "Bereaved_families_have_called_on_Activision_to_rem.mp3",
     "hash": "c9fd0dbd129415429604dca17cd03728b50bcf0de46b616c92dd5c2f29b4b4a5"
   },
+  "https://www.ign.com/articles/final-fantasy-producer-cites-star-wars-as-a-key-inspiration-for-characters-and-mechanics-in-franchise": {
+    "file": "Longtime_Final_Fantasy_producer_Yoshinori_Kitase_r.mp3",
+    "hash": "358c7eff508073a53b9fb40cae55604db06bf89204c564d25b204c45a0add13d"
+  },
+  "https://www.ign.com/articles/final-fantasy-vii-revelation-producer-yoshinori-kitase-hints-that-square-enix-is-interested-in-movie-adaptations-and-new-games": {
+    "file": "Yoshinori_Kitase,_producer_of_the_Final_Fantasy_VI.mp3",
+    "hash": "4eba22b3ae4174ca82a8b3c17bd69a6bed6b2b44aab11602719eee25a3fcac38"
+  },
   "https://www.ign.com/articles/final-fantasy-xiv-evercold-delayed-new-release-date-announced-at-ffxiv-fan-fest": {
     "file": "The_MMORPG's_next_expansion_was_set_to_launch_shor.mp3",
     "hash": "3f6c7a4cc6a565083d46016a919b30982eaa9a468309419fa7163158b01dc038"
@@ -1750,6 +1798,10 @@
   "https://www.ign.com/articles/former-xbox-coo-helen-chiang-speaks-out-following-shock-exit-from-microsoft": {
     "file": "On_November_2,_former_Xbox_COO_Helen_Chiang_took_t.mp3",
     "hash": "4f345f528a81fed2175039872bbb5717e5c2a46dbbde166eb9d7c11ed773867e"
+  },
+  "https://www.ign.com/articles/fortnite-pirate-shop-token-hunt-sparked-wave-of-profiteering": {
+    "file": "Fortnite_Players_Are_Doing_Things_Epic_Would_Proba.mp3",
+    "hash": "4de1f70620de85f60e83e8513c8384d8a3d5d33d3ed9fa6fa046ff398439031e"
   },
   "https://www.ign.com/articles/forza-motorsport-director-and-turn-10-boss-dan-greenawalt-retiring-from-microsoft-after-27-years": {
     "file": "Dan_Greenawalt,_a_27_year_Microsoft_employee_who_h.mp3",
@@ -1782,6 +1834,10 @@
   "https://www.ign.com/articles/go-play-gta-6-says-wardogs-developer": {
     "file": "After_the_runaway_success_of_Wardogs,_a_new_sandbo.mp3",
     "hash": "5814b4a12759f83019a63ba0fc6f7518673df89e24fc0a078c134dd36f87c70c"
+  },
+  "https://www.ign.com/articles/god-of-war-laufey-delayed-to-may-2027": {
+    "file": "God_of_War_Laufey_will_no_longer_be_released_in_Fe.mp3",
+    "hash": "0f702a663bd0c1f8440f288fa3d0211a08e495af3aa0a7965e8bf393df383073"
   },
   "https://www.ign.com/articles/grand-theft-auto-vi-the-original-score-where-to-buy": {
     "file": "Grand_Theft_Auto_VI_The_Original_Score_is_a_three_.mp3",
@@ -1911,6 +1967,10 @@
     "file": "Kevin_Feige,_president_of_Marvel_Studios_and_COO_o.mp3",
     "hash": "9761fc704811571eff036ed66f2ce27ec23dcd6ed12e00740643c33f1fcd4dbf"
   },
+  "https://www.ign.com/articles/kfc-reveals-official-avengers-doomsday-menu-worthy-of-dr-doom": {
+    "file": "Dr._Doom_is_teaming_up_with_a_particularly_powerfu.mp3",
+    "hash": "b08555af9fda7daa56969a1059ffdbb6898c5d187fe2302467b024820a3a720e"
+  },
   "https://www.ign.com/articles/kingdom-come-deliverance-developer-serious-cybersecurity-incident": {
     "file": "Warhorse_Studios_\u2014_the_developer_behind_Kingdom_Co.mp3",
     "hash": "c884d35fd951a506de1c74873432f65d7f7c9a1f7c38bb75daf9439d2dc92c20"
@@ -1922,6 +1982,10 @@
   "https://www.ign.com/articles/lego-godzilla-announced-releases-on-black-friday": {
     "file": "LEGO_has_announced_it's_releasing_a_huge_new_LEGO_.mp3",
     "hash": "0f22f6060142a4b620daaff1e57e49bc6cf5bc61eb2e50e6efcdc4e978cc66a6"
+  },
+  "https://www.ign.com/articles/liam-neeson-had-a-priceless-reaction-to-learning-meryl-streep-is-voicing-aslan-in-narnia-the-magicians-nephew": {
+    "file": "Liam_Neeson_was_apparently_unaware_that_Meryl_Stre.mp3",
+    "hash": "7b59c5ca2883852d217416edd47376e76d289c7c79f88ab5f9e8bc6d417d804e"
   },
   "https://www.ign.com/articles/life-is-strange-developer-dont-nod-blasted-by-union-employees-over-illegal-management-practices-as-possible-layoffs-loom": {
     "file": "An_October_27_statement_from_employees_of_Don't_No.mp3",
@@ -1965,7 +2029,7 @@
   },
   "https://www.ign.com/articles/nexus-mods-forces-mandatory-generative-ai-disclosures-and-filters": {
     "file": "Nexus_Mods_has_reacted_to_the_deluge_of_AI_mods_by.mp3",
-    "hash": "0c77731d88feb83ce7fb953e7fa55077d3d1bb99bd3d12d497915120e24d29ca"
+    "hash": "178f2071d08b3d71ea90bad9f7a8c1a476cb1b525af1b8842a40ad526a6aa1b8"
   },
   "https://www.ign.com/articles/nicolas-cage-madden-movie-fan-reactions": {
     "file": "NFL_fans_expressed_some_pretty_heated_responses_on.mp3",
@@ -2002,6 +2066,10 @@
   "https://www.ign.com/articles/no-mans-sky-forsaken-update": {
     "file": "Just_as_No_Man\u2019s_Sky_lands_for_iOS,_the_ever_expan.mp3",
     "hash": "d4534c2fd6cacf3e060ca2e2b410cb9c8888525c7e2a8e3f6897b5aa39388664"
+  },
+  "https://www.ign.com/articles/nvidia-shows-off-dlss-5-hogwarts-legacy-trailer": {
+    "file": "Nvidia_just_showed_off_DLSS_5_in_Hogwarts_Legacy_i.mp3",
+    "hash": "8c86b3d8cd13c37f3355ebaafc3598957eed88691f27a1c044f0beef62044d20"
   },
   "https://www.ign.com/articles/obsession-director-releasing-new-short-film-on-youtube-in-time-for-halloween": {
     "file": "Curry_Barker,_writer_and_director_of_the_brilliant.mp3",
@@ -2074,6 +2142,10 @@
   "https://www.ign.com/articles/playstation-pulse-wireless-headset-where-to-buy": {
     "file": "PlayStation_Pulse_Wireless_Headset_preorders_are_l.mp3",
     "hash": "82888f3cd33b6ab07c6a57a8dc0102f7ee88582a05ec1ed9dcc093b93897e2ab"
+  },
+  "https://www.ign.com/articles/playstations-black-friday-sale-is-live": {
+    "file": "PlayStation\u2019s_Black_Friday_sale_is_live,_with_big_.mp3",
+    "hash": "8ede062c0de6f8e7f993f6d18a6589d807102598423e0214a5c3961934beeda8"
   },
   "https://www.ign.com/articles/pocketpair-wants-palworld-on-nintendo-switch-2-pokemon": {
     "file": "The_legal_battle_between_Nintendo_and_Pocketpair_i.mp3",
@@ -2174,6 +2246,10 @@
   "https://www.ign.com/articles/sir-patrick-stewart-dead-at-86": {
     "file": "Acclaimed_actor_Sir_Patrick_Stewart_has_died_at_th.mp3",
     "hash": "b19167e1e33f5b80b931ddb342596e04803466415e667b46e182d983b912a7ea"
+  },
+  "https://www.ign.com/articles/sonic-the-hedgehog-new-angry-birds-3-trailer": {
+    "file": "Sonic_is_a_cameo_character_in_The_Angry_Birds_Movi.mp3",
+    "hash": "98c0cb8ab12359dce5cd5ca908353e534e035f4362474186c59cd660ad59244c"
   },
   "https://www.ign.com/articles/sony-and-lionsgate-team-up-for-naruto-movie-filming-to-begin-in-spring-2027": {
     "file": "Sony_and_Lionsgate_have_teamed_up_for_the_live_act.mp3",
