@@ -1059,6 +1059,10 @@
     "file": "Bloodborne,_FromSoftware's_singular_Lovecraftian_a.mp3",
     "hash": "80fd04c7ac7e07836b497d5a69824dfb49006dbf3565391e63c008f1d1bc87a6"
   },
+  "https://www.eurogamer.net/bloodborne-involved-rights-former-playstation-boss": {
+    "file": "Every_year,_Bloodborne_fans_pray_for_the_birth_of_.mp3",
+    "hash": "1784ef673cfeb0ac546232f6d0ff5054be20cbcefd5b08710689723f10f1dae2"
+  },
   "https://www.eurogamer.net/borderlands-100-million-copies-gearbox": {
     "file": "The_Borderlands_series_has_sold_more_than_100m_cop.mp3",
     "hash": "ae88e742b2329daca7bdfee7cdbf4d234b710d971658eea0223711654e868112"
@@ -1282,6 +1286,10 @@
   "https://www.eurogamer.net/mass-effect-battlefield-6-crossover-bioware-closure": {
     "file": "After_EA's_sudden_shutdown_of_developer_BioWare,_u.mp3",
     "hash": "4812f02a224e810e35826991b28ef293cb3c079b811ac306101b5773891c50b6"
+  },
+  "https://www.eurogamer.net/mass-effect-expanse-rpg-david-gaider": {
+    "file": "The_Expanse_Osiris_Reborn_looks_like_it's_carrying.mp3",
+    "hash": "84c552c654912d958d6e06db9aa1c823a753348ac8dacb3d05808a8e21e03637"
   },
   "https://www.eurogamer.net/mass-effect-fans-save-rpg-times-square": {
     "file": "Fans_continue_to_rally_around_the_'Save_Mass_Effec.mp3",
@@ -1543,6 +1551,10 @@
     "file": "After_acquiring_EA_for_$55bn_earlier_this_year,_Sa.mp3",
     "hash": "10cf21a15534387f77dff4022da817a860a8d5fd4176e33c66766ff02642dc29"
   },
+  "https://www.eurogamer.net/updated-xbox-pc-app-faster-asha-sharma": {
+    "file": "The_Xbox_PC_app_hasn't_had_the_best_track_record_i.mp3",
+    "hash": "e151f4e914cb1e415caf750768e411b949bec760965b4108e4e0710b099640e6"
+  },
   "https://www.eurogamer.net/video-game-industry-reacts-to-bioware-closure": {
     "file": "Following_the_sudden_closure_of_Bioware_last_night.mp3",
     "hash": "5a95ffcc6efbbebe594c33b89dc680147230b1e830d9cbc5ee11cb9d467cbb93"
@@ -1639,9 +1651,13 @@
     "file": "Adam_Driver_says_he's_done_with_Star_Wars_and_Kylo.mp3",
     "hash": "93808d3d598f63b2ee62effc04481a260c38ed0b0272d48ba8d89e04478f0b7b"
   },
+  "https://www.ign.com/articles/adam-driver-talks-about-mister-sinister-x-men-reboot": {
+    "file": "Adam_Driver,_best_known_for_his_turn_as_Kylo_Ren_i.mp3",
+    "hash": "eedcf01d5b6944ee361874a9b713715e34892215cd108301b8c9e148b6307a53"
+  },
   "https://www.ign.com/articles/after-buying-ea-silver-lake-and-pif-are-reportedly-now-seeking-to-acquire-gaming-software-provider-unity": {
     "file": "After_Buying_EA,_Silver_Lake_and_PIF_Are_Reportedl.mp3",
-    "hash": "3fda43eb9575474e4909580cfa30786ab2bf47f304ac4ade730dc13dd3c9a78e"
+    "hash": "52aabe6bd78bc4f4296fe9fbbc75867f4087f5c67bde7c76f478ec70326b2efa"
   },
   "https://www.ign.com/articles/ai-slop-fuelled-steam-backlog-preventing-games-from-hitting-launch-targets": {
     "file": "Valve\u2019s_approval_process_has_always_taken_a_bit_of.mp3",
@@ -1746,6 +1762,10 @@
   "https://www.ign.com/articles/blizzard-reveals-plan-for-world-of-warcraft-forever-update-frequency": {
     "file": "World_of_Warcraft_Forever_launches_a_week_from_tod.mp3",
     "hash": "f32921064a43369fa63a6eb07588d3aaef5a89e56f369b7dd86e0ab1620cf58b"
+  },
+  "https://www.ign.com/articles/blizzard-reveals-what-made-it-finally-pull-the-trigger-on-wow-forever": {
+    "file": "World_of_Warcraft_Forever_came_out_earlier_this_we.mp3",
+    "hash": "0f479a5cac4b79af45586203f9366b1b1563fe6a8db6172980b6a38085255cd9"
   },
   "https://www.ign.com/articles/blizzard-sparks-world-of-warcraft-fan-backlash-for-breaking-promise-over-housing-microtransactions": {
     "file": "Back_when_housing_was_added_to_World_of_Warcraft_a.mp3",
@@ -1855,6 +1875,10 @@
     "file": "\u201cThe_largest_bank_heist_in_human_history.\u201d_That\u2019s_.mp3",
     "hash": "edd6d87070c593652c733b8f0e1a13f6fee8ac5229e046591b9b4b225941223d"
   },
+  "https://www.ign.com/articles/dane-cook-and-robert-bowling-announce-vicious-vocab-a-genre-bending-word-game-with-a-big-twist": {
+    "file": "Ex_Call_of_Duty_creative_strategist_Robert_Bowling.mp3",
+    "hash": "66a9fa121437ed8a45b66360264f36e1cf52b7da8abb255e8722ae50f4fd8299"
+  },
   "https://www.ign.com/articles/dave-bautista-reveals-hes-gained-20-pounds-of-muscle-to-play-kratos-in-the-god-of-war-series": {
     "file": "Dave_Bautista_Reveals_He's_Gained_20_Pounds_of_Mus.mp3",
     "hash": "304652d5f7eba730aa641cab929fbeb3e5d395b2ae9e147695f90c4fd1abbca7"
@@ -1878,6 +1902,10 @@
   "https://www.ign.com/articles/dead-by-daylight-devs-explain-chuckys-exit-from-stores-and-says-horror-icons-removed-due-to-licenses-have-open-invitation-to-rejoin": {
     "file": "Dead_by_Daylight_developer_Behaviour_Interactive_h.mp3",
     "hash": "e87f0d1cd676feda2cc58fe24abd363aa6d12fb209df3b9ecf7fcebd24ed8c03"
+  },
+  "https://www.ign.com/articles/dead-by-daylight-jumps-to-positive-ratings-after-steam-hides-off-topic-reviews-following-burntpeanut-backlash": {
+    "file": "Dead_by_Daylight_has_returned_to_'Mostly_Positive'.mp3",
+    "hash": "1403f96095df3bfc66243c96c43f3841b6daa11deca8637bba1560b1b1f38b5f"
   },
   "https://www.ign.com/articles/death-stranding-isolations-anime-gets-first-trailer": {
     "file": "Kojima_Productions_revealed_the_first_trailer_for_.mp3",
@@ -1922,6 +1950,10 @@
   "https://www.ign.com/articles/emberville-delays-early-access-launch-at-the-last-minute": {
     "file": "Cygnus_Cross,_the_development_team_behind_the_prom.mp3",
     "hash": "2fe7bc673ea3a38973f88057aa02023abaedcc7ae132123bab4cca59f975bb20"
+  },
+  "https://www.ign.com/articles/endix-the-fully-free-digital-gaming-expo-is-now-live-with-more-than-50-games-world-premieres-exclusive-trailers-and-more": {
+    "file": "ENDIX,_the_fully_digital,_free_to_attend_gaming_ex.mp3",
+    "hash": "9cdcbee63cf4cc36c4912588b70e636b3be3ea78cbdf8754114a3f6e773c0983"
   },
   "https://www.ign.com/articles/every-new-lego-set-november-2026": {
     "file": "Only_four_new_LEGO_sets_are_releasing_in_early_Nov.mp3",
@@ -2187,6 +2219,10 @@
     "file": "BioWare_reportedly_shut_down_because_EA_bosses_cho.mp3",
     "hash": "0ce596942ca47c744761ff8fda6696d2023ae8fb2af53115248af776302dd7d5"
   },
+  "https://www.ign.com/articles/mass-effect-is-dead-but-the-official-bioware-store-is-still-releasing-new-merch-for-n7-day": {
+    "file": "item_004.mp3",
+    "hash": "913eba62e8978859e0154b187bb0e550e5e8a54bdef224e639332b30245a99e1"
+  },
   "https://www.ign.com/articles/matthew-lillard-superman-2-character-james-gunn-moment": {
     "file": "Superman_2_Man_of_Tomorrow_brings_Daredevil_Born_A.mp3",
     "hash": "3e51f232fc518d15c36d427812ae0856ce86f4881dd9555605f93bf73d9d1ecf"
@@ -2229,7 +2265,7 @@
   },
   "https://www.ign.com/articles/nier-automata-dev-working-on-fix-patch-that-bloated-game-size-366gb": {
     "file": "Nier_Automata_got_a_patch_yesterday_to_add_support.mp3",
-    "hash": "70c3b862b23f6f354342f051747be678afc80b0a1c406be9c14bf8c4fd76dccb"
+    "hash": "4b584a47e725c3fdf9dd9065f2fd5c279abdbb810073b31358ba3923dea48b33"
   },
   "https://www.ign.com/articles/niftski-breaks-super-mario-bros-world-record": {
     "file": "Niftski,_the_speedrunning_world_record_holder_for_.mp3",
@@ -2341,7 +2377,7 @@
   },
   "https://www.ign.com/articles/pilot-draws-incredible-gta-6-mural-with-flight-path": {
     "file": "Benjamin_McDaniel,_who_calls_himself_The_Pilot_Pic.mp3",
-    "hash": "7e7e160b6e2fbe4e1ee8bd39d2c8cacf65f0c97890ab462d237837e9513ee0b2"
+    "hash": "c970fa06a2db29a5744ea50d38649edfc92a4d4473dc98120ebb6387e7f5f7ee"
   },
   "https://www.ign.com/articles/playstation-2026-black-friday-sale-announcement": {
     "file": "PlayStation_has_officially_announced_its_upcoming_.mp3",
@@ -2411,6 +2447,10 @@
     "file": "Introducing_Ratata,_a_chaotic_four_player_co_op_ph.mp3",
     "hash": "ce23a334883678dd17085ec2d6095a9f3aeb4313c860da815e05f1d3c8c3f847"
   },
+  "https://www.ign.com/articles/ratchet-clank-ranger-rumble-shutting-down": {
+    "file": "It_was_announced_less_than_a_year_ago,_but_Ratchet.mp3",
+    "hash": "c6650f9bde3332acc174c21366de7c8398a593eb966f78e4a8e4089d8d684744"
+  },
   "https://www.ign.com/articles/red-rising-director-francis-lawrence-says-ya-series-movie-adaptation-is-a-priority-at-paramount-following-shelved-netflix-show": {
     "file": "We_got_the_chance_to_chat_with_Francis_Lawrence,_d.mp3",
     "hash": "b8adc346bed95db9af3addf1b0de3815863b0475eed7ab512ebbffb9e6c2ed3f"
@@ -2479,6 +2519,14 @@
     "file": "Acclaimed_actor_Sir_Patrick_Stewart_has_died_at_th.mp3",
     "hash": "b19167e1e33f5b80b931ddb342596e04803466415e667b46e182d983b912a7ea"
   },
+  "https://www.ign.com/articles/skyrim-game-director-has-a-very-specific-wishlist-for-the-elder-scrolls-vi-sentinel": {
+    "file": "The_Elder_Scrolls_VI_Sentinel_is_probably_still_a_.mp3",
+    "hash": "d8efca34fd083ca0a2b7d7b8055a6df3f79f0cdff45552f2e43db02529931159"
+  },
+  "https://www.ign.com/articles/snow-panic-an-8-player-ssx-meets-mario-kart-skiing-game-announced-for-pc": {
+    "file": "Developer_KAFI_has_announced_its_next_game,_titled.mp3",
+    "hash": "568bdeddf8affb6187cf01d67bc74265149c6d17ac4c75000f9bfb4128e6e431"
+  },
   "https://www.ign.com/articles/sonic-the-hedgehog-new-angry-birds-3-trailer": {
     "file": "Sonic_is_a_cameo_character_in_The_Angry_Birds_Movi.mp3",
     "hash": "c77b729d2f642b6282385ff65e97009605dff3da7ec4a7f991e599689553a352"
@@ -2486,6 +2534,10 @@
   "https://www.ign.com/articles/sony-and-lionsgate-team-up-for-naruto-movie-filming-to-begin-in-spring-2027": {
     "file": "Sony_and_Lionsgate_have_teamed_up_for_the_live_act.mp3",
     "hash": "9537ae9043cfe55660a03b4fb6935e93c4518b379af7c23c93ff765c1b16ccc7"
+  },
+  "https://www.ign.com/articles/sony-announces-new-ps-plus-perks-fans-hate-them": {
+    "file": "Sony_has_announced_a_range_of_new_\u201cperks\u201d_for_PS_P.mp3",
+    "hash": "8b9cdaac5490097f0b211f80052e1adf70f3d29b6cc99299b005dfe4f1ef2bad"
   },
   "https://www.ign.com/articles/sony-announces-official-marvels-wolverine-sales-figure-for-the-first-time-raises-playstation-sales-forecast-with-gta-6-imminent": {
     "file": "Sony_has_raised_its_sales_forecast_for_its_gaming_.mp3",
@@ -2570,6 +2622,10 @@
   "https://www.ign.com/articles/the-elder-scrolls-vi-sentinel-finally-got-its-name-today-but-bethesda-says-it-will-be-some-time-before-were-ready-to-share-more": {
     "file": "Bethesda_finally_revealed_the_name_for_The_Elder_S.mp3",
     "hash": "ca825258e1d17fa04230cde6b7e5d3e0162c90a0b5c5b18f83ef78b72e0ce4bb"
+  },
+  "https://www.ign.com/articles/the-expanse-osiris-reborn-changes-actors-updates-face-model": {
+    "file": "Actor_Blythe_Melin_is_now_the_voice_of_the_male_pr.mp3",
+    "hash": "b473a50397dc3db68b04c4b467ad6c1bc654f5e6de88f76a2fed9cd6a42e8d23"
   },
   "https://www.ign.com/articles/the-hellraiser-franchise-is-getting-three-new-tabletop-adaptations-for-halloween-2027": {
     "file": "item_018.mp3",
@@ -2678,6 +2734,10 @@
   "https://www.ign.com/articles/xbox-made-an-alligator-shaped-series-x-and-you-can-win-it-before-gta-6-launches": {
     "file": "GTA_6_is_mere_weeks_away_from_launch,_and_to_celeb.mp3",
     "hash": "8c2a5f0d93111fc2121d23c8d3c6195e10e5e8b9cb8e168e5ba063e5e2ee6aeb"
+  },
+  "https://www.ign.com/articles/xbox-series-x-x25-special-edition-console-invite-requests-are-up-at-amazon": {
+    "file": "item_001.mp3",
+    "hash": "0889fa63bf7b0b2fd2f09f681e0e9f09f41946c9a040029a2075f8cd6dadf267"
   },
   "https://www.ign.com/articles/xboxs-doom-wolfenstein-developers-working-more-closely-than-ever-following-xbox-reset-layoffs": {
     "file": "Bethesda_and_Xbox_development_studio_id_Software,_.mp3",
