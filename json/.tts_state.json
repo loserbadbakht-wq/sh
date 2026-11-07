@@ -1571,6 +1571,10 @@
     "file": "Happy_Halloween!_Are_you_scared_I_am_I'm_in_a_thea.mp3",
     "hash": "b65cf19d2afc0a6f5017da62b40bb7d31036c367a50a9481b2b0914a3102cbc5"
   },
+  "https://www.eurogamer.net/what-weve-been-playing-vice-city-zelda-world-of-warcraft-forever": {
+    "file": "Well,_hello!_I_am_once_again_wearing_the_Bertie_ha.mp3",
+    "hash": "16d3849cd60a05cc9b83e92ce7c62631322458fac7a315dec1882a2543015608"
+  },
   "https://www.eurogamer.net/what-weve-been-playing-warframe-over-the-hill-switch-sports-resort": {
     "file": "Hello,_it_is_me,_your_regular_weekend_host_Mertie_.mp3",
     "hash": "6ef080422975b11d30040456fe61f39fd39372f1515cb6417c5a2fcfe8e1f12e"
@@ -1653,7 +1657,7 @@
   },
   "https://www.ign.com/articles/adam-driver-talks-about-mister-sinister-x-men-reboot": {
     "file": "Adam_Driver,_best_known_for_his_turn_as_Kylo_Ren_i.mp3",
-    "hash": "130b57753d183bd6fc2e5c72b12a5593d51f742a624f9c47c059c94384dcc62c"
+    "hash": "eedcf01d5b6944ee361874a9b713715e34892215cd108301b8c9e148b6307a53"
   },
   "https://www.ign.com/articles/after-buying-ea-silver-lake-and-pif-are-reportedly-now-seeking-to-acquire-gaming-software-provider-unity": {
     "file": "After_Buying_EA,_Silver_Lake_and_PIF_Are_Reportedl.mp3",
@@ -1706,6 +1710,10 @@
   "https://www.ign.com/articles/assassins-creed-valhalla-is-getting-new-game-six-years-after-release": {
     "file": "Assassin's_Creed_Valhalla_launched_all_the_way_bac.mp3",
     "hash": "65bc5697834609ce67f421b5e4a99dd1158ffbca8e5ef738417266e5ad4685ec"
+  },
+  "https://www.ign.com/articles/avengers-doomsday-car-commercial-features-new-look-at-nightcrawler-sparks-theories-about-unannounced-heroes": {
+    "file": "An_Avengers_Doomsday_car_commercial_just_revealed_.mp3",
+    "hash": "c57af4fd87087eb74f97873b670814d8ea514b88a8224e380b0f99b05a1c0886"
   },
   "https://www.ign.com/articles/avery-the-pok-kids-father-pleads-with-the-pokmon-company-to-make-a-trading-card-in-honor-of-his-late-son": {
     "file": "The_father_of_late_Pok\u00e9mon_influencer_Avery_the_Po.mp3",
@@ -1949,7 +1957,7 @@
   },
   "https://www.ign.com/articles/ed-boon-wants-to-know-what-fans-want-the-next-mortal-kombat-game-to-be-called": {
     "file": "Ed_Boon_is_stirring_up_excitement_in_the_fighting_.mp3",
-    "hash": "a8fd5c0001ddaaba24cff2f4583d570939832a0b39a33362624eda142f1da5ff"
+    "hash": "08155d97d164848abbcec7d7314bb2cdf04342fbbea749d731fa1f1fabfae14f"
   },
   "https://www.ign.com/articles/elden-ring-movie-runtime-could-reach-nearly-3-hours": {
     "file": "A_few_new_details_on_the_story_for_A24\u2019s_Elden_Rin.mp3",
@@ -2121,7 +2129,7 @@
   },
   "https://www.ign.com/articles/i-meant-it-when-i-said-what-i-said-nicolas-cage-is-actually-relieved-that-spider-noir-got-canceled": {
     "file": "IGN_got_the_chance_to_catch_up_with_Nicolas_Cage_o.mp3",
-    "hash": "27f12305783d716f2cfce41ca6b5966a5fe2f511da4f55613d5d3fa5630391dd"
+    "hash": "822c06099a59dcb57615891ab3666da42cc6db50dcfe84bcb5ffbb24c45145bf"
   },
   "https://www.ign.com/articles/input-lag-is-so-bad-in-call-of-duty-modern-warfare-4-on-nintendo-switch-2-that-players-suffer-from-a-competitive-disadvantage": {
     "file": "If_you\u2019re_playing_Call_of_Duty_Modern_Warfare_4_on.mp3",
@@ -2503,6 +2511,10 @@
     "file": "Halloween_had_no_shortage_of_viral_costumes,_but_R.mp3",
     "hash": "e7d7299ae70313bfae9e657d4f5d680b881fcb2e3790aa237f5227eb361114ac"
   },
+  "https://www.ign.com/articles/robert-pattinson-bond-26-007-screen-test-nicholas-hoult": {
+    "file": "Robert_Pattinson_reportedly_screen_tested_for_the_.mp3",
+    "hash": "758530b52430c3b690527a0886ee8fad3f5e34fb0bdeef6fc2423c8211386ea1"
+  },
   "https://www.ign.com/articles/robert-pattinson-says-steven-soderbergh-is-completely-selfless-for-taking-over-on-the-batman-part-2": {
     "file": "The_Batman_Part_2_star_Robert_Pattinson_has_called.mp3",
     "hash": "e2d1ac122ab93972c280881729d23b10ef5ea6f9f7136241bc59e04fb84848d2"
@@ -2754,6 +2766,10 @@
   "https://www.ign.com/articles/world-of-warcraft-forever-preload-and-global-release-times-confirmed": {
     "file": "World_of_Warcraft_Forever_is_just_a_few_days_away,.mp3",
     "hash": "fc68026311ea24e3392a5447853899805b470a6935ddc79b0a087d3097f70ff1"
+  },
+  "https://www.ign.com/articles/world-of-warcraft-forever-world-first-level-60-character-hits-cap-three-days-after-launch": {
+    "file": "World_of_Warcraft_Forever_World_First_Level_60_Cha.mp3",
+    "hash": "73de61b32e4278b14609bffd7bbc4d4a2365891260701bf1e32568fdfa9580e9"
   },
   "https://www.ign.com/articles/world-of-warcraft-forevers-launch-was-running-on-over-200000-gigabytes-of-ram": {
     "file": "World_of_Warcraft_Forever_launched_last_night,_and.mp3",
