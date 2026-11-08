@@ -25,7 +25,7 @@
   },
   "https://br.pinterest.com/pin/618752436374692009/": {
     "file": "item_000.mp3",
-    "hash": "3cb7a0b7de604a0fdbb75dcfc4c629015e81b12657527eccdfca0ce3720dbb9e"
+    "hash": "bbb69c6235e6309714e95363db8f838a88e9c17ee8dfd8ce317de7841bb4c8d2"
   },
   "https://bsky.app/profile/did:plc:7xjfiotec4h4ytkzc5vdtdxa/post/3myx55ic6fs2q": {
     "file": "item_022.mp3",
@@ -1431,6 +1431,10 @@
     "file": "Phantom_Blade_Zero_has_been_officially_released,_a.mp3",
     "hash": "67b71283d3f43fa184e617886e4eb160ee4988e70d0164d842e1b481459c1c7e"
   },
+  "https://www.eurogamer.net/phasmophobia-ghost-hunts-for-hearts-230000-american-heart-association": {
+    "file": "The_Phasmophobia_community_has_raised_more_than_$2.mp3",
+    "hash": "d690453ec205d70ea4a6100c247c84eb7dcb5eebc9dea7c1e68fe1ab67f6ad2e"
+  },
   "https://www.eurogamer.net/pikmin-4-switch-2-edition-release-date-demo": {
     "file": "Pikmin_4_Nintendo_Switch_2_Edition_will_launch_on_.mp3",
     "hash": "c79079735b17cdc75aeefd1b7915881de148c55fd893d834a150463e46f63c6e"
@@ -1658,6 +1662,10 @@
   "https://www.eurogamer.net/yakuza-creator-new-studio-closed-netease": {
     "file": "Nagoshi_Studio_has_officially_shut_down_and_its_fi.mp3",
     "hash": "0ff6040fecdb13c36063ce0c5f8e1b93ab9680d6cbd13542899b99dc4ba6c864"
+  },
+  "https://www.eurogamer.net/zelda-ocarina-of-time-remake-master-quest-dlc-datamine": {
+    "file": "Ocarina_of_Time's_notoriously_tricky_Master_Quest_.mp3",
+    "hash": "c3968b72bfc53043ea67a2d8553878a1e5258976dce2d953042bacf7ba20806b"
   },
   "https://www.ign.com/articles/007-first-light-gets-free-trial-for-select-playstation-plus-subscribers": {
     "file": "Select_PlayStation_Plus_subscribers_can_try_007_Fi.mp3",
@@ -1993,7 +2001,7 @@
   },
   "https://www.ign.com/articles/ed-boon-wants-to-know-what-fans-want-the-next-mortal-kombat-game-to-be-called": {
     "file": "Ed_Boon_is_stirring_up_excitement_in_the_fighting_.mp3",
-    "hash": "a8fd5c0001ddaaba24cff2f4583d570939832a0b39a33362624eda142f1da5ff"
+    "hash": "08155d97d164848abbcec7d7314bb2cdf04342fbbea749d731fa1f1fabfae14f"
   },
   "https://www.ign.com/articles/elden-ring-movie-runtime-could-reach-nearly-3-hours": {
     "file": "A_few_new_details_on_the_story_for_A24\u2019s_Elden_Rin.mp3",
@@ -2017,7 +2025,7 @@
   },
   "https://www.ign.com/articles/epic-reveals-drop-rate-for-fortnites-pirate-token-following-pressure-from-fans": {
     "file": "Epic_Games_has_revealed_the_drop_rate_for_Fortnite.mp3",
-    "hash": "07689c5b5b0ef406f4c3a860fdba93e88ed6f73c918f7f24cf4a92921be82280"
+    "hash": "34be136a8a9d6c96b66fa976403d3e75c376f20d177847a8bbfa0b5547aa9196"
   },
   "https://www.ign.com/articles/every-new-lego-set-november-2026": {
     "file": "Only_four_new_LEGO_sets_are_releasing_in_early_Nov.mp3",
@@ -2093,7 +2101,11 @@
   },
   "https://www.ign.com/articles/god-of-war-ragnarok-tops-list-of-10-highest-grossing-playstation-studios-games-from-the-ps5-generation": {
     "file": "Sony_Santa_Monica_Studios'_God_of_War_Ragnarok_top.mp3",
-    "hash": "bfdfdfb01318ce6bf6f35548206c699a2229788d6bc0e8693559dac511036a0e"
+    "hash": "6da601ee164983e36c79a641eaacc9b3ae4813fadbfb7a70c056625db13888ea"
+  },
+  "https://www.ign.com/articles/godzilla-minus-zero-stomps-on-expectations-with-63-million-box-office-opening-weekend": {
+    "file": "Godzilla_Minus_Zero_crushed_expectations_with_a_st.mp3",
+    "hash": "dcd44118f6a7bf3541f75f910f6c8eabc2ce4505c2440ab0fdbeaf9354a0d430"
   },
   "https://www.ign.com/articles/gog-announces-road-rash-touch-up-new-publishing-arm": {
     "file": "GOG_is_old_enough_to_drink_in_the_UK._To_celebrate.mp3",
@@ -2173,7 +2185,7 @@
   },
   "https://www.ign.com/articles/i-meant-it-when-i-said-what-i-said-nicolas-cage-is-actually-relieved-that-spider-noir-got-canceled": {
     "file": "IGN_got_the_chance_to_catch_up_with_Nicolas_Cage_o.mp3",
-    "hash": "822c06099a59dcb57615891ab3666da42cc6db50dcfe84bcb5ffbb24c45145bf"
+    "hash": "27f12305783d716f2cfce41ca6b5966a5fe2f511da4f55613d5d3fa5630391dd"
   },
   "https://www.ign.com/articles/input-lag-is-so-bad-in-call-of-duty-modern-warfare-4-on-nintendo-switch-2-that-players-suffer-from-a-competitive-disadvantage": {
     "file": "If_you\u2019re_playing_Call_of_Duty_Modern_Warfare_4_on.mp3",
@@ -2738,6 +2750,10 @@
   "https://www.ign.com/articles/the-legend-of-zelda-ocarina-of-time-remake-global-release-times": {
     "file": "The_Legend_of_Zelda_Ocarina_of_Time_remake_is_just.mp3",
     "hash": "061e20436cc5e4dd2f212e79ea7481ad084a48d981ed9194a446f2feddceee2e"
+  },
+  "https://www.ign.com/articles/the-legend-of-zelda-ocarina-of-time-speedrunners-have-already-found-new-ways-to-break-the-remake": {
+    "file": "From_quicker_movement_to_sending_Link_to_space,_Th.mp3",
+    "hash": "211fc0f554985729d4646e15f014c7a4c1e9c01504d50cb9fc2d8c8cf811495b"
   },
   "https://www.ign.com/articles/the-odyssey-is-returning-to-imax-theaters-in-december-ahead-of-awards-season": {
     "file": "The_Odyssey_is_returning_to_theaters_in_December_f.mp3",
