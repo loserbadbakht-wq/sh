@@ -23,6 +23,10 @@
     "file": "item_026.mp3",
     "hash": "88b7d428aea3bd37e12fe1e16f777767444a9f18c8f82192e9e8e4290139ef2c"
   },
+  "https://br.pinterest.com/pin/618752436374692009/": {
+    "file": "item_000.mp3",
+    "hash": "3cb7a0b7de604a0fdbb75dcfc4c629015e81b12657527eccdfca0ce3720dbb9e"
+  },
   "https://bsky.app/profile/did:plc:7xjfiotec4h4ytkzc5vdtdxa/post/3myx55ic6fs2q": {
     "file": "item_022.mp3",
     "hash": "87f18223e26f1c71dd57451e01d01812e7f910984dfa105210663764ef332d18"
@@ -999,6 +1003,10 @@
     "file": "The_developers_behind_Alien_Isolation_2_are_commit.mp3",
     "hash": "75abf81d9bc9275da3f1f8734aa053c8a85f2ef312fd7473ad1a2bd1a84e223b"
   },
+  "https://www.eurogamer.net/among-us-missing-teen-rescued-utah-oregon": {
+    "file": "A_teenager_who_went_missing_in_Utah_more_than_17_m.mp3",
+    "hash": "7ac1f6cbdbd2319d1cdc041f185e01c1dda2bc64cdab640d2b408f1a4c83fe10"
+  },
   "https://www.eurogamer.net/anthropic-claude-generative-ai-game-clones-update": {
     "file": "An_update_to_Anthropic's_Claude_AI_software_has_se.mp3",
     "hash": "0381ce80c5e5bf48674cef4ae2c02c703c2714928e30e4dbd5008d81fa7cf51f"
@@ -1286,6 +1294,10 @@
   "https://www.eurogamer.net/mass-effect-5-pitched-music-composer": {
     "file": "Austin_Wintory_has_shared_twenty_minutes_of_music_.mp3",
     "hash": "bcc18db662460d041dad7111fd4639eda7cbdd06834b3ab890c1d71482eb3c6f"
+  },
+  "https://www.eurogamer.net/mass-effect-5-save-cost-200m-bioware-co-founder-trent-oster": {
+    "file": "Anyone_hoping_to_buy_Mass_Effect_from_EA_and_finis.mp3",
+    "hash": "147fb7e7e4983414d9214cf6fcdea8d0033d0fb15437d962c734b8df0aec042b"
   },
   "https://www.eurogamer.net/mass-effect-battlefield-6-crossover-bioware-closure": {
     "file": "After_EA's_sudden_shutdown_of_developer_BioWare,_u.mp3",
@@ -1614,6 +1626,10 @@
   "https://www.eurogamer.net/world-of-warcraft-halloween-housing-cosmetics-controversy-kul-tiran": {
     "file": "The_World_of_Warcraft_team_has_found_itself_at_the.mp3",
     "hash": "61ee30817a4c7a5cbb9eda42a8bb21abef62e1844a86b8c8c607781313051f48"
+  },
+  "https://www.eurogamer.net/wow-forever-biggest-launch-world-of-warcraft-history-concurrent-players": {
+    "file": "World_of_Warcraft_Forever_is_the_biggest_launch_in.mp3",
+    "hash": "6d9e397bc487483c16d4220d723598fd2d8ffbe616b92c2adf494ee894d67ba6"
   },
   "https://www.eurogamer.net/xbox-ai-microsoft-voluntary-exit-offer-60000": {
     "file": "Xbox_isn't_the_only_Microsoft_division_looking_to_.mp3",
@@ -1977,7 +1993,7 @@
   },
   "https://www.ign.com/articles/ed-boon-wants-to-know-what-fans-want-the-next-mortal-kombat-game-to-be-called": {
     "file": "Ed_Boon_is_stirring_up_excitement_in_the_fighting_.mp3",
-    "hash": "08155d97d164848abbcec7d7314bb2cdf04342fbbea749d731fa1f1fabfae14f"
+    "hash": "a8fd5c0001ddaaba24cff2f4583d570939832a0b39a33362624eda142f1da5ff"
   },
   "https://www.ign.com/articles/elden-ring-movie-runtime-could-reach-nearly-3-hours": {
     "file": "A_few_new_details_on_the_story_for_A24\u2019s_Elden_Rin.mp3",
@@ -2157,7 +2173,7 @@
   },
   "https://www.ign.com/articles/i-meant-it-when-i-said-what-i-said-nicolas-cage-is-actually-relieved-that-spider-noir-got-canceled": {
     "file": "IGN_got_the_chance_to_catch_up_with_Nicolas_Cage_o.mp3",
-    "hash": "27f12305783d716f2cfce41ca6b5966a5fe2f511da4f55613d5d3fa5630391dd"
+    "hash": "822c06099a59dcb57615891ab3666da42cc6db50dcfe84bcb5ffbb24c45145bf"
   },
   "https://www.ign.com/articles/input-lag-is-so-bad-in-call-of-duty-modern-warfare-4-on-nintendo-switch-2-that-players-suffer-from-a-competitive-disadvantage": {
     "file": "If_you\u2019re_playing_Call_of_Duty_Modern_Warfare_4_on.mp3",
@@ -2809,7 +2825,7 @@
   },
   "https://www.ign.com/articles/world-of-warcraft-forever-world-first-level-60-character-hits-cap-three-days-after-launch": {
     "file": "World_of_Warcraft_Forever_World_First_Level_60_Cha.mp3",
-    "hash": "260a7e6feb1a6498d7f4f46d95aff9e3e175397dffca02311090ff41d41df119"
+    "hash": "73de61b32e4278b14609bffd7bbc4d4a2365891260701bf1e32568fdfa9580e9"
   },
   "https://www.ign.com/articles/world-of-warcraft-forevers-launch-was-running-on-over-200000-gigabytes-of-ram": {
     "file": "World_of_Warcraft_Forever_launched_last_night,_and.mp3",
