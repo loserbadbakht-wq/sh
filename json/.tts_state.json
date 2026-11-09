@@ -25,7 +25,7 @@
   },
   "https://br.pinterest.com/pin/618752436374692009/": {
     "file": "item_000.mp3",
-    "hash": "bbb69c6235e6309714e95363db8f838a88e9c17ee8dfd8ce317de7841bb4c8d2"
+    "hash": "96f16f7fdfaec676b54cab800f9e1719cf5687adafd0994a8b159b8e79633ce3"
   },
   "https://bsky.app/profile/did:plc:7xjfiotec4h4ytkzc5vdtdxa/post/3myx55ic6fs2q": {
     "file": "item_022.mp3",
@@ -1115,6 +1115,10 @@
     "file": "The_Call_of_Duty_movie_will_explore_the_cost_of_wa.mp3",
     "hash": "03294cb5519aeb4a7f0204a48744dca7e1ec55603a852db177959c5bbbce99db"
   },
+  "https://www.eurogamer.net/call-of-duty-warzone-agent-cheating-software-shutdown": {
+    "file": "Lobby_shopping_is_what_Call_of_Duty_Warzone_player.mp3",
+    "hash": "28cbcb03918c8c967b5d52cc3a7b2eb13e897301b43332ba077cf5928ae700a5"
+  },
   "https://www.eurogamer.net/canadian-politician-bioware-employees-buy-studio-federal-support": {
     "file": "In_the_wake_of_EA's_tragic_shuttering_of_BioWare_l.mp3",
     "hash": "0744355fc66002c938cd63778c206a625a27a7eb2e2aac8deb30ca06eba8aec9"
@@ -1243,6 +1247,10 @@
     "file": "God_of_War_Laufey_has_been_delayed._Sony_Santa_Mon.mp3",
     "hash": "95e0fb688ecb9130603dbd2ff5221e454579a4fca05e09eac417a5c971cec7c9"
   },
+  "https://www.eurogamer.net/god-of-war-ragnarok-highest-earning-playstation-game": {
+    "file": "God_of_War_Ragnarok_is_the_generation's_best_selli.mp3",
+    "hash": "6e3f8336d6fa661901c94c0dccb4a28ac2e78b74528f603331fcab1ff1e7724f"
+  },
   "https://www.eurogamer.net/grand-theft-auto-6-38-new-screenshots": {
     "file": "Rockstar_Games_have_released_38_new_screenshots_of.mp3",
     "hash": "1d5841069a6d1aa7af5c5b08c28524635d2b92a27fc5198150ca2d90d1a2d1f0"
@@ -1275,6 +1283,10 @@
     "file": "Halo_and_Destiny_composer_Marty_O'Donnell's_politi.mp3",
     "hash": "4181b6d0efef42b27489639f7425d3939b55cc510bb8cec7fb8e2ad25db3ae7b"
   },
+  "https://www.eurogamer.net/hollow-knight-silksong-physical-free-content-packs-sea-of-sorrow": {
+    "file": "More_than_a_year_after_its_initial_release,_physic.mp3",
+    "hash": "1dd22229d0d8873bc3639c5f0aa4e7d32bbeb8f9179bea45f665555a32c79c22"
+  },
   "https://www.eurogamer.net/id-software-doing-great-losing-half-the-studio": {
     "file": "Iconic_Doom_and_Quake_developer_id_Software_was_am.mp3",
     "hash": "a24229e85325b2d3aee0aeea656ccd43510a357f8466496ce07bfab6e816443c"
@@ -1299,6 +1311,10 @@
     "file": "Marvel's_Wolverine_may_not_have_had_the_best_criti.mp3",
     "hash": "18c969f428026f3798f38c394b6050a5bea38b445706da786c598810803fa08b"
   },
+  "https://www.eurogamer.net/masahiro-sakurai-generative-ai-famitsu": {
+    "file": "Masahiro_Sakurai,_the_designer_behind_many_iconic_.mp3",
+    "hash": "384d5da2b8aacf0f4547f48b4c710c4b3a65f51edc4c445b7e4a4d3b3bfcb552"
+  },
   "https://www.eurogamer.net/mass-effect-5-pitched-music-composer": {
     "file": "Austin_Wintory_has_shared_twenty_minutes_of_music_.mp3",
     "hash": "bcc18db662460d041dad7111fd4639eda7cbdd06834b3ab890c1d71482eb3c6f"
@@ -1310,6 +1326,10 @@
   "https://www.eurogamer.net/mass-effect-battlefield-6-crossover-bioware-closure": {
     "file": "After_EA's_sudden_shutdown_of_developer_BioWare,_u.mp3",
     "hash": "4812f02a224e810e35826991b28ef293cb3c079b811ac306101b5773891c50b6"
+  },
+  "https://www.eurogamer.net/mass-effect-cast-save-bioware-n7-day": {
+    "file": "This_N7_Day_was_the_first_without_developer_BioWar.mp3",
+    "hash": "bf93efe6f4db0024cc7d82b1fe32256f3592bf0f80a026f1ed47f424f51f9085"
   },
   "https://www.eurogamer.net/mass-effect-expanse-rpg-david-gaider": {
     "file": "The_Expanse_Osiris_Reborn_looks_like_it's_carrying.mp3",
@@ -1403,6 +1423,14 @@
     "file": "Yesterday,_Ubisoft_issued_a_statement_about_the_fu.mp3",
     "hash": "c2ea371975bbde7d9e1d687d60f1399db8fd6bab0f7ee1d33d03d61824fa16da"
   },
+  "https://www.eurogamer.net/nvidia-ceo-jensen-huang-investigation-affair-chinese-spy": {
+    "file": "Nvidia's_board_of_directors_has_launched_an_invest.mp3",
+    "hash": "e88d0641bc81e31bd342b7cf7466f25097fc5df28a44919c3583893b2e789c52"
+  },
+  "https://www.eurogamer.net/ocarina-of-time-support-studios-confirmed-switch-2": {
+    "file": "Xenoblade_series_developer_Monolith_Soft_and_Banda.mp3",
+    "hash": "9ceb2d237263549f0cb143a4012d5c19dc26244456d1c8df1920d83ca4408246"
+  },
   "https://www.eurogamer.net/onimusha-way-of-the-sword-enemy-difficulty-capcom": {
     "file": "Even_before_Onimusha_Way_of_the_Sword_came_out,_th.mp3",
     "hash": "c8487b1958df5bfd0a5d04a5d21ba8cab0cb4531d9ca27f349d9d104a5422ccd"
@@ -1483,6 +1511,10 @@
     "file": "Multiple_remakes_of_beloved_games_including_Counte.mp3",
     "hash": "ef3b81b15fb9aed40b147559c22fdcff172b7f2fa0c42aa184f0285809dea40d"
   },
+  "https://www.eurogamer.net/rockstar-gta-6-miami-music-festival": {
+    "file": "The_next_level_glamour_of_Grand_Theft_Auto_6's_arr.mp3",
+    "hash": "b3b669157fa9d13b2ab3a358ed1d11b3309090d0cdddef739c7ad05143219f75"
+  },
   "https://www.eurogamer.net/rockstar-union-vote-november": {
     "file": "A_date_has_been_locked_in_for_Rockstar_Games_emplo.mp3",
     "hash": "56d3b4ebf971b1c445d4e4c49e3aca72330b86687ebddfebd76228b35a6dbc82"
@@ -1490,6 +1522,10 @@
   "https://www.eurogamer.net/save-mass-effect-petition": {
     "file": "A_petition_created_to_save_BioWare's_well_loved_sc.mp3",
     "hash": "cc022ae720ce4159188cfa8ab76ea010898b219aefe7644c725e756a514d6623"
+  },
+  "https://www.eurogamer.net/selfridges-gta-6-collab-takeover": {
+    "file": "Expensive_British_department_store_Selfridges_has_.mp3",
+    "hash": "501fad2260578a35b033369adbb1d9879d9e785d68c585a7ba23eb83c7c3039d"
   },
   "https://www.eurogamer.net/shenmue-3-enhanced-edition-delayed": {
     "file": "Grab_your_nearest_forklift_operator_and_make_sure_.mp3",
@@ -1567,6 +1603,10 @@
     "file": "I've_been_captivated_by_the_idea_of_wrong_footing_.mp3",
     "hash": "a5fcec6c86784b0af0e98dcb296fa8dac8eeffcf70aa28d3f0741882c00e0599"
   },
+  "https://www.eurogamer.net/the-elder-scrolls-6-sentinel-ladders-skyrim-bethesda-designer": {
+    "file": "For_such_a_simple,_straightforward_real_world_obje.mp3",
+    "hash": "c1c5d0dd99059b0320dba64d67431a2d31b51309a432b635ca9cea9d8913a751"
+  },
   "https://www.eurogamer.net/the-elder-scrolls-6-sentinel-revealed-bethesda-xbox": {
     "file": "Today,_Xbox_and_Bethesda_have_finally_revealed_the.mp3",
     "hash": "d5adf8d4a40753b56d746595cd248f67fbe25f0a96cac661bb87d3ce74bf0a83"
@@ -1603,6 +1643,10 @@
     "file": "Wardogs'_Season_3_will_launch_on_12th_November,_co.mp3",
     "hash": "ae083ab52221b4291439f4cc20028eec33a5d9ed10eb32844f0cace47bbc750a"
   },
+  "https://www.eurogamer.net/warhammer-40k-dark-heresy-owlcat-crpg": {
+    "file": "Owlcat_Games_has_revealed_a_release_date_for_its_t.mp3",
+    "hash": "0601b0be388bc22964be7ba8af0a2cc1b8c8fbb1020caee6830e2304deaf2237"
+  },
   "https://www.eurogamer.net/warhorse-cyberattack-kingdom-come-deliverance": {
     "file": "Kingdom_Come_Deliverance_developer_Warhorse_Studio.mp3",
     "hash": "9d512808fde2c48f23e74176032e01a6cd1500f09b22ceba80ae9ea7d5682e79"
@@ -1618,6 +1662,10 @@
   "https://www.eurogamer.net/what-weve-been-playing-warframe-over-the-hill-switch-sports-resort": {
     "file": "Hello,_it_is_me,_your_regular_weekend_host_Mertie_.mp3",
     "hash": "6ef080422975b11d30040456fe61f39fd39372f1515cb6417c5a2fcfe8e1f12e"
+  },
+  "https://www.eurogamer.net/world-of-warcraft-forever-dungeon-mob-xp-rate-buff": {
+    "file": "World_of_Warcraft_Forever_has_received_a_massive_b.mp3",
+    "hash": "66c6a0b61f037c99a164299621702536eecf16750f1ea41fd07fc42452dcb325"
   },
   "https://www.eurogamer.net/world-of-warcraft-forever-first-person-mod-rpg": {
     "file": "One_World_of_Warcraft_Forever_player_is_attempting.mp3",
@@ -1919,6 +1967,10 @@
     "file": "Channing_Tatum_has_debuted_a_slightly_updated_acce.mp3",
     "hash": "e681e0b69ae95522e7422268e367f258239adf69e89b81900919169cc2753732"
   },
+  "https://www.ign.com/articles/christopher-nolans-interstellar-is-getting-a-lego-set": {
+    "file": "LEGO_has_approved_a_LEGO_Ideas_submission_based_on.mp3",
+    "hash": "ffa89b9db69ec2b4345d4fb28f93766a291b901e074f15d374cf3dd6073d26a9"
+  },
   "https://www.ign.com/articles/chronicles-medieval-developer-at-real-risk-of-closing-before-release-as-funding-no-longer-in-place": {
     "file": "Chronicles_Medieval_developer_Raw_Power_Games_post.mp3",
     "hash": "8fb19b8d7765f1fca98a32b068846837d8f3d97d98faff3e9dad4a4d6bb01aa4"
@@ -1946,6 +1998,10 @@
   "https://www.ign.com/articles/crypto-hackers-steal-63-billion-from-binance-in-largest-bank-heist-in-human-history": {
     "file": "\u201cThe_largest_bank_heist_in_human_history.\u201d_That\u2019s_.mp3",
     "hash": "edd6d87070c593652c733b8f0e1a13f6fee8ac5229e046591b9b4b225941223d"
+  },
+  "https://www.ign.com/articles/cyberpunk-2077-just-got-a-new-multiplayer-mod-complete-with-rp-servers": {
+    "file": "Last_month,_Cyberpunk_2077_got_an_ambitious_multip.mp3",
+    "hash": "c3f64448b4d3555c9870d4deadaf5328b80920b45ccc4a7590ffedbbab65a38b"
   },
   "https://www.ign.com/articles/dane-cook-and-robert-bowling-announce-vicious-vocab-a-genre-bending-word-game-with-a-big-twist": {
     "file": "Ex_Call_of_Duty_creative_strategist_Robert_Bowling.mp3",
@@ -2067,6 +2123,10 @@
     "file": "The_MMORPG's_next_expansion_was_set_to_launch_shor.mp3",
     "hash": "3f6c7a4cc6a565083d46016a919b30982eaa9a468309419fa7163158b01dc038"
   },
+  "https://www.ign.com/articles/former-bioware-executive-producer-mark-darrah-shares-original-vision-for-a-more-immersive-dragon-age-4": {
+    "file": "BioWare_veteran_Mark_Darrah_has_revealed_an_intern.mp3",
+    "hash": "9dbe60f2d3e415474573bd2848714e62ba1dc3ba869524aaf8655c4c2ff5a6a3"
+  },
   "https://www.ign.com/articles/former-playstation-boss-says-sony-doesnt-need-a-ps6-for-1200-it-needs-a-ps5-for-300": {
     "file": "Former_PlayStation_boss_Shawn_Layden_said_he_think.mp3",
     "hash": "e991710c97de56a96aee99d02c806d18c5d21415fb606609c42947d9b158b208"
@@ -2147,6 +2207,10 @@
     "file": "GTA_6_made_a_surprise_appearance_on_South_Park_wit.mp3",
     "hash": "0e2b17439abcd716737762e732ac41abd885fcca33855e69f322d11c154b2f19"
   },
+  "https://www.ign.com/articles/gta-6-metadata-ray-tracing-improvements-on-ps5-pro": {
+    "file": "GTA_6_preloads_are_live_for_those_who_live_in_New_.mp3",
+    "hash": "fe7340f134164394e0c01151edd6366fa6493803bec612649b415d6cb0f91658"
+  },
   "https://www.ign.com/articles/gta-6-players-in-germany-can-legally-take-time-off-work-to-play-the-game-on-launch-but-theres-a-catch": {
     "file": "Germany_has_a_unique_legal_loophole_that_lets_60_e.mp3",
     "hash": "40e80b2086276fae9ac388c4e73289abbd9980aedccad09fe05e46e3ab8c4973"
@@ -2215,6 +2279,10 @@
     "file": "If_you\u2019re_playing_Call_of_Duty_Modern_Warfare_4_on.mp3",
     "hash": "9bb11a2c6e44adf8082ee484577498a63bf6eebd5c2698a0896cdbb6d1c846e9"
   },
+  "https://www.ign.com/articles/internal-mass-effect-2-trailer-gives-us-the-earliest-look-at-the-game-yet": {
+    "file": "The_lead_animator_for_Mass_Effect_2_has_shared_a_p.mp3",
+    "hash": "9a4c62a8c463f847f9d619e86b86fa2914d71ad1d006118bce5840f87a5e35df"
+  },
   "https://www.ign.com/articles/is-v-in-edgerunners-2-is-there-a-cyberpunk-2077-canon-ending-and-what-about-season-3-we-asked-the-showrunner-in-a-new-interview": {
     "file": "Edgerunners_2_showrunner_Bartosz_Sztybor_on_all_th.mp3",
     "hash": "83b60b2ac9fb9c24141bef2ab45bf637857c2b19efe6f79a794e409b0460c728"
@@ -2234,6 +2302,10 @@
   "https://www.ign.com/articles/jack-in-the-box-gets-official-avengers-doomsday-meal-with-mystery-assemble-sauce": {
     "file": "Jack_in_the_Box_is_getting_in_on_the_Avengers_hype.mp3",
     "hash": "5b1d268cdfccc2e75d7bb234edbf603b6a735a4fcc598ce052f76f3c8c5270c2"
+  },
+  "https://www.ign.com/articles/james-gunn-and-peter-safran-are-stepping-down-from-dc-studios-in-shock-development-that-sparks-all-sorts-of-questions-about-the-dcu": {
+    "file": "DC_Studios_heads_James_Gunn_and_Peter_Safran_are_s.mp3",
+    "hash": "ca41f0fe611eb6b57dd511df32dc53d5e659cda7fb7dd7d271b6d29d74d46404"
   },
   "https://www.ign.com/articles/james-gunn-confirms-batman-and-wonder-woman-are-diamond-characters-in-the-dcu-despite-their-continued-absence": {
     "file": "James_Gunn_has_clarified_DC_Studios\u2019_8_10_year_roa.mp3",
@@ -2306,6 +2378,10 @@
   "https://www.ign.com/articles/lego-godzilla-announced-releases-on-black-friday": {
     "file": "LEGO_has_announced_it's_releasing_a_huge_new_LEGO_.mp3",
     "hash": "0f22f6060142a4b620daaff1e57e49bc6cf5bc61eb2e50e6efcdc4e978cc66a6"
+  },
+  "https://www.ign.com/articles/lego-teases-yoshi-set-for-2027": {
+    "file": "Nintendo_has_teased_a_new_LEGO_Yoshi_set_in_a_post.mp3",
+    "hash": "06958a6cd28ff85fb5c7c9d3ed1b10477084e23d66ca5dda609cc5d0818d3edb"
   },
   "https://www.ign.com/articles/leonardo-dicaprio-and-joaquin-phoenix-were-offered-the-role-of-the-joker-in-the-dark-knight-but-turned-it-down": {
     "file": "Leonardo_DiCaprio_and_Joaquin_Phoenix_were_both_of.mp3",
@@ -2433,7 +2509,7 @@
   },
   "https://www.ign.com/articles/nvidia-launches-investigation-into-ceo-jensen-huang-following-affair-with-alleged-chinese-spy": {
     "file": "Nvidia_has_launched_an_independent_investigation_i.mp3",
-    "hash": "157869916fb0ba6099c3e10deca96d4ee31c15876d7176fdf63c5c4cc243a582"
+    "hash": "30c2c80d806b24ba0bf4d8cf62c564ef104255111292308b8d25296d1f8b079b"
   },
   "https://www.ign.com/articles/nvidia-shows-off-dlss-5-hogwarts-legacy-trailer": {
     "file": "Nvidia_just_showed_off_DLSS_5_in_Hogwarts_Legacy_i.mp3",
@@ -2647,6 +2723,10 @@
     "file": "British_self_made_millionaire,_entrepreneur,_and_s.mp3",
     "hash": "45ac1d0687c0b8cda354a67977927272837301f3e21b0929da4c2db426f00461"
   },
+  "https://www.ign.com/articles/selfridges-gta-6-takeover-varsity-jacket": {
+    "file": "Luxury_British_department_store_Selfridges_has_had.mp3",
+    "hash": "c21cd6f5f0375059933cae720f13463a2ca6509ec6b5be956a523ed6618e0c05"
+  },
   "https://www.ign.com/articles/silent-hill-remake-coming-2027-cast-details-leaked": {
     "file": "The_1999_PS1_horror_game_is_getting_the_Bloober_tr.mp3",
     "hash": "db9841f721b4137d8acfc4a907159debacc8c64865418d1a411d99407ef54d29"
@@ -2687,6 +2767,10 @@
     "file": "Sony_has_released_yet_another_PS5_firmware_update_.mp3",
     "hash": "9c3eb6c8636fa3772497eb3b45aca8d5e1a51580d5e433408bba95f7ddcb9142"
   },
+  "https://www.ign.com/articles/sony-launches-new-ps-portal-model-in-japan-with-internal-storage-for-future-functionality-changes-official-name": {
+    "file": "Sony_is_releasing_a_new_model_of_the_PlayStation_P.mp3",
+    "hash": "bef283950e230266e9dbf13153bf0853e7719e82743c9712021633226b20c158"
+  },
   "https://www.ign.com/articles/sony-wants-to-buy-your-ps5-console-for-400": {
     "file": "Sony_is_offering_$400_to_people_who_are_willing_to.mp3",
     "hash": "8e4ea64e89cd08e015824904a236d6dba6f62c81157cbfcde3caee3e4a4c8b5d"
@@ -2722,6 +2806,10 @@
   "https://www.ign.com/articles/studio-ghibli-calcifers-yule-log-is-coming-back-to-hbo-max-for-the-holiday-season": {
     "file": "item_014.mp3",
     "hash": "44007f11b11a7697d0edeec8ef2d28108ec1e908a4c1c06fd862353d4d209c15"
+  },
+  "https://www.ign.com/articles/supper-mario-broth-health-condition": {
+    "file": "A_popular_Nintendo_blogger_who_tells_his_viewers_o.mp3",
+    "hash": "19814094d54e270f8642e93e052cc503978325fd0b9f7aa67b4efebd51406bcc"
   },
   "https://www.ign.com/articles/taika-waititi-blasts-critics-as-irrelevant-out-of-touch-obsolete-following-klara-and-the-suns-negative-reviews": {
     "file": "Marvel_filmmaker_Taika_Waititi_has_called_critics_.mp3",
@@ -2774,6 +2862,10 @@
   "https://www.ign.com/articles/the-legend-of-zelda-ocarina-of-time-remake-added-fast-travel-before-devs-decided-it-never-needed-it-in-the-first-place": {
     "file": "The_Legend_of_Zelda_producer_Eiji_Aonuma_asked_the.mp3",
     "hash": "4552d66f0380dec059afc7d9c349c7ce871114f63b7516d375ee8bb72dc25c70"
+  },
+  "https://www.ign.com/articles/the-legend-of-zelda-ocarina-of-time-remake-dataminers-uncover-potential-majoras-mask-master-quest-dlc-hints": {
+    "file": "The_Legend_of_Zelda_Ocarina_of_Time_players_are_ge.mp3",
+    "hash": "1a23f465537ec5b06be54eb20eb9eb7c366103dc0a538d02ad7c5d64fe83da58"
   },
   "https://www.ign.com/articles/the-legend-of-zelda-ocarina-of-time-remake-full-english-voice-cast-revealed": {
     "file": "The_Legend_of_Zelda_Ocarina_of_Time_remake_is_out_.mp3",
@@ -2858,6 +2950,14 @@
   "https://www.ign.com/articles/winnie-the-pooh-blood-and-honey-3-trailer": {
     "file": "IGN_can_exclusively_reveal_the_first_trailer_for_W.mp3",
     "hash": "2ac818de3ecc02d9b21c72d85d1c0292c62a1d2d35c39f653c1d216fed58c70f"
+  },
+  "https://www.ign.com/articles/world-of-warcraft-forever-dungeon-experience-buffed-but-theres-a-long-way-to-go": {
+    "file": "World_of_Warcraft_Forever_has_been_a_massive_hit,_.mp3",
+    "hash": "3b9f168769b24505c58c14dc44dd3b0cf5b53eda09780eb59cf9c497b62fb79b"
+  },
+  "https://www.ign.com/articles/world-of-warcraft-forever-is-the-biggest-wow-launch-in-history": {
+    "file": "Even_during_the_beta,_World_of_Warcraft_Forever_wa.mp3",
+    "hash": "a2172adf59d262a633b2d9f190af3ce9b66f601369c0d7c24405f8a41ca0f017"
   },
   "https://www.ign.com/articles/world-of-warcraft-forever-launch-live-blog": {
     "file": "World_of_Warcraft_Forever_launch_day_live_blog.mp3",
@@ -3540,8 +3640,8 @@
     "hash": "9690c900cf55fe39716898440f4c1d5061aff721a26483630544c70b60c190cb"
   },
   "https://x.com/UIS410/status/2117593977809773009": {
-    "file": "item_001.mp3",
-    "hash": "a831d8c4a98528cfb0e86ac0968da09c4b079aad1280069663e03c07ddd29f72"
+    "file": "item_020.mp3",
+    "hash": "ea03547ad56bdb689dac32e6a8abae2b323940bdbff951d455fe5eee2fec350a"
   },
   "https://x.com/User2265774/status/2113649904472240253": {
     "file": "item_006.mp3",
