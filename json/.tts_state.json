@@ -59,6 +59,10 @@
     "file": "item_022.mp3",
     "hash": "e72ac8621180254e2ce30434a671c5c1c68b045b818fa448e465805d96a370b3"
   },
+  "https://bsky.app/profile/did:plc:kslpjnmwkxdy4euskbmzm25a/post/3n2eqeastxs24": {
+    "file": "item_006.mp3",
+    "hash": "5e763c627a525d9f24ab819bfe050a8cb4714adddd179ec9c5de21cd609cf8c1"
+  },
   "https://bsky.app/profile/did:plc:pibfejl26riq2ithp6eqrika/post/3my53blwpfk2h": {
     "file": "item_024.mp3",
     "hash": "1e108277b12b82f341d06a4e1fa530cbdcadb98a750652705d9e667c208497f9"
@@ -679,6 +683,10 @@
     "file": "item_038.mp3",
     "hash": "3d7fc30aab366e001abece7b7deb9b5a9506c671d11740f3baf1c35e5112dc91"
   },
+  "https://i.pximg.net/img-original/img/2026/10/07/15/23/23/150560016_p0.png": {
+    "file": "item_007.mp3",
+    "hash": "8ac52439d812fb81ddb5bc22af54f6e56e344afab6a845911fd87c1956da1725"
+  },
   "https://i.pximg.net/img-original/img/2026/10/10/02/10/17/150658308_p0.png": {
     "file": "item_001.mp3",
     "hash": "997dce30a67f2a21c6568090c6cc6e56226f79f4102b2081092d63e1d3843d5e"
@@ -1182,6 +1190,10 @@
   "https://i.pximg.net/img-original/img/2026/11/14/17/32/28/152052714_p0.jpg": {
     "file": "item_019.mp3",
     "hash": "db3cb05b3288e01fe79376d2667a878bb1cd0aa8821d7e30adfc499644ec2512"
+  },
+  "https://i.pximg.net/img-original/img/2026/11/14/22/09/50/152064589_p0.png": {
+    "file": "item_004.mp3",
+    "hash": "e9eb053a51e92d1933bd5c9865af7c7dda78ec8db2701ca2299445b4fd2304e9"
   },
   "https://i.pximg.net/img-original/img/2026/11/14/23/37/21/152068452_p0.png": {
     "file": "item_021.mp3",
@@ -2597,7 +2609,7 @@
   },
   "https://www.ign.com/articles/blade-runner-2099-executive-producers-confirm-franchise-owners-are-in-talks-for-aaa-video-game-adaptation": {
     "file": "Andrew_Kosove_and_Broderick_Johnson,_executive_pro.mp3",
-    "hash": "8409f482291d3b0b36137103c94daa3fbc4916c8c9c98be1c5eb24158a0ba989"
+    "hash": "8950edc1b6e9d7f4ae2c856fe08c8657a1fef756f483d8b0f75976702a4aa526"
   },
   "https://www.ign.com/articles/blade-runner-2099-the-board-game-will-feature-a-different-story-than-the-tv-series": {
     "file": "item_019.mp3",
@@ -2629,7 +2641,7 @@
   },
   "https://www.ign.com/articles/breaking-down-theos-shock-moment-in-the-lord-of-the-rings-the-rings-of-power-season-3-and-the-mystery-of-his-father-with-actor-tyroe-muhafidin": {
     "file": "A_spoiler_filled_The_Lord_of_the_Rings_The_Rings_o.mp3",
-    "hash": "8353a75d8e9faf1af5d02122dcf98920f47a631aa986df20022cdec6f1e90904"
+    "hash": "1fc46e5ca3657e585bb2c289aa245590ab80a1d96d48acb864cda6751c528d3d"
   },
   "https://www.ign.com/articles/bride-goes-viral-after-challenging-groom-to-beat-her-at-valorant-before-marrying-her": {
     "file": "A_bride_in_China_is_going_viral_for_giving_her_hus.mp3",
@@ -2717,7 +2729,7 @@
   },
   "https://www.ign.com/articles/chris-pratt-says-he-would-love-james-gunn-to-return-for-guardians-of-the-galaxy-vol-4-after-leaving-dc": {
     "file": "Chris_Pratt_said_he_would_love_to_reunite_with_Jam.mp3",
-    "hash": "95c2bf2b6c14d3b05a8da6465aabea6c46fad99d0595d9f8c6731ed49cf9db5c"
+    "hash": "6e3ee3f9cb6289383215479851eb71a6c50a269ddd0e4f89d3aad71302ae11f7"
   },
   "https://www.ign.com/articles/christopher-nolans-interstellar-is-getting-a-lego-set": {
     "file": "LEGO_has_approved_a_LEGO_Ideas_submission_based_on.mp3",
@@ -2861,7 +2873,7 @@
   },
   "https://www.ign.com/articles/ea-adds-dont-delete-message-to-madden-nfl-27-in-bid-to-keep-players-from-making-room-ahead-of-gta-6": {
     "file": "EA_has_added_a_don't_delete_pop_up_message_to_Madd.mp3",
-    "hash": "c3f97c6b0b96c1860b6df4cf52ab837836dac8987c13de4e15d8fa374c56bdef"
+    "hash": "eae3864998df9d4fbed7e98b46f2a9c9f191660e3a8e965fc63f35523ede2a2c"
   },
   "https://www.ign.com/articles/ea-brings-every-ultima-and-wing-commander-game-to-steam-and-gog-with-quality-of-life-updates": {
     "file": "Electronic_Arts_is_bringing_25_classic_games_from_.mp3",
@@ -3061,7 +3073,7 @@
   },
   "https://www.ign.com/articles/gta-6-leak-seemingly-reveals-full-track-list-days-before-launch": {
     "file": "The_full_track_list_for_Grand_Theft_Auto_VI_The_Al.mp3",
-    "hash": "f71204cd26284c7754df64706a42ff66104ca1939baf3fa86f7a8c6988c5f7b5"
+    "hash": "b16ffbcb25247caf20f95bb3f6394e0a0b8f3be3d310744a8808b30272de899f"
   },
   "https://www.ign.com/articles/gta-6-metadata-ray-tracing-improvements-on-ps5-pro": {
     "file": "GTA_6_preloads_are_live_for_those_who_live_in_New_.mp3",
@@ -3263,6 +3275,10 @@
     "file": "Jason_Momoa,_if_you_hadn't_noticed,_is_a_much_bigg.mp3",
     "hash": "12f0b4bd725ab1e38e79c2c6106ac88e6cc9120f8c963059413e2dd8a1ba6922"
   },
+  "https://www.ign.com/articles/jensen-huang-reportedly-weighing-return-as-nvidia-ceo-with-allies": {
+    "file": "Jensen_Huang_has_reportedly_had_discussions_with_h.mp3",
+    "hash": "4867be8b1b6b5ab636cade2360120f740ae4cea301eec61e1fc3aa26de2e4404"
+  },
   "https://www.ign.com/articles/jensen-huang-resigns-as-nvidia-boss-amid-honeytrap-scandal-interim-ceo-appointed": {
     "file": "Jensen_Huang_has_resigned_as_CEO_of_Nvidia,_the_co.mp3",
     "hash": "ae137ef8d06502360a25a228cafe049608446e92629dd97078f844d10b9a812f"
@@ -3309,7 +3325,7 @@
   },
   "https://www.ign.com/articles/kevin-feige-didnt-want-wanda-in-visionquest-because-he-was-worried-she-would-distract-from-the-core-show": {
     "file": "Marvel_actor_Paul_Bettany_has_said_Kevin_Feige_did.mp3",
-    "hash": "d565d5237db59c4a32b419e5e362ee8637eaf6fe34aeb5f3a9be264ae87d0be0"
+    "hash": "7679ebef138ab652910ddedc73613a89bb380a343d77c332447363c43d87d897"
   },
   "https://www.ign.com/articles/kfc-reveals-official-avengers-doomsday-menu-worthy-of-dr-doom": {
     "file": "Dr._Doom_is_teaming_up_with_a_particularly_powerfu.mp3",
@@ -4183,9 +4199,17 @@
     "file": "Fans_have_been_left_furious_by_Microsoft's_launch_.mp3",
     "hash": "60be005aed6af276a53c195d37e20f1c3ce5c495b3e32f67fcaf494d7004a3d4"
   },
+  "https://www.ign.com/articles/xbox-confirms-project-helix-is-a-console-capable-of-playing-games-from-your-pc": {
+    "file": "Xbox_has_confirmed_Project_Helix_is_designed_to_be.mp3",
+    "hash": "224b374f9d0c239092af0b47b95c6a2bf0be24da36cdb51a2117be62aaa76068"
+  },
   "https://www.ign.com/articles/xbox-made-an-alligator-shaped-series-x-and-you-can-win-it-before-gta-6-launches": {
     "file": "GTA_6_is_mere_weeks_away_from_launch,_and_to_celeb.mp3",
     "hash": "8c2a5f0d93111fc2121d23c8d3c6195e10e5e8b9cb8e168e5ba063e5e2ee6aeb"
+  },
+  "https://www.ign.com/articles/xbox-reveals-original-and-360-boot-up-options-for-25th-anniversary": {
+    "file": "Microsoft_has_revealed_three_new_nostalgic_Xbox_co.mp3",
+    "hash": "7bcac0b62317e0135e2e805e942866c5fabd2cd70a8105e7f7e85f162c2689e9"
   },
   "https://www.ign.com/articles/xbox-series-x-x25-special-edition-console-invite-requests-are-up-at-amazon": {
     "file": "item_001.mp3",
@@ -4580,7 +4604,7 @@
     "hash": "4cb1ba34266c7ee12c5d574f6c22101139bd4d8d47fa24b5daafdc7a90a21a6a"
   },
   "https://x.com/BaiYu5530/status/2111537468306555349": {
-    "file": "item_006.mp3",
+    "file": "item_020.mp3",
     "hash": "d03fcaa66cdc3a1359d3d1d4900601bb8b3e9a961e39a75a3b39725f988cea5c"
   },
   "https://x.com/BaiYu5530/status/2114019013491630285": {
@@ -5427,6 +5451,10 @@
     "file": "item_009.mp3",
     "hash": "10f44bbf4e46782521cb3507d669441c664bd3ff9a1893db6b31c878fa64a2e9"
   },
+  "https://x.com/amlichan/status/2122129546568712691": {
+    "file": "item_003.mp3",
+    "hash": "198a11db4ebb36a26668a3a767d608ad77517dd07723fe2071ef06a796d49538"
+  },
   "https://x.com/an_xinin/status/2103808139481297192": {
     "file": "item_004.mp3",
     "hash": "0b46b6829e8af3424f341c43f23e391de10408a3793837a00b98025c77b1fcdd"
@@ -5871,6 +5899,10 @@
     "file": "item_000.mp3",
     "hash": "dde241ee8c95f6c984a5863edb618999fdf481cb12c6caa88d4ab4a893dc96b2"
   },
+  "https://x.com/i_love__lesbian/status/2121901223502901280": {
+    "file": "item_002.mp3",
+    "hash": "4e11507c256e2d3bfc0b7068e2e9f14d0140b2e74cf49cb8549950caacb6e754"
+  },
   "https://x.com/idgukgu/status/2108156858804633951": {
     "file": "item_017.mp3",
     "hash": "84cf39956238fb2aa738d24e4fc1373284cdf67e662c0605de1ba73abe126c71"
@@ -5986,6 +6018,10 @@
   "https://x.com/jiye_P1/status/2121598302018048049": {
     "file": "item_031.mp3",
     "hash": "f4fcac67b2b55e8da152f8803886a99c4ed77a54f7afba117f8b7a2c8db9791a"
+  },
+  "https://x.com/joboqs/status/2117563986946204131": {
+    "file": "item_013.mp3",
+    "hash": "222e6fb1d5b611f159037b4f950a92f5c592306e612c0560f30cc54453531fbc"
   },
   "https://x.com/jocy_juice/status/2119436872061689917": {
     "file": "item_029.mp3",
@@ -6431,6 +6467,10 @@
     "file": "item_022.mp3",
     "hash": "4c9a7dae47fe0d1daf05a3fad10cf65efbe15f869c824a39b08c273b06982029"
   },
+  "https://x.com/na991211/status/2122110055588016282": {
+    "file": "item_001.mp3",
+    "hash": "ee58f09a270dc83f4e27f756b24615ab980fdb2d834a36ee0832d2b166f44660"
+  },
   "https://x.com/na_tarapisu153/status/2115777345298866284": {
     "file": "item_003.mp3",
     "hash": "ffb02f74d5e91eb654a0e0b3ce2dcdf5a0d91bc2cd88b1191478c0a65d1aa74e"
@@ -6490,6 +6530,14 @@
   "https://x.com/nonoberry22/status/2121272522406772909": {
     "file": "item_035.mp3",
     "hash": "82fca63b03ab6983c8f65019851e241f05a7132474f512c02d3baebbf15c2af9"
+  },
+  "https://x.com/nononss5/status/2072269499487670285": {
+    "file": "item_011.mp3",
+    "hash": "539c2ff387ed81e2e51975d5a4cdc5f4eaec94164875518a75f057fd197281a2"
+  },
+  "https://x.com/nononss5/status/2081789685966451115": {
+    "file": "item_010.mp3",
+    "hash": "1b4aff92c6577fb986c8e5d7d7702a8eddc02dbf0a83e72a20b3517f62caee1e"
   },
   "https://x.com/noratanukimaru/status/2118749757657289140": {
     "file": "item_030.mp3",
@@ -6675,6 +6723,10 @@
     "file": "item_003.mp3",
     "hash": "6024887388f75e7fdb7d9dd645923bd05ef857a4c5d2fb6b3b9e8d35bca04225"
   },
+  "https://x.com/pippi663/status/2121567737684090927": {
+    "file": "item_008.mp3",
+    "hash": "f99aed3a1858ea71e3a86a3d7a669cce2787a05e7059693d3347d4e472279ed1"
+  },
   "https://x.com/pockiseisont/status/2120022359239438501": {
     "file": "item_014.mp3",
     "hash": "fe7c3056405acf1c1c009fd4949213793d9a876c48f4dee1c4f4c2f3c75668a8"
@@ -6844,7 +6896,7 @@
     "hash": "aba4832e1a70e20cf36b638177f091222e9c660224c6f5779bc0a424cf57d19d"
   },
   "https://x.com/samambms/status/2121679859705417886": {
-    "file": "item_022.mp3",
+    "file": "item_036.mp3",
     "hash": "bf675f5333dcf3f9b8247a6ae1d2a665d9c833fabdfd9505c8720cc2faab100e"
   },
   "https://x.com/sammback_s/status/2116880389679780289": {
@@ -6958,6 +7010,14 @@
   "https://x.com/ssami0617/status/2121489214718333414": {
     "file": "item_013.mp3",
     "hash": "ce2804cb789f73fa2e8cd67e5ccf72b2191c1cf6e6a151e37904cd6bdd6737fc"
+  },
+  "https://x.com/storijuna/status/2121992567114133683": {
+    "file": "item_005.mp3",
+    "hash": "2470a1a1e438e44393b126233b8c6acf0ff61485513b12f466e8eb5c4fc065c5"
+  },
+  "https://x.com/sui_0000016/status/2122098070494359943": {
+    "file": "item_000.mp3",
+    "hash": "3cb2f71a2aa6cf03d852dbffd7f4d864f6a20df63f9a270e40c6b613d9c7fa19"
   },
   "https://x.com/sukn_9765/status/2114860066226815195": {
     "file": "item_015.mp3",
@@ -7115,6 +7175,10 @@
     "file": "item_045.mp3",
     "hash": "cfb83f7e03e5c8e5d17e75b74d38699345cc9de294c3761f158b63e2038c016e"
   },
+  "https://x.com/uk_0128/status/2121990082605564081": {
+    "file": "item_009.mp3",
+    "hash": "d64700836cbea4c1271132f091d017946c3c59038816b3d35caab85cda8404a3"
+  },
   "https://x.com/uktsoy/status/441574030613549056": {
     "file": "item_012.mp3",
     "hash": "cdf5a7e6bd328c831c332e6c9000a5a61f36911fa9888f5c8aaa43eac7271653"
@@ -7146,6 +7210,10 @@
   "https://x.com/veylithmavestyr/status/2116827216957038651": {
     "file": "item_004.mp3",
     "hash": "d65849207af9aaec9308e58527bbb90ccf00c0e067ae42560313780c4c926875"
+  },
+  "https://x.com/voyangelfan/status/2089561665628946613": {
+    "file": "item_012.mp3",
+    "hash": "4882988b22d2e564e4ccbd6e68d9b1935901d419a8e1778b28860dd023e5ad73"
   },
   "https://x.com/watawata246/status/2114678522858094730": {
     "file": "item_038.mp3",
