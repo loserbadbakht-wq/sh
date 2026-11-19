@@ -199,9 +199,17 @@
     "file": "Granblue_Fantasy_Versus_Rising_Gameplay_and_Story.mp3",
     "hash": "eb7e0f2674f4a0cf8bb63265c92cf6607e1ced6883e184721e2799466755dfc2"
   },
+  "https://game8.co/articles/latest/gta-6-cuts-sex-partners-prostitutes-and-other-longtime-features-rockstar-explains-why": {
+    "file": "GTA_6_Cuts_Sex_Partners,_Prostitutes,_and_Other_Lo.mp3",
+    "hash": "8185eb97cc07bc7fc3fd688871a9c52d5a078bb417caed4a893fd3192e1c473d"
+  },
   "https://game8.co/articles/latest/gta-6-extended-look-hypes-fans-for-release-with-26-minutes-of-new-gameplay": {
     "file": "GTA_6_Extended_Look_Hypes_Fans_For_Release_With_26.mp3",
     "hash": "edb975f47bf34a777f31539dcac97fdc82b8577fd504546948ca87a30c4cd081"
+  },
+  "https://game8.co/articles/latest/gta-6-makes-texting-and-driving-so-brutal-it-might-save-lives-irl": {
+    "file": "GTA_6_Makes_Texting_and_Driving_So_Brutal_It_Might.mp3",
+    "hash": "f853abd54dc278978ba795c2f18f993d4b51541f7120c30114beceb4003d7d4f"
   },
   "https://game8.co/articles/latest/gta-6-merch-collection-brings-vice-city-to-players": {
     "file": "GTA_6_Merch_Collection_Brings_Vice_City_to_Players.mp3",
@@ -406,6 +414,10 @@
   "https://i.pximg.net/img-original/img/2011/10/03/20/12/33/22155662_p0.jpg": {
     "file": "item_008.mp3",
     "hash": "01678702695a2d19f242c972556069d6618f2a27fe7a845de47209a30d0cd9d6"
+  },
+  "https://i.pximg.net/img-original/img/2017/02/02/15/01/01/61237116_p0.jpg": {
+    "file": "item_005.mp3",
+    "hash": "056250449009e144094e094fde0a3fc01f9eeb33a64a84ceabc67c85e771b8c3"
   },
   "https://i.pximg.net/img-original/img/2017/08/29/14/53/47/64677622_p1.jpg": {
     "file": "item_003.mp3",
@@ -1323,9 +1335,17 @@
     "file": "item_000.mp3",
     "hash": "da15fa5a6542e73b9c3cd607bc6fca049136c316542ed7eede54b14136aa93fb"
   },
+  "https://i.pximg.net/img-original/img/2026/11/18/20/13/49/152212251_p0.png": {
+    "file": "item_006.mp3",
+    "hash": "2597413a4eaa2c04b8b8282635eb5eeeb58af2014e7d3271b67ae809f0c53b4f"
+  },
   "https://i.pximg.net/img-original/img/2026/11/19/00/03/14/152222730-cf55d090b130a2962b01affd6d276188_p0.png": {
     "file": "item_003.mp3",
     "hash": "6eda8434a52a6704fe8db7688505070cfdb783c48fac22a98426dedc74b6ca58"
+  },
+  "https://i.pximg.net/img-original/img/2026/11/19/02/58/27/152227677_p0.jpg": {
+    "file": "item_007.mp3",
+    "hash": "6be05061fd6c0172483e481196f9c58871fb5c6798a808a5f3b95da009f136ce"
   },
   "https://igot-filthyways.tumblr.com/post/832181223942242304": {
     "file": "item_023.mp3",
@@ -2755,6 +2775,10 @@
     "file": "A_13_year_old_Tekken_player_went_viral_over_the_we.mp3",
     "hash": "625c6154a0bc24683e13cc1c2297a72f48fd5a1f164dee179223731d221f6a8a"
   },
+  "https://www.ign.com/articles/43-army-members-reenlisted-in-exchange-for-paid-time-off-to-play-gta-6": {
+    "file": "If_you\u2019ve_been_following_the_GTA_6_hype_train,_you.mp3",
+    "hash": "6ed758af49c4e53e6b3eebaaec6e1555ca30bc6f4586a266e10391e64c2396b6"
+  },
   "https://www.ign.com/articles/52-year-old-youtuber-learns-karate-by-studying-tekken-to-train-with-his-son": {
     "file": "A_52_year_old_Japanese_YouTuber_is_learning_karate.mp3",
     "hash": "4b29db99d3217241ea6919157397dabbf50a0be62bc7fdfa791d0f974db526f9"
@@ -2777,7 +2801,7 @@
   },
   "https://www.ign.com/articles/a-gta-6-location-was-teased-by-rockstar-all-the-way-back-in-2021-and-whats-inside-was-worth-the-wait": {
     "file": "In_2021,_Rockstar_fans_believed_that_a_GTA_6_scree.mp3",
-    "hash": "21176aa050c0054e49c049fa50b1c813f5fee02e32df86550f5382264e9b2d39"
+    "hash": "d609f49b5f7adc3eb2dec7650fe6157b65863e9a3154d79b21cd2c815e3bf4f3"
   },
   "https://www.ign.com/articles/a-lot-of-players-dont-want-to-play-a-monster-wow-forever-principal-designer-sheds-more-light-on-why-the-skyborne-were-added": {
     "file": "World_of_Warcraft_Forever_has_its_full_launch_a_we.mp3",
@@ -3005,7 +3029,7 @@
   },
   "https://www.ign.com/articles/build-a-rocket-boy-legal-action-against-mindseye-saboteurs-debts": {
     "file": "After_the_disastrous_release_of_MindsEye,_its_coll.mp3",
-    "hash": "189b2482e0c1009af73f0378d0f48ad2d654ccb2ebcf8a1ab74ce7a09b942f83"
+    "hash": "f29e88ebc1342dd664c68e270cd61bfaddf033c4c93829567c23be082a2e43fa"
   },
   "https://www.ign.com/articles/bungie-says-dont-buy-marathon-as-a-donation-as-destiny-players-look-to-support-studios-future": {
     "file": "As_Bungie_plots_a_future_for_more_Destiny,_head_of.mp3",
@@ -3016,8 +3040,8 @@
     "hash": "6773e426fd5968755a017794dd464aea955bdf0d1a3ed3d2bc7913c7cc6e7c01"
   },
   "https://www.ign.com/articles/burger-kings-chocolate-whopper-prank-is-being-turned-into-a-real-burger": {
-    "file": "item_001.mp3",
-    "hash": "de3cd9327e3d59980615106026dc096abb046890e489d02797044a2a1816c484"
+    "file": "item_004.mp3",
+    "hash": "b34dfbf2d6e54d52fc1b61df29192aaa3be1c0865667586fab6c011ede7a420b"
   },
   "https://www.ign.com/articles/by-skipping-last-gen-systems-stranger-than-heaven-is-allowing-rgg-studio-to-fully-leverage-the-power-of-current-gen-consoles-at-long-last": {
     "file": "By_Skipping_Last_Gen_Systems,_Stranger_Than_Heaven.mp3",
@@ -3471,6 +3495,10 @@
     "file": "GTA_6's_release_has_led_to_as_much_as_a_17%_increa.mp3",
     "hash": "65a872afdab7cf8031f4b56b9d49cda6c8631c7b4bc15a08499b75d783ed8675"
   },
+  "https://www.ign.com/articles/gta-6-doesnt-let-players-pick-up-prostitutes-but-rockstar-has-a-logical-reason-for-it": {
+    "file": "Rockstar_Games_has_revealed_why_they_chose_to_fore.mp3",
+    "hash": "4d5295d0832b26a362ec2b3d5bf008494e0f583186d99e0d302a1a1692a34def"
+  },
   "https://www.ign.com/articles/gta-6-doesnt-let-you-replay-story-missions-heres-why": {
     "file": "Unlike_previous_games_in_the_series,_you_can't_rep.mp3",
     "hash": "b3069b32c824fd21bcc2fb42ada74ebe6d4cf06a842b8488ca46d8a2e25de7d1"
@@ -3514,6 +3542,10 @@
   "https://www.ign.com/articles/gta-6-is-now-the-joint-highest-rated-game-of-all-time": {
     "file": "GTA_6_has_become_the_joint_highest_rated_game_of_a.mp3",
     "hash": "329f6a3ed1b5e4a4239d06de8256aaf237d4e0ff0c90f227ec3526d4657a387b"
+  },
+  "https://www.ign.com/articles/gta-6-launch-causes-massive-spike-in-traffic-for-internet-provider-xfinity": {
+    "file": "Internet_provider_Xfinity_has_reported_a_massive_s.mp3",
+    "hash": "d8a8edc8791f13fc4b9a81da8e4a0e48ad1eba379926409a04dc5470b217c1e0"
   },
   "https://www.ign.com/articles/gta-6-launch-live-blog": {
     "file": "13_years_after_GTA_5_came_out,_GTA_6_is_finally_up.mp3",
@@ -4345,7 +4377,7 @@
   },
   "https://www.ign.com/articles/robert-downey-jr-teases-avengers-doomsday-with-new-behind-the-scenes-footage": {
     "file": "Avengers_Doomsday_star_Robert_Downey_Jr._has_discu.mp3",
-    "hash": "a0aacc32ae4289f8b40465ea641337bd8d9b7275bebfa0f0fd8fc5352dd16e72"
+    "hash": "5b2df20487eda8d1bfaaba065dc45370d7714e3307133640767eba8b1e80998e"
   },
   "https://www.ign.com/articles/robert-pattinson-bond-26-007-screen-test-nicholas-hoult": {
     "file": "Robert_Pattinson_reportedly_screen_tested_for_the_.mp3",
@@ -4381,7 +4413,7 @@
   },
   "https://www.ign.com/articles/rockstar-president-sam-houser-issues-rare-statement-to-celebrate-gta-6-launch": {
     "file": "As_GTA_6_launches_around_the_world,_Rockstar_presi.mp3",
-    "hash": "910b60728d3324f276c96bbfa406ad846fae2a996014d5f42d89d02f74e21592"
+    "hash": "64ee32847efee718baf67ac2bf4804b02dda2eb1285bdfa07446d5b28758e724"
   },
   "https://www.ign.com/articles/roger-craig-smith-replaced-original-phantom-blade-zero-actor": {
     "file": "In_the_trailers_leading_up_to_launch,_Phantom_Blad.mp3",
@@ -5367,6 +5399,10 @@
     "file": "item_035.mp3",
     "hash": "880de034d5c60fcb3126f195b5628cbe0929869f36dc59b898cc32c50bb56bf0"
   },
+  "https://x.com/BlackTea_AJIA/status/2123083999564509319": {
+    "file": "item_009.mp3",
+    "hash": "585b4cb660c386263234c78f5873d45fa2fe17e4af3b8b784d0a62f62731c4aa"
+  },
   "https://x.com/Blue_rose_o0/status/2053351769460343146": {
     "file": "item_014.mp3",
     "hash": "e07f27ca31b413361c2e6b0a6037f6b2dad35052430d8cbb96a2aa15bc170359"
@@ -5927,6 +5963,10 @@
     "file": "item_018.mp3",
     "hash": "ce159daa5f64a31f077e3e3eccfa85f657fa2dc1152fe8b0e89af6d550bf8c30"
   },
+  "https://x.com/SU_CHUYV/status/2123028966131020130": {
+    "file": "item_003.mp3",
+    "hash": "884dc16c0e53d4d371a25ffd3e029f2015998e01954fd19bbd9f1228d0e8c35c"
+  },
   "https://x.com/Seraph_HUIYU/status/2116845394097328519": {
     "file": "item_005.mp3",
     "hash": "368a1817d362cfdb87bb2c2d6679aa77f8bf09c3455267ba7d22880897ddbf07"
@@ -5980,7 +6020,7 @@
     "hash": "ba3bd41d1589d7f864d4cf94ff28c9a9f3c51f29ef91f55c592a9f16958d8d5f"
   },
   "https://x.com/TCN_tancha/status/2123102807280828847": {
-    "file": "item_004.mp3",
+    "file": "item_014.mp3",
     "hash": "43c790e63e8d8018afa5d851e1d4d5b733865f79ea4f55764121a3e017bb0571"
   },
   "https://x.com/TChauu26/status/2113680389676105849": {
@@ -6034,6 +6074,10 @@
   "https://x.com/TomboyAch40/status/2111518333745176783": {
     "file": "item_012.mp3",
     "hash": "58ed56216e74e7ee53e26bc9fd12addb41d3b0da8ef8655457375922df8b2025"
+  },
+  "https://x.com/TotsukaSaika_59/status/2122812045229998353": {
+    "file": "item_002.mp3",
+    "hash": "9dc89a01d1c5a2f6323377b5850d6f5aeb7ed25b2a4c2e4de5ace3cad73677c9"
   },
   "https://x.com/Touka127430/status/2116814572556595437": {
     "file": "item_001.mp3",
@@ -6546,6 +6590,10 @@
   "https://x.com/dogwhiteE/status/2119463187284414585": {
     "file": "item_003.mp3",
     "hash": "2b70889cc90ca0aa8978a952530f70b607362bb88c1beb4c62d9b61742ff3037"
+  },
+  "https://x.com/dogwhiteE/status/2122965384055984309": {
+    "file": "item_001.mp3",
+    "hash": "72c32b5195a920789a524e66952130e0a3c94b73a412d8e4303b6c00475f36f5"
   },
   "https://x.com/dogwhiteE/status/2123105869089177993": {
     "file": "item_000.mp3",
@@ -7367,6 +7415,10 @@
     "file": "item_013.mp3",
     "hash": "4dd7ff3f777bb0604cc752f795741e7f0a7f9bcec268a6109ccb1f4e498fcab1"
   },
+  "https://x.com/misakysh/status/1895277761994080414": {
+    "file": "item_004_1.mp3",
+    "hash": "7bd3030186ea6392230ac6c7336f54aec9e7da211c1418e548d5ba9cfa920f5e"
+  },
   "https://x.com/misamxsa08/status/1942731323132764576": {
     "file": "item_044.mp3",
     "hash": "32c8f16d1dc9c74a015c57642c4c5e4744220b346601f4bc603e13de18bbc41d"
@@ -7486,6 +7538,10 @@
   "https://x.com/nananana_siiii/status/2121670090852876669": {
     "file": "item_002.mp3",
     "hash": "24e819505ca79c8e7257dd01ebd23dee192d21f81470cb4087a16f3c836b26ca"
+  },
+  "https://x.com/natu4687/status/2123030374624423965": {
+    "file": "item_008.mp3",
+    "hash": "2c8d7544c9ff224603204c856b16bf28514e4085689f27352f32b352aa0ac57d"
   },
   "https://x.com/ne_tochika/status/2116187570375893291": {
     "file": "item_001.mp3",
@@ -7986,6 +8042,10 @@
   "https://x.com/serichii4/status/2115305384235954238": {
     "file": "item_001.mp3",
     "hash": "63e04ba9e7dfb1c25a58413aa5a3de4d5d9744523136e7b90b16565e06120d12"
+  },
+  "https://x.com/sesmkun/status/2123273400957407445": {
+    "file": "item_000.mp3",
+    "hash": "7e7b896c589ac214f50d0b62decaf0bb85ed2285801703dbcca73c817abfffde"
   },
   "https://x.com/setsugaka/status/2116362769515864147": {
     "file": "item_026.mp3",
