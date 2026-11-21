@@ -519,6 +519,10 @@
     "file": "item_004.mp3",
     "hash": "81e8c65fc5075ec12ee55a751cf1c3479f969180821f3152f5572db8b1f4680d"
   },
+  "https://i.pximg.net/img-original/img/2020/01/27/22/19/49/79132090_p3.jpg": {
+    "file": "item_001.mp3",
+    "hash": "0a020643e0167d26aca186ab561560f1bf95ba0c5f69ade2e7c6cb06b33ef424"
+  },
   "https://i.pximg.net/img-original/img/2020/02/15/18/09/56/79510871_p0.jpg": {
     "file": "item_001.mp3",
     "hash": "a943b3dacd770f1f87c680d7b975e9a248ec36b31a780419ee32de946ce51e18"
@@ -738,6 +742,10 @@
   "https://i.pximg.net/img-original/img/2026/04/12/19/46/11/143470595_p0.jpg": {
     "file": "item_007.mp3",
     "hash": "e6e9b1fb189e51b181f2586b857d83ced27572bf9af251a082f4252bcea9caa6"
+  },
+  "https://i.pximg.net/img-original/img/2026/05/03/23/06/10/144322128_p7.jpg": {
+    "file": "item_000.mp3",
+    "hash": "93430915d355c7abf5ff6967188afff6a4db6630cd438d206c20f0c32ca680e3"
   },
   "https://i.pximg.net/img-original/img/2026/07/05/11/52/33/146838331_p0.jpg": {
     "file": "item_022.mp3",
@@ -1572,7 +1580,7 @@
     "hash": "1b4d6ac85c0d19f15c2fbcb4fbae54961b6a84fd0deb882856eb52a9afaf3fbb"
   },
   "https://meng8866.lofter.com/post/1fc64cda_2be566964": {
-    "file": "item_037.mp3",
+    "file": "item_044.mp3",
     "hash": "be648cfc5c583d56e903405173c0c42da74827c0ddeedc3aa5ebe29bad664e26"
   },
   "https://mu91098977.lofter.com/post/acae4c2a_34f9b24fe": {
@@ -3043,6 +3051,10 @@
     "file": "Rockstar_Games_and_West_Coast_Customs_teamed_up_to.mp3",
     "hash": "cd5239b112bba11fb2219b4f8b0e3b04196221ac67837020f053cd020e871fb3"
   },
+  "https://www.ign.com/articles/actor-who-plays-mandy-in-gta-6-excitedly-speaks-out-after-character-goes-viral": {
+    "file": "Lexie_Shoaibi,_the_actor_who_plays_Mandy_in_GTA_6,.mp3",
+    "hash": "80cbfe6071749736247449fd52091784884a7fbcde7222db9951c60cef019d4c"
+  },
   "https://www.ign.com/articles/adam-driver-confirms-his-role-in-heat-2-comments-on-recent-michael-mann-shooting": {
     "file": "Adam_Driver_Confirms_His_Role_in_Heat_2,_Comments_.mp3",
     "hash": "1dea479bfa321c6291f8b1eb17725dfafd8d948721d15a6880dabeb8dc9ea788"
@@ -3789,7 +3801,7 @@
   },
   "https://www.ign.com/articles/gta-6-doesnt-officially-have-first-person-but-you-can-force-it-to-heres-how-to-do-it": {
     "file": "GTA_6_may_not_have_launched_with_the_option_to_pla.mp3",
-    "hash": "c0a2bcff6dfd3e97a650a713f0e06e33ec075aa2820964ce672c5881b15daa0e"
+    "hash": "57a9b907f19c52045ab8fd7e29d7c4348417e7cde1c2736b687b80934658cc5e"
   },
   "https://www.ign.com/articles/gta-6-dog-poop-gameplay-premieres-in-the-latest-episode-of-south-park": {
     "file": "GTA_6_made_a_surprise_appearance_on_South_Park_wit.mp3",
@@ -3825,7 +3837,7 @@
   },
   "https://www.ign.com/articles/gta-6-has-only-been-out-for-a-day-and-people-are-already-asking-take-twos-boss-about-gta-7": {
     "file": "GTA_6_has_finally_arrived_after_more_than_a_decade.mp3",
-    "hash": "8b38af3990acdc2ac4d066f530a965d4dd8cf8998a454cb3443076d864969947"
+    "hash": "e3738e50ef295b731a5f562e59f89d114d1c229f552497b39e87aaff0e15c031"
   },
   "https://www.ign.com/articles/gta-6-has-police-departments-across-america-begging-people-not-to-commit-crimes-irl": {
     "file": "GTA_6's_popularity_has_led_to_police_departments_a.mp3",
@@ -3845,7 +3857,7 @@
   },
   "https://www.ign.com/articles/gta-6-is-the-biggest-entertainment-launch-of-all-time-at-379-billion-on-day-one": {
     "file": "Rockstar_Games_has_confirmed_GTA_6_retail_sales_re.mp3",
-    "hash": "480c485baf14d1c514685e5119b37effe3c1a1331c08794e9aa6f3d3232553e2"
+    "hash": "0130ef45c32d7b10d99b9189edb286650544d940904ea7f8e5a1a2dca1dc01cb"
   },
   "https://www.ign.com/articles/gta-6-is-the-most-popular-game-ever-across-twitch-and-kick-and-its-only-been-out-for-a-day": {
     "file": "GTA_6_has,_perhaps_unsurprisingly,_become_the_most.mp3",
@@ -3885,7 +3897,7 @@
   },
   "https://www.ign.com/articles/gta-6-players-agree-that-jasons-stash-needs-a-major-tweak": {
     "file": "GTA_6_players_can't_help_but_agree_that_controllin.mp3",
-    "hash": "294bdc75b388fc2826637a9c147e73638b03e4b1891bff3c7c247f6b22a9a4ed"
+    "hash": "f5e091045e53e58399099012d2bc2157d1846bcb0b2112bf6eefa1ef6082cd50"
   },
   "https://www.ign.com/articles/gta-6-players-in-germany-can-legally-take-time-off-work-to-play-the-game-on-launch-but-theres-a-catch": {
     "file": "Germany_has_a_unique_legal_loophole_that_lets_60_e.mp3",
@@ -3893,7 +3905,11 @@
   },
   "https://www.ign.com/articles/gta-6-players-multiple-money-glitches": {
     "file": "Some_GTA_6_players_are_refusing_to_make_use_of_an_.mp3",
-    "hash": "3d4e30a6ea29baf4fa6d5f4a4d9c4aef5d786cfa4a7c8037801442200f13cf6b"
+    "hash": "f7f2c70546d4ba55862ca42f711f44b901c80bfcc47e39c279210b729ad17441"
+  },
+  "https://www.ign.com/articles/gta-6-players-react-after-exclusive-shops-greet-non-ultimate-edition-buyers-with-locked-doors": {
+    "file": "GTA_6_players_are_being_locked_out_of_in_game_stor.mp3",
+    "hash": "9a7efc6bb539824ebb6326a2620e73c660f05049d6eb4857a4646d6205dec136"
   },
   "https://www.ign.com/articles/gta-6-preload-now-trailer-includes-nearly-30-seconds-of-new-footage-swat-team-nightclub-dancing-and-more": {
     "file": "Rockstar_has_released_a_new_GTA_6_trailer_announci.mp3",
@@ -3918,6 +3934,10 @@
   "https://www.ign.com/articles/gta-6-switches-sprint-to-l3-saving-thumbs-globally": {
     "file": "GTA_6_has_changed_the_series'_traditional_sprint_b.mp3",
     "hash": "768bf076b91916801c2e0a831ce0e9c5c72c089bd213213fe1de97f54517eaa5"
+  },
+  "https://www.ign.com/articles/gta-6-triggers-busiest-traffic-day-in-comcast-history": {
+    "file": "Comcast_has_said_GTA_6's_launch_triggered_the_busi.mp3",
+    "hash": "74c0c394618adf40dd2a0848b5bb6cc20efdb6a425086449a4b0f11e26522ad9"
   },
   "https://www.ign.com/articles/gta-6-uses-fsr-41-on-xbox-series-s-to-upscale-from-720p-to-1080p": {
     "file": "GTA_6_is_finally_here,_and_it's_genuinely_a_techni.mp3",
@@ -4171,6 +4191,10 @@
     "file": "Former_Nvidia_boss_Jensen_Huang_has_said_he_is_rea.mp3",
     "hash": "51927747a9bd1bdc60c3835436adc9498c6cd3c96ed713bb8a978627281beb6b"
   },
+  "https://www.ign.com/articles/jensen-huang-verbal-abuse-allegations": {
+    "file": "Former_Nvidia_CEO_Jensen_Huang_allegedly_threatene.mp3",
+    "hash": "4828575d168ea467018c9b7dda362bab3e81a0ab8e044f0dd53b854a28b3b773"
+  },
   "https://www.ign.com/articles/jesse-eisenberg-says-he-experiments-with-ai-just-to-make-sure-its-not-good-at-writing-yet": {
     "file": "Jesse_Eisenberg_said_he_will_sometimes_experiment_.mp3",
     "hash": "74e3121491e6713ad6aae3afec6733cfe1fcfbd3b26be2c8c57bc6029b4cc486"
@@ -4290,6 +4314,10 @@
   "https://www.ign.com/articles/macaulay-culkin-returns-as-kevin-for-the-mcdonalds-home-alone-meal-featuring-collectible-socks-and-a-new-pizza-sauce": {
     "file": "McDonald's_is_launching_a_massive_Home_Alone_colla.mp3",
     "hash": "db9719f64a262f702bbe5b7859ce5551e18d991a48582753c1474b477f36826f"
+  },
+  "https://www.ign.com/articles/macaulay-culkin-to-return-as-kevin-mccallister-in-home-alone-sequel": {
+    "file": "Macaulay_Culkin_has_reportedly_signed_on_to_return.mp3",
+    "hash": "cf425becaba8e359c9ba851b75ec764b79e556747b77502c7c7abb9d0d4d4751"
   },
   "https://www.ign.com/articles/magic-the-gathering-head-designer-says-no-more-star-trek-sets": {
     "file": "Magic_The_Gathering_Star_Trek_is_just_a_couple_wee.mp3",
@@ -4559,6 +4587,10 @@
     "file": "Robert_Downey_Jr._and_Pedro_Pascal's_Avengers_Doom.mp3",
     "hash": "15c717321e5e04522e1841d9fa4a282e424614e95c9d6297ae3e85877343c495"
   },
+  "https://www.ign.com/articles/percy-jackson-actors-reveal-they-watched-attack-on-titan-fan-edits-to-help-themselves-cry-while-filming-emotional-scenes": {
+    "file": "Walker_Scobell_and_Aryan_Simhadri_revealed_that_th.mp3",
+    "hash": "f3a6655b05db0b92f801fe7a31c31642790a9866b9def141317885f8d1e34dbd"
+  },
   "https://www.ign.com/articles/percy-jackson-viewership-boost-nolan-odyssey": {
     "file": "Percy_Jackson_and_the_Olympians_showrunners_explai.mp3",
     "hash": "3819222ebbb46a7ac06b4b760244ca07379b444cc8fcd3e1941e12191f2b6f5c"
@@ -4803,6 +4835,10 @@
     "file": "The_pitch_for_Sankan,_from_solo_developer_Dany_Rex.mp3",
     "hash": "eb0941d625b87961492428cca7fc0355f66edf7ef2f74c2d33e0c3a5b4977025"
   },
+  "https://www.ign.com/articles/satoru-gojos-english-voice-actor-didnt-realize-these-wild-lines-he-recorded-were-for-gta-6": {
+    "file": "Kaiji_Tang,_the_English_voice_actor_behind_iconic_.mp3",
+    "hash": "70d2c9cc458900cb57e24f167194bca9f1c6471a0a94686acced5fb3ac7d2b87"
+  },
   "https://www.ign.com/articles/save-mass-effect-graffiti-reportedly-spray-painted-outside-ea-building": {
     "file": "An_EA_office_building_in_Madrid_was_vandalized_wit.mp3",
     "hash": "23145d4e157d58c8bc829b31e611a205a0d9bc0e69332938725c6c5314bedb27"
@@ -4822,6 +4858,10 @@
   "https://www.ign.com/articles/selfridges-gta-6-takeover-varsity-jacket": {
     "file": "Luxury_British_department_store_Selfridges_has_had.mp3",
     "hash": "c21cd6f5f0375059933cae720f13463a2ca6509ec6b5be956a523ed6618e0c05"
+  },
+  "https://www.ign.com/articles/sexyy-red-had-the-best-response-to-her-viral-gta-6-moment-with-jason": {
+    "file": "Rapper_Sexyy_Red_has_given_a_hilarious_response_to.mp3",
+    "hash": "98c7dc6e84e6b932db4ae7e513cd281fa07cec923a85fc7a89f9d853e8e79497"
   },
   "https://www.ign.com/articles/shadow-the-hedgehog-gets-an-unofficial-pc-port-and-it-isnt-vibecoded": {
     "file": "Shadow_Recompiled_is_an_unofficial_PC_port_of_the_.mp3",
@@ -5776,8 +5816,8 @@
     "hash": "36973f79987f6cef300218e5599864160899002d9ae4e8cc6f32706a53558c9c"
   },
   "https://x.com/AslingTang/status/2123380995835728230": {
-    "file": "item_000.mp3",
-    "hash": "0d6c849da1cce1ff0dc35ee41579a5012d78ddc3e21795dc6613c67734fcc7a0"
+    "file": "item_007.mp3",
+    "hash": "21e939b3676980e768f165efd662f04f520873ef5eda952b8cacc8c11b58f012"
   },
   "https://x.com/AtreeDown/status/2117236019481477230": {
     "file": "item_003.mp3",
@@ -6607,6 +6647,10 @@
     "file": "item_009.mp3",
     "hash": "e9ab68cea5bbfcff186f36accc60e01374dc2c165cd91c9a8e6dd2cee589122e"
   },
+  "https://x.com/UIS410/status/2123670738309947769": {
+    "file": "item_004.mp3",
+    "hash": "3496e78aac3a6b7128e33e8e762154bd323bc7bfefec18369959a0952cb44706"
+  },
   "https://x.com/URI_UMU/status/2120443522159632476": {
     "file": "item_025.mp3",
     "hash": "c3fec0d99d94a4c38a5e9cd76cf69f8cc687efea80c0b4f5fea38dee235211f0"
@@ -6658,6 +6702,14 @@
   "https://x.com/Wolf80443556697/status/2057791709078294694": {
     "file": "item_000.mp3",
     "hash": "86c09b56c7788b2ec67d82c647bc4044a6df48a16934bfb48e907a9379e06dc5"
+  },
+  "https://x.com/YAMAMOTOchaveZ/status/2121906091407872334": {
+    "file": "item_002.mp3",
+    "hash": "ca9116deb13fd8e55658d20223b5c5f40da4a17325c50fd4cd8e9cb9f69db9ec"
+  },
+  "https://x.com/Ya2607520948/status/2123836101945434609": {
+    "file": "item_005.mp3",
+    "hash": "478522a54811771f9a1e05f200bd3fa00a5e3b2259166bb018ba3ec65219c515"
   },
   "https://x.com/Yuetchi/status/2114722645618930115": {
     "file": "item_016.mp3",
@@ -7286,6 +7338,10 @@
   "https://x.com/gl1_only/status/2113625102579593325": {
     "file": "item_003.mp3",
     "hash": "21dc96407d4ac993391eff2d025d39e512e28e7101f8f5ef587e4872a8eb35f3"
+  },
+  "https://x.com/goku_kennnn/status/2075861961187930455": {
+    "file": "item_006.mp3",
+    "hash": "f1291652d4bf853852b58c069d873234e12aee6d127d2dad0aa9fbc0fb09c577"
   },
   "https://x.com/gomo_00/status/2111130296586572087": {
     "file": "item_039.mp3",
@@ -8275,6 +8331,10 @@
     "file": "item_011.mp3",
     "hash": "7ad402625699d38c313434d0737b58bc2b928eb847277e5133470154abb3ca25"
   },
+  "https://x.com/o_sakanagawa/status/1747268830307725473": {
+    "file": "item_003.mp3",
+    "hash": "01e6ae283f39555fd6772d79087bf85e3ef984a1451725745ea47f2131d661e9"
+  },
   "https://x.com/oarfishman/status/2117678012199997471": {
     "file": "item_027.mp3",
     "hash": "cf9f818c7fdcfc7659ab37442f8760a2e768354b631e3dbeea2d10e34f7c1380"
@@ -8292,7 +8352,7 @@
     "hash": "4a0174356cb66828e7d6d4f49b7a289695f9512d47108ebe2242c259ac41d1d7"
   },
   "https://x.com/oimobito/status/2123708975455850819": {
-    "file": "item_015.mp3",
+    "file": "item_022.mp3",
     "hash": "685decab9bdb66304260be0459ad75c768ea569b6461f6669335ade42d8e63c2"
   },
   "https://x.com/oinari_33/status/2121542348119408676": {
