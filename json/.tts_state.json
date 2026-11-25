@@ -16,7 +16,7 @@
     "hash": "87b7abfd240e036074103c3ef789e8ee4d945fff6296e984ac8624c6ebc74484"
   },
   "https://ag3010.lofter.com/post/4ccd9a9d_3f94bc15c": {
-    "file": "item_011.mp3",
+    "file": "item_026.mp3",
     "hash": "aae41262442e7f3cd7cece0a7922c40c8f3ab99b13819f588c213853e365daf8"
   },
   "https://akayukikaede.lofter.com/post/75486ad6_34fac4919": {
@@ -155,6 +155,10 @@
     "file": "6_Things_The_Legend_of_Zelda_Ocarina_of_Time_Remak.mp3",
     "hash": "59562cd5d547c75f17af2369eda53836a36b92657827ac302f8732018413d3b2"
   },
+  "https://game8.co/articles/latest/aether-gazer-global-content-updates-end-in-december-but-servers-will-remain-active": {
+    "file": "Aether_Gazer_Global_Content_Updates_End_In_Decembe.mp3",
+    "hash": "2c2f388cb37cddcc42428dd06bb287672562932256af70fd64b72e250a020170"
+  },
   "https://game8.co/articles/latest/aniimo-hits-160k-concurrent-players-on-steam-also-now-available-on-mobile": {
     "file": "Aniimo_Hits_160k_Concurrent_Players_on_Steam,_Also.mp3",
     "hash": "3f5f8deb7371dd34d9c039e0daf734f8b4fdc67cee7e4a2db12a40a9c1fc9215"
@@ -274,6 +278,10 @@
   "https://game8.co/articles/latest/gta-6-is-playstations-biggest-launch-ever-but-cod-fortnite-lose-millions-of-daily-players-during-debut-weekend": {
     "file": "GTA_6_Is_PlayStation\u2019s_Biggest_Launch_Ever,_But_Co.mp3",
     "hash": "4a0d173478fd41c3c56572bb41ecd0dd473f5127481c0701d0b6d0052fe26c4d"
+  },
+  "https://game8.co/articles/latest/gta-6-keeps-it-real-with-the-birds-and-wildlife-with-accurate-birding-says-expert": {
+    "file": "GTA_6_Keeps_It_Real_With_The_Birds_and_Wildlife_wi.mp3",
+    "hash": "e26fff6d899c5beb389421023a57bb11b41fa19a0590ee7d4f46a0dcc64a0d46"
   },
   "https://game8.co/articles/latest/gta-6-launch-weekend-sees-gta-5-gta-4-san-andreas-player-counts-break-records": {
     "file": "GTA_6_Launch_Weekend_Sees_GTA_5,_GTA_4,_San_Andrea.mp3",
@@ -710,6 +718,14 @@
   "https://i.pximg.net/img-original/img/2023/12/30/02/06/06/114676382_p0.png": {
     "file": "item_002.mp3",
     "hash": "2a28336577a7518a49a7ff4e8a86b36b117ebdfdfe2805d3ffd9eab5b2614bc8"
+  },
+  "https://i.pximg.net/img-original/img/2024/04/05/01/45/09/117555332-b1a91deb89b0e94754d14a259e9317e6_p0.png": {
+    "file": "item_005.mp3",
+    "hash": "b95e0eb0b3fa70ae1029a2e22cfa9c778b1dcf851b9e05a1e885e6dff1cd3718"
+  },
+  "https://i.pximg.net/img-original/img/2024/04/05/01/45/09/117555332-b1a91deb89b0e94754d14a259e9317e6_p3.png": {
+    "file": "item_002.mp3",
+    "hash": "74ea44879abfed3d849e2512410bd5bac87f5bbb768bdcb5400776e0c4fe485d"
   },
   "https://i.pximg.net/img-original/img/2024/05/31/19/57/59/119216276_p5.jpg": {
     "file": "item_011.mp3",
@@ -1711,6 +1727,10 @@
     "file": "item_016.mp3",
     "hash": "76f8503a6942b625fc881e3c21deb4968225a8c4974d6eead15c847e8c732216"
   },
+  "https://i.pximg.net/img-original/img/2026/11/23/17/24/58/152400744_p0.png": {
+    "file": "item_008.mp3",
+    "hash": "a0289b3cf3a616520666bb95f7a000c0a52912838c11f03424de462c95919a8b"
+  },
   "https://i.pximg.net/img-original/img/2026/11/23/18/22/19/152402964_p15.jpg": {
     "file": "item_020.mp3",
     "hash": "bb99b5e1ed1f4645a6f8a9ef33985f37c0a625ee90e1ad13314397f353eb5b41"
@@ -2383,6 +2403,10 @@
     "file": "CD_Projekt_Red_has_revealed_that_it_used_and_is_us.mp3",
     "hash": "43ac66d261f700a727089eacdaeb481a232d3f1aee2752c5074bf9a8660225ce"
   },
+  "https://www.eurogamer.net/cd-projekt-red-signs-new-marketing-partnership-deal-with-sony-for-the-witcher-4-and-to-increase-the-presence-of-its-games-on-playstation": {
+    "file": "As_part_of_The_Witcher_and_Cyberpunk_studio_CD_Pro.mp3",
+    "hash": "697ec36c1fe75eff1395c59f7b16124dac043890dc186f97504fe193d7efc03c"
+  },
   "https://www.eurogamer.net/clair-obscur-jennifer-svedberg-yen-bafta-fund-new-talent": {
     "file": "Last_night,_it_was_revealed_that_Clair_Obscur_Expe.mp3",
     "hash": "928a96734d3f5693cc09157f6967b2071d955ecfa757c259150bd978208df8fe"
@@ -2531,6 +2555,10 @@
     "file": "The_European_Commission_has_published_its_proposed.mp3",
     "hash": "d87b2d2a9a1507a597f9d3079530739b1a83251c78b96d11796bae3340129d90"
   },
+  "https://www.eurogamer.net/exo-primal-shutting-down-2027": {
+    "file": "Sad_news_dinosaur_lovers._Exoprimal_Capcom's_third.mp3",
+    "hash": "5175ace07c3f406da9cbd67b6c1be32ac4f0a138433a34769ae6f7e426d80932"
+  },
   "https://www.eurogamer.net/exodus-femjun-femshep-mass-effect-bioware-sci-fi-rpg": {
     "file": "Sci_fi_role_playing_game_Exodus_continues_to_play_.mp3",
     "hash": "f6956eacdf62f954a7c73f3a3cb246b3228f89dcd37a0b041e823947e584067e"
@@ -2622,6 +2650,10 @@
   "https://www.eurogamer.net/grand-theft-auto-6-doja-cat-gutted-not-in-soundtrack": {
     "file": "As_countless_people_flock_to_Grand_Theft_Auto_6_fo.mp3",
     "hash": "8050e47d5a731a7e9b0799ae5d61069028a8272a17ed7eefde28a428d669b60d"
+  },
+  "https://www.eurogamer.net/grand-theft-auto-6-frame-rate-xbox-series-x-ps5": {
+    "file": "If_you_don't_own_a_PlayStation_5_Pro,_the_best_way.mp3",
+    "hash": "6a4ce47c6094669f456995afe031c97704d6b78b33c86b0face4fc94116d2652"
   },
   "https://www.eurogamer.net/grand-theft-auto-6-meet-the-developers-tackling-it-head-on": {
     "file": "Grand_Theft_Auto_6._It's_got_cool_cars,_crime,_a_b.mp3",
@@ -2798,6 +2830,10 @@
   "https://www.eurogamer.net/gta-6-no-cheats-until-completing-main-story": {
     "file": "Here's_a_twist_you_can't_use_cheats_in_Grand_Theft.mp3",
     "hash": "a0f5fd06e6c4d43d011a13ba4dd87a71eb78087e3c59c1650031550ca7c06f56"
+  },
+  "https://www.eurogamer.net/gta-6-over-1500-buildings-you-can-enter": {
+    "file": "One_GTA_6_player_has_put_in_the_legwork_and_found_.mp3",
+    "hash": "42853b9dc72f62cf53d043b1ae87848e5f67e192a72ee6d4fa91970f9f7ed16e"
   },
   "https://www.eurogamer.net/gta-6-plane-vehicle-stunts-impressive": {
     "file": "One_of_the_best_things_to_emerge_from_Grand_Theft_.mp3",
@@ -3286,6 +3322,10 @@
   "https://www.eurogamer.net/shovel-knight-3d-mina-financial-stability": {
     "file": "Yacht_Club_Games_has_confirmed_that_most_of_its_de.mp3",
     "hash": "362d0080e04898b4b5f274819e505d3299d5443f2633d88277f9efc11f432ae2"
+  },
+  "https://www.eurogamer.net/showa-american-story-delay-2027": {
+    "file": "Publisher_4Divinity_and_developer_Nekcom_Entertain.mp3",
+    "hash": "0183203c09c498a6f6f4d90daf320ab82ece2f7b955a7e2708a39f5577763449"
   },
   "https://www.eurogamer.net/silent-hill-townfall-hard-mode-update": {
     "file": "Silent_Hill_Townfall_has_added_a_new_Hard_difficul.mp3",
@@ -4077,7 +4117,7 @@
   },
   "https://www.ign.com/articles/cyberpunk-2-is-still-a-ways-out-but-cd-projekt-red-says-its-rpgs-will-come-out-faster-in-the-future": {
     "file": "We_are_still_two_years_out_from_The_Witcher_4,_but.mp3",
-    "hash": "6934a15fbb70ecc3b59f12eadc9ae552aeb0e87592914199da460930d0ca1797"
+    "hash": "7d88be173954b58f5f28bcf3801ecc7cc8e6c7c77896e71645b0b37aac73c668"
   },
   "https://www.ign.com/articles/cyberpunk-2077-just-got-a-new-multiplayer-mod-complete-with-rp-servers": {
     "file": "Last_month,_Cyberpunk_2077_got_an_ambitious_multip.mp3",
@@ -4438,6 +4478,10 @@
   "https://www.ign.com/articles/gta-5-fans-make-one-last-emotional-ride-through-los-santos-before-heading-to-vice-city": {
     "file": "Ahead_of_GTA_6's_release,_GTA_5_fans_are_reflectin.mp3",
     "hash": "e61ad6c56ca2c20bc48766b7ee4986b5a31656fbee6c5fbb67901f56c295f8e1"
+  },
+  "https://www.ign.com/articles/gta-6-analysis-shows-ps5-version-suffers-substantially-more-frequent-frame-rate-drops-than-xbox-series-x-version-sparking-debate-about-sonys-plays-best-on-ps5-marketing": {
+    "file": "The_tech_experts_at_Digital_Foundry_have_revealed_.mp3",
+    "hash": "8f48e9e98dfa820f4e241c65dee4a68e7067d9d30152c511fc3735b10aefa338"
   },
   "https://www.ign.com/articles/gta-6-bikini-girl-trailer-easter-egg": {
     "file": "Grand_Theft_Auto_6's_Bikini_Girl_has_been_found,_a.mp3",
@@ -4989,7 +5033,7 @@
   },
   "https://www.ign.com/articles/kevin-feige-and-the-russo-brothers-are-planning-a-special-tribute-to-patrick-stewart-as-avengers-doomsday-release-approaches": {
     "file": "Marvel_Studios_boss_Kevin_Feige_has_revealed_that_.mp3",
-    "hash": "7f2fb40f6b5b4d186223da63b11a67d1cbc1e504d6f96dd17feed2980ca0b988"
+    "hash": "c8a2a4d93bdaae0857147eb9849d0026a7d320e62759b9c9e569ed72d7c131e8"
   },
   "https://www.ign.com/articles/kevin-feige-didnt-want-wanda-in-visionquest-because-he-was-worried-she-would-distract-from-the-core-show": {
     "file": "Marvel_actor_Paul_Bettany_has_said_Kevin_Feige_did.mp3",
@@ -5109,7 +5153,7 @@
   },
   "https://www.ign.com/articles/marvel-shows-off-first-look-at-kelsey-grammers-beast-in-avengers-doomsday-and-fans-are-divided": {
     "file": "We\u2019ve_gotten_our_first_look_at_Kelsey_Grammer\u2019s_Be.mp3",
-    "hash": "2cf463f31f82103462ca4b23f6e92b2dfe4f3ee3f5692bf2109717dcf8c3751f"
+    "hash": "fd2580cc3744ae0980ea1112d9714e6743431ba046d7dfc9bba7314f3fcb90df"
   },
   "https://www.ign.com/articles/marvel-star-xochitl-gomez-says-she-struggled-to-find-work-after-joining-the-mcu-as-everyone-assumed-shed-be-too-busy-even-though-her-character-has-never-returned": {
     "file": "Xochitl_Gomez_has_described_her_big_Marvel_break_a.mp3",
@@ -5547,9 +5591,13 @@
     "file": "It_was_announced_less_than_a_year_ago,_but_Ratchet.mp3",
     "hash": "7f2bd48590ed9c8e2cbed489c6c78bc2fd69bb9e0bc6cfd2f71ab34548ac82da"
   },
+  "https://www.ign.com/articles/raul-bautista-actor-manny-perez-playing-gta-6": {
+    "file": "The_actor_behind_one_of_the_best_GTA_characters_of.mp3",
+    "hash": "f467fd915974af39c7c6385114a2d56a3472d519f6899c6147676a63d1d6c72f"
+  },
   "https://www.ign.com/articles/real-life-strip-club-says-its-had-hundreds-of-inquiries-from-gta-6-fans-as-pornhub-traffic-plummets": {
     "file": "Strip_clubs_are_part_of_the_very_DNA_of_GTA_6,_and.mp3",
-    "hash": "6e25947329765da8fc5abece116485bd0d5c69907ccf65dbde4665b9feba6877"
+    "hash": "0e6cdfca48a62d4acd134eb6e11b2f3b7098cde71e44940abb999f74f282be50"
   },
   "https://www.ign.com/articles/red-rising-director-francis-lawrence-says-ya-series-movie-adaptation-is-a-priority-at-paramount-following-shelved-netflix-show": {
     "file": "We_got_the_chance_to_chat_with_Francis_Lawrence,_d.mp3",
@@ -6231,6 +6279,10 @@
     "file": "Yakuza_series_creator_Toshiro_Nagoshi\u2019s_studio_has.mp3",
     "hash": "b9dc31fd5ed326d97070649b1c3537a976116d7267940dc7755576084ef934a2"
   },
+  "https://www.ign.com/articles/yes-there-was-one-thing-cut-from-gta-6-for-australia-nz": {
+    "file": "Rockstar_chopped_out_a_temporary_stat_buff_from_GT.mp3",
+    "hash": "1dcc151c4fe6a12f7abd770f0df33cf746fbf8c4ca75ee314f374e0ece9a1c6b"
+  },
   "https://www.ign.com/articles/you-can-now-buy-the-steam-machine-without-a-reservation-but-supplies-are-limited": {
     "file": "Back_when_the_Steam_Machine_first_came_out_in_June.mp3",
     "hash": "dcba9f5fbb9922691f7e1c478b213543592d3434dfdc9bbccee9ec7020b45e4b"
@@ -6379,6 +6431,10 @@
     "file": "item_002.mp3",
     "hash": "03ef1efcfcdba7516fad340371e1529a8da113ee1e937bf52e74ef58d6c1a28b"
   },
+  "https://www.weibo.com/5840255964/5366984666778990": {
+    "file": "item_004.mp3",
+    "hash": "8b6acda0a72e9b93fede11ba4521969a277a020f6f40090411acf3a6a819b443"
+  },
   "https://www.weibo.com/5900709747/R47qurSeV": {
     "file": "item_047.mp3",
     "hash": "43fde48d291ba164219409183c1c4427b29cf5997f0a1360d8801b4f1e419fcb"
@@ -6396,7 +6452,7 @@
     "hash": "df50cd5da83abd15e3465025532905b5e62c2b348a253dc6c1aa76374871d7d4"
   },
   "https://www.weibo.com/7302768339/Ro99Nvoev": {
-    "file": "item_013.mp3",
+    "file": "item_028.mp3",
     "hash": "5957da6141888d2c55a3b84afb6f1ae1e1c7716c999defbb1060b0ef2256f5be"
   },
   "https://www.weibo.com/7530396789/RrH4bp7Yk": {
@@ -6903,6 +6959,10 @@
     "file": "item_009.mp3",
     "hash": "585b4cb660c386263234c78f5873d45fa2fe17e4af3b8b784d0a62f62731c4aa"
   },
+  "https://x.com/Blue_Hawaii_KGS/status/2123423403432636686": {
+    "file": "item_009.mp3",
+    "hash": "7b74ca6eee37ab2abd6507a744c0bb8c2874f370e41c6da6318528c592c45e89"
+  },
   "https://x.com/Blue_rose_o0/status/2053351769460343146": {
     "file": "item_014.mp3",
     "hash": "e07f27ca31b413361c2e6b0a6037f6b2dad35052430d8cbb96a2aa15bc170359"
@@ -6994,6 +7054,10 @@
   "https://x.com/Dinosaurkl2/status/2122678954473738546": {
     "file": "item_006.mp3",
     "hash": "376fe60a23148a27047563a551971c348d55a2798924614c99c4fbee7158b150"
+  },
+  "https://x.com/Dregs477526/status/2117581882632413481": {
+    "file": "item_001.mp3",
+    "hash": "14174af532c853ead13f586f846067f7eb32b35e20897a9e127c29479740d48c"
   },
   "https://x.com/Eclipsaa8/status/2111316912361627765": {
     "file": "item_008.mp3",
@@ -7286,6 +7350,10 @@
   "https://x.com/Kiroshi_007/status/2115927657971941591": {
     "file": "item_019.mp3",
     "hash": "5692d0394a50efd8f0d11024b52d3af6491286823cee3585698e8ee889ec372f"
+  },
+  "https://x.com/KitsuneTenma/status/2125306456769503658": {
+    "file": "item_012.mp3",
+    "hash": "f50635beb59db4d344c788d1ae91ca3baca71cf064b82bdc4908ac4dfb730db3"
   },
   "https://x.com/Kittaryn/status/2119141250196541795": {
     "file": "item_002.mp3",
@@ -7852,7 +7920,7 @@
     "hash": "fb7f19fcd38629170c7cce63658a352230fe549a730af9efce84a8fbb5b7b94a"
   },
   "https://x.com/Volcanogulu/status/2125246826236494084": {
-    "file": "item_006.mp3",
+    "file": "item_021.mp3",
     "hash": "0c793dbf6a544bdb45e2ef93b5a9c0d9670f3a6b97bb76ec526322ff0ea7f447"
   },
   "https://x.com/WaifuDispenser/status/2121400772026155283": {
@@ -8267,6 +8335,10 @@
     "file": "item_014.mp3",
     "hash": "4b2b4b7125f1f0d14b081181b6a09512d612c541928f7c1615a8bc0628b7194f"
   },
+  "https://x.com/blansoha/status/2125372840530882871": {
+    "file": "item_011.mp3",
+    "hash": "ba74f507d6fa1d1f11f0c4ec8e4974dc0e9a83835f93ca37bb23f243e44606f0"
+  },
   "https://x.com/bonesoup_6/status/2117517008296124655": {
     "file": "item_012.mp3",
     "hash": "24eb2f89640fd84ff427473ebe1267e11c78ac1a45ccf658820589b22ada2676"
@@ -8542,6 +8614,10 @@
   "https://x.com/fhsjkcjwjosodj/status/2116820392304410878": {
     "file": "item_006.mp3",
     "hash": "2c8c05b9083791559a62fd001fcc4bb9167a89ad79543297f5cd692c8d3ec92c"
+  },
+  "https://x.com/flansodaa/status/2125423644222624191": {
+    "file": "item_006.mp3",
+    "hash": "d79630fb2dec6cadd33da03be5722af1852dd0b817406bba262c056722358d48"
   },
   "https://x.com/float_gaohyu/status/2124809646838002068": {
     "file": "item_048.mp3",
@@ -9195,6 +9271,10 @@
     "file": "item_006.mp3",
     "hash": "542f8c385601dd253f127e4c5ecd25d2d473977c1c7306cadefc7f79d72196fb"
   },
+  "https://x.com/konmuscle/status/2125113319053046237": {
+    "file": "item_014.mp3",
+    "hash": "c6c829b3af7b0599d9609210b4bb62a7e939abc384bd17c38b190131617b4a6e"
+  },
   "https://x.com/konomi_150/status/2124083089433624706": {
     "file": "item_024.mp3",
     "hash": "581a3a42a12b0ebebc244c132365736092c424b1d7e1478b1c6cc27610837327"
@@ -9299,6 +9379,10 @@
     "file": "item_040.mp3",
     "hash": "f04cffb34366b067fbcd706412adfe9de56ea4e1cc68a0f1ae6e1a0e87b4c02a"
   },
+  "https://x.com/libertaslib/status/2125107655438111137": {
+    "file": "item_013.mp3",
+    "hash": "369ddf45d2c46b4a1f93d5d8f8c6c0aa887acfc43b7626c5a99b474e64231a26"
+  },
   "https://x.com/lililizizi3/status/2116482047573119412": {
     "file": "item_047.mp3",
     "hash": "c617080675f33df133a410b2643c0aef12d60938cf4c7672f579a6d6b5c19b55"
@@ -9334,6 +9418,10 @@
   "https://x.com/lucidkana/status/2116548597949026605": {
     "file": "item_001.mp3",
     "hash": "806b63e7989429bf344b7d7ca04d4d8253d9803615c8bf5dbdc6be562fc36473"
+  },
+  "https://x.com/lvseshan643/status/2116872582817583371": {
+    "file": "item_007.mp3",
+    "hash": "1eefca5e8f24f553f166fb0bafbeefb86b6e23e84183d21481ba2879a57bed13"
   },
   "https://x.com/lyritart/status/2123822953091514503": {
     "file": "item_023.mp3",
@@ -10591,6 +10679,10 @@
     "file": "item_002.mp3",
     "hash": "f10535d9182c50ece55971c8723d1fd845ada42b325653ee9ab6a6031ad4bf10"
   },
+  "https://x.com/tktgm0703/status/2125552702205874287": {
+    "file": "item_000.mp3",
+    "hash": "63d6870d1be0fe2193afaa26077828d277dc795b5c9199b9bd2cbc3b2ec5e37a"
+  },
   "https://x.com/tktkhappymchyr/status/2124475153480618202": {
     "file": "item_028.mp3",
     "hash": "81dccb6d9a5ed9c1388c0fadd90f8d7255b5bb3c20c76d3e8546d37c5f028b67"
@@ -10606,6 +10698,10 @@
   "https://x.com/tokaikowai_00/status/2120484879721021619": {
     "file": "item_004.mp3",
     "hash": "bdaf098f3d2b169aa5eb6b0e98cf365070daf92cf01f26928931d64eb53027df"
+  },
+  "https://x.com/tokonameko/status/2125278399207973278": {
+    "file": "item_010.mp3",
+    "hash": "a49f947b505ad1f86f0c8b1a4ef496670c5c9ef8316a699e6aeee8e15dac7049"
   },
   "https://x.com/tomo_hatopo/status/2119000222219317343": {
     "file": "item_002.mp3",
@@ -11000,7 +11096,7 @@
     "hash": "c57aedaad80c5f79af7008bc84eb034c6dec94ec57041f97cde69ececbe7ac82"
   },
   "https://x.com/yurasynthesis/status/2125168093869818002": {
-    "file": "item_003.mp3",
+    "file": "item_018.mp3",
     "hash": "729f40c3cf8b9936803866f592ce4bf2ebcb868f8a79a3b1586b2c11da3771fd"
   },
   "https://x.com/yuriyalloween/status/1935692040571871268": {
