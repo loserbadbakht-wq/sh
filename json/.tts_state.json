@@ -691,6 +691,14 @@
     "file": "item_038.mp3",
     "hash": "221ec548dbfa06fd06d513e7656fde7b0dc2703ad172d8816a75d98d54d471dd"
   },
+  "https://i.pximg.net/img-original/img/2022/02/23/03/24/16/96456559_p30.png": {
+    "file": "item_011.mp3",
+    "hash": "4c460660a545ffc4e3c0896ebd3c06fe869df37a9b23e21edb658f902a3a67c6"
+  },
+  "https://i.pximg.net/img-original/img/2022/02/23/03/24/16/96456559_p34.png": {
+    "file": "item_008.mp3",
+    "hash": "fd114de906a15026c75b573b0f36a8003410c0fb25177e9838b92a6c5c8c8f1a"
+  },
   "https://i.pximg.net/img-original/img/2022/03/14/19/11/07/96910922_p0.jpg": {
     "file": "item_015.mp3",
     "hash": "134c2c87949ffe0468ee8ef8bccfebe971c60b5548a468fcf881e9cc5b24f6ed"
@@ -1115,6 +1123,10 @@
     "file": "item_007.mp3",
     "hash": "8b8a6333a95b213ab1618782100d524aa572dc49f4755db893af50703fbddcc7"
   },
+  "https://i.pximg.net/img-original/img/2026/10/26/10/13/22/151296361_p0.png": {
+    "file": "item_009.mp3",
+    "hash": "ad59350da8d26d516ceb88c4280a745907eb37b21ca0fe97b7c53439fa61925e"
+  },
   "https://i.pximg.net/img-original/img/2026/10/26/20/51/19/151313072_p0.jpg": {
     "file": "item_011.mp3",
     "hash": "d11e5484aba93e608bbe5bb77b1f79dd6ac5c3fc590a2b5d725d9fd297a17e43"
@@ -1274,6 +1286,10 @@
   "https://i.pximg.net/img-original/img/2026/10/31/16/59/01/151499743_p0.png": {
     "file": "item_008.mp3",
     "hash": "d3b7725a4af121ae31d700e534d4939ce9556e69c8cfe62cca43323123e3be16"
+  },
+  "https://i.pximg.net/img-original/img/2026/10/31/18/20/34/151503854_p1.png": {
+    "file": "item_004.mp3",
+    "hash": "a42d9853f551d741ccbea591cd4952f40291af93c5449255f81e9d07ba421076"
   },
   "https://i.pximg.net/img-original/img/2026/10/31/21/17/27/151515000_p4.png": {
     "file": "item_015.mp3",
@@ -4717,7 +4733,7 @@
   },
   "https://www.ign.com/articles/gta-6-animation-director-reveals-rockstar-made-3-animations-for-each-item-interaction": {
     "file": "Mike_Jones,_the_director_of_gameplay_animation_for.mp3",
-    "hash": "75b716cc64048c9696b9bf1e2dedff3b1c747c53858f4fba359baa185ee56cbc"
+    "hash": "d3f96595c9e098e714140c819f75bd2642df8f01f0a3839d7b84f25810702047"
   },
   "https://www.ign.com/articles/gta-6-bikini-girl-trailer-easter-egg": {
     "file": "Grand_Theft_Auto_6's_Bikini_Girl_has_been_found,_a.mp3",
@@ -4753,7 +4769,7 @@
   },
   "https://www.ign.com/articles/gta-6-doesnt-let-you-replay-missions-and-rockstar-says-theres-a-good-reason-for-that": {
     "file": "GTA_6_gives_players_a_lot_of_freedom_in_how_the_st.mp3",
-    "hash": "317c6ac6b67eb637747c225cc2d522121f6dbf35fb14e2c2fe36beddd1bb2518"
+    "hash": "e8a82d56e9892f7331f534f2e5cb52ab08b14a2314ddfb97cbf88100d026ea25"
   },
   "https://www.ign.com/articles/gta-6-doesnt-let-you-replay-story-missions-heres-why": {
     "file": "Unlike_previous_games_in_the_series,_you_can't_rep.mp3",
@@ -5373,7 +5389,7 @@
   },
   "https://www.ign.com/articles/lucia-actress-manni-l-perez-issues-first-statement-since-gta-6-launch": {
     "file": "Manni_L._Perez,_the_actress_who_plays_Lucia_in_GTA.mp3",
-    "hash": "04bd08ab72e3957f0809e9959aca95cb04a3c86e9a53aa7a6926e6d79a92b538"
+    "hash": "03701335d51d943f86cc3deed924d782549bf32c4ee2cfd9ec957ef01c14beca"
   },
   "https://www.ign.com/articles/macaulay-culkin-returns-as-kevin-for-the-mcdonalds-home-alone-meal-featuring-collectible-socks-and-a-new-pizza-sauce": {
     "file": "McDonald's_is_launching_a_massive_Home_Alone_colla.mp3",
@@ -5841,7 +5857,7 @@
   },
   "https://www.ign.com/articles/ps5-workaround-weather-gta-6": {
     "file": "Rockstar_recently_dropped_the_first_post_launch_pa.mp3",
-    "hash": "e65123d820853ac1f18aadc17b2c55a2a0142fc005d49b0ddec5096458d590e4"
+    "hash": "229bdf1a87ca7471ae051c57f2ec422c9e62737c0d1262f8a68cc2178137bfa9"
   },
   "https://www.ign.com/articles/pubg-battlegrounds-k-pop-girl-group-collab": {
     "file": "K_pop_girl_group_IVE_is_bringing_its_hit_song_Love.mp3",
@@ -5909,7 +5925,7 @@
   },
   "https://www.ign.com/articles/robbing-gta-6-atms-quickly": {
     "file": "Somewhere_around_the_middle_of_GTA_6_you_unlock_th.mp3",
-    "hash": "5a2c0728b18285458435ecfe59343c38d39d6d8c7307b37307a9d6260dbe4a93"
+    "hash": "e6589b843cc5c7199b1b2debdaf3d400fff3b1a325dccf5deee88a3ceba00e85"
   },
   "https://www.ign.com/articles/robert-downey-jr-and-pedro-pascal-swap-places-for-halloween-with-mister-fantastic-and-doctor-doom-costumes": {
     "file": "Halloween_had_no_shortage_of_viral_costumes,_but_R.mp3",
@@ -5945,11 +5961,11 @@
   },
   "https://www.ign.com/articles/rockstar-explains-why-it-added-consequences-to-gta-6s-violence-and-crimes": {
     "file": "Rockstar_Games_boss_Rob_Nelson_has_explained_why_t.mp3",
-    "hash": "9e933cc157b5371676daca771af00699b7d969d93e50d81fdaa0dee5e8ac7c97"
+    "hash": "8b3bb5641a07e5d0753a98aede251ae09338fe17551e00a976f61899f6ba7db2"
   },
   "https://www.ign.com/articles/rockstar-games-issues-statement-as-union-vote-fails": {
     "file": "The_Rockstar_Games_union_vote_has_failed,_with_75%.mp3",
-    "hash": "31e2d59009fcb752d70006b99e3c45033bda81918bcc832ee6f9bbcb67d61fb8"
+    "hash": "91e65f30f43a44d849a8bf59ba9b39ac59a5e9f7432240df0ea546bddb7ca656"
   },
   "https://www.ign.com/articles/rockstar-games-releases-39-new-gta-6-screenshots-to-celebrate-two-weeks-from-launch": {
     "file": "Rockstar_Games_has_released_a_few_dozen_new_screen.mp3",
@@ -6149,7 +6165,7 @@
   },
   "https://www.ign.com/articles/spider-man-brand-new-day-rerelease-includes-a-scene-cut-from-avengers-doomsday": {
     "file": "Spider_Man_Brand_New_Day_rerelease_includes_a_scen.mp3",
-    "hash": "66d927a4dbe36a1813ba83bfc64514894dd3593ce1d0358b5e3cd2f41dc12b1e"
+    "hash": "083a12f19ab0bb27a2b0da00c98dc383ee8ee3db9c8dc9c304f92dac78e9b915"
   },
   "https://www.ign.com/articles/spotify-reveals-massive-spike-in-streams-for-music-featured-in-gta-6": {
     "file": "Spotify_has_released_new_data_that_shows_huge_spik.mp3",
@@ -6772,7 +6788,7 @@
     "hash": "2ca7c0740dcecbfa8a1cb3a04cb37ec1cac939567afd7c7847480389f13ade85"
   },
   "https://www.rednote.com/discovery/item/6af7b227000000002a038ddd?xsec_token=ABPiupZHXa8eEJeP_7LOp6FQ5eEQC_WZciOxASBK-jJNU=": {
-    "file": "item_016.mp3",
+    "file": "item_032.mp3",
     "hash": "a44230b6ee819329b17d4b77af45f448ad3d22ebe25fcc362228944b1fd5d433"
   },
   "https://www.weibo.com/5234644360/RrdtBqvZL": {
@@ -7010,6 +7026,10 @@
   "https://x.com/0cloudy_cloudy0/status/2115092818347884959": {
     "file": "item_013.mp3",
     "hash": "b5a8775236d0c2ec6e74a4ff194fce8ea29b21237b2c1db1442f2628f1f6e892"
+  },
+  "https://x.com/0rf_cha/status/2126150416874500368": {
+    "file": "item_007.mp3",
+    "hash": "0d8140d4fe57bba2f880149e6ac61b8cecde424173fbecb20f6a656322c1388a"
   },
   "https://x.com/10porari/status/2107310681594941589": {
     "file": "item_013.mp3",
@@ -7951,6 +7971,10 @@
     "file": "item_017.mp3",
     "hash": "1d8d468657285d3ec6acdbfd74404aeaaaf632d252b1b9f7d7bd19790a7c034e"
   },
+  "https://x.com/Mub_ovo/status/2092504027506561224": {
+    "file": "item_002.mp3",
+    "hash": "5a1bcf3d42d2615acd20c3310770146db4273da68121be3c43d8895cafd9c0f7"
+  },
   "https://x.com/MuonRei00/status/2115298406126227933": {
     "file": "item_020.mp3",
     "hash": "7ef73de8a44adb54c6d77fa3a6b0c67295539789faed46be2e8e79f6d4df7b87"
@@ -8359,6 +8383,10 @@
     "file": "item_000.mp3",
     "hash": "86c09b56c7788b2ec67d82c647bc4044a6df48a16934bfb48e907a9379e06dc5"
   },
+  "https://x.com/Xcsc5373/status/2089866110187483556": {
+    "file": "item_015.mp3",
+    "hash": "fa6075ac9f1095679e6b17c3a6a28910a5f8eb54a741775497704145b673fe91"
+  },
   "https://x.com/YAMAMOTOchaveZ/status/2121906091407872334": {
     "file": "item_002.mp3",
     "hash": "ca9116deb13fd8e55658d20223b5c5f40da4a17325c50fd4cd8e9cb9f69db9ec"
@@ -8515,6 +8543,10 @@
     "file": "item_009.mp3",
     "hash": "1cef76f67249fb8ed4ad014e6fbc5136f18e6b01b96ab9d2b711942a1ce22040"
   },
+  "https://x.com/_uhhoh/status/2125915889539416574": {
+    "file": "item_001.mp3",
+    "hash": "f502a2c2644b94cf8aea123e313a7a9cc5e3e184f6cfeeefadca3f41b867f6d8"
+  },
   "https://x.com/_yanagi_h/status/2118641979395567785": {
     "file": "item_008.mp3",
     "hash": "0f7fc486e52fb0bdc11831e2b8d80b7c62a991513aa6b4161b33a1482ab0b199"
@@ -8582,6 +8614,10 @@
   "https://x.com/ahageao/status/2067698727859499516": {
     "file": "item_010.mp3",
     "hash": "2f567ba84254a9144dcb4c8a05fcce5906799a5167291e041dfda9777aa7c707"
+  },
+  "https://x.com/akaga204/status/2126172758363234468": {
+    "file": "item_000.mp3",
+    "hash": "e3c2301bcfd707393327bcad6eaad2a5bf485361d67e6e63869b0a25a7b3a5ae"
   },
   "https://x.com/akayukikaede/status/2122313750552178742": {
     "file": "item_047.mp3",
@@ -9198,6 +9234,10 @@
   "https://x.com/gomo_00/status/2111130296586572087": {
     "file": "item_039.mp3",
     "hash": "61afab13de9c2dbc8bb3a91955ff022abdba1774022b1ebecd322162d6707712"
+  },
+  "https://x.com/gracepago0314/status/2125633363293913589": {
+    "file": "item_003.mp3",
+    "hash": "fbc91fb65321c1fb37d94cecfc6bcbf043460837a18c9a082eb39799468dff4d"
   },
   "https://x.com/grande_bom/status/2116557632723177691": {
     "file": "item_013.mp3",
@@ -9870,6 +9910,10 @@
   "https://x.com/lesly_oh/status/2122289830293811505": {
     "file": "item_040.mp3",
     "hash": "f04cffb34366b067fbcd706412adfe9de56ea4e1cc68a0f1ae6e1a0e87b4c02a"
+  },
+  "https://x.com/lettuccine/status/2125642978966544739": {
+    "file": "item_005.mp3",
+    "hash": "236763c11c30116a02720795f187543cc733e25e2c47e764ff3ee3c826b44c39"
   },
   "https://x.com/libertaslib/status/2125107655438111137": {
     "file": "item_013.mp3",
@@ -10699,6 +10743,10 @@
     "file": "item_041.mp3",
     "hash": "6455b0ab59734d9b3e25c42dddb0b4fdd9d60c93cab2aaee4fb86394b3d02139"
   },
+  "https://x.com/punicchi1/status/2125881599355236500": {
+    "file": "item_006.mp3",
+    "hash": "549c6ca8851e6522ad4adb2baace314c6ed891caba6f8af90b994f83ad5b5b15"
+  },
   "https://x.com/pupgutty/status/2120728891761570157": {
     "file": "item_014.mp3",
     "hash": "79fdb21fc52d88bdb71197e2927f6e9173243a61f192732d74b2da9cf4bcfce9"
@@ -10738,6 +10786,10 @@
   "https://x.com/qmfl55/status/2125260296961101832": {
     "file": "item_005.mp3",
     "hash": "aac0241be794848848d3f89080bbb6a466d77c895dfd226345b66f338f17f558"
+  },
+  "https://x.com/qorhvmek77777/status/2125951700758663200": {
+    "file": "item_010.mp3",
+    "hash": "db41d7835c35ae7718e3aeeae2054dbd521160da5f66bb91bd170911d4d06362"
   },
   "https://x.com/qp2222u74/status/2100384744471158908": {
     "file": "item_019.mp3",
@@ -11746,6 +11798,18 @@
   "https://x.com/zhinchora/status/2115945015708893547": {
     "file": "item_001.mp3",
     "hash": "f0b9d7dc4ac74fa7f0b0ba5da3b29fa04d5ad2fd51fea81c5fd3c1abfa739e08"
+  },
+  "https://x.com/zhinchora/status/2124310906427613488": {
+    "file": "item_012.mp3",
+    "hash": "28ac5f9f28154329e9c84bd4b1974515c72448d854aa12d7bb1d2dbb85a92b90"
+  },
+  "https://x.com/zhinchora/status/2125751149827346866": {
+    "file": "item_014.mp3",
+    "hash": "a07b0efad24b58cb837270055e183096defe337570200796a25ba1a884e30990"
+  },
+  "https://x.com/zhinchora/status/2126077196724736380": {
+    "file": "item_013.mp3",
+    "hash": "8cadf61498c6c5229342fe5f91e72ca9d396e5c894a8fc40442cd0946bc1206a"
   },
   "https://x.com/zihacheol/status/2120476929119965638": {
     "file": "item_049.mp3",
